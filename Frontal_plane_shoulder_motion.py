@@ -1,3 +1,4 @@
+# https://www.youtube.com/watch?v=_GoXq9H0hqg
 import mediapipe as mp
 import cv2
 import numpy as np
@@ -33,6 +34,8 @@ while True:
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = pose.process(imgRGB)
 
+    # the condition will be True if at least one pose landmark is detected.
+    # aici poti verifica daca faci displaty doar la landmark-urile relevante sau le lasi pe toate
     if results.pose_landmarks:
         mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
         points = {}
@@ -43,11 +46,11 @@ while True:
 
         # testing here
         # vector_AB = umar cot
-        # vector_BC = cot incheietura 
+        # vector_BC = cot incheietura
         vector_DA = (points[11][0] - points[12][0], points[11][1] - points[12][1])
         vector_AB = (points[12][0] - points[14][0], points[12][1] - points[14][1])
         vector_BC = (points[14][0] - points[16][0], points[14][1] - points[16][1])
-        
+
 
         # Calculate the dot product of AB and BC
         dot_product_DB = vector_DA[0] * vector_AB[0] + vector_DA[1] * vector_AB[1]
@@ -70,34 +73,48 @@ while True:
         angle_deg_DB = math.degrees(angle_rad_DB)
         angle_deg_AC = math.degrees(angle_rad_AC)
 
+
+
         cv2.putText(img, str(int(angle_deg_AC)), (points[14][0], points[14][1]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
         cv2.putText(img, str(int(angle_deg_DB)), (points[12][0], points[12][1]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
 
         print("Angle (degrees):", angle_deg_AC)
 
         #end test here
-        if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10:
+        if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
             cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, "YOU CAN START THE EXERCISE2 ", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), )
-        else:
+            cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        elif int(angle_deg_AC) > 10:
             cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
             cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
             cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-            cv2.putText(img, "please correct your hand extention, it must be fully extended 0 degrees", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), )
-
-
-        if not up and points[22][1] < points[12][1]:
-            print("UP")
-            up = True
-            counter += 1
-            print(counter)
-            # voice.speak("go down slowly")
-        elif up and points[22][1] > points[12][1] and points[22][1] > points[24][1]:
-            print("DOWN")
-            up = False
-            # voice.speak("go up fast")
+            cv2.putText(img, "please extend your hand", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+        else:
+            cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+            if not up and int(angle_deg_DB) > 60 and int(angle_deg_DB) < 80:
+                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+                if points[16][1] < points[5][1] and points[14][1] < points[5][1]:
+                    print("it's UP")
+                    up = True
+                    counter += 1
+                    print(counter)
+                    # voice.speak("go down slowly")
+                    cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
+            elif up and points[16][1] > points[24][1] and points[14][1] > points[12][1]:
+                print("it's DOWN")
+                up = False
+                # voice.speak("go up fast")
+                cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
         print("--------------")
 
     cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
