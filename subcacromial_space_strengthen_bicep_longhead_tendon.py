@@ -128,7 +128,7 @@ while True:
                 cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
                 cv2.putText(img, str("go down slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
 
-            elif points[16][1]+30 < points[14][1] and ((int(angle_deg_AC) >= 10 and int(angle_deg_AC) <= 80) or (int(angle_deg_AC) >= 100)):
+            elif points[16][1]+30 < points[14][1] and (int(angle_deg_AC) <= 80) or (int(angle_deg_AC) >= 100):
             # elif points[16][1]+30 < points[14][1] and int(angle_deg_AC) >= 100 and int(angle_deg_AC) <= 80:
                 cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
                 cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
@@ -141,6 +141,12 @@ while True:
                     cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
                     cv2.putText(img, str("great, now extend the hand"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
                     extended = True
+
+            elif points[16][1]+30 >= points[14][1] and int(angle_deg_AC) < 80 and not(extended):
+                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
+                cv2.putText(img, str("get back to top position, and  ~90deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
 
             elif points[16][1]+30 >= points[14][1] and int(angle_deg_AC) < 80 and extended:
                 cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
@@ -157,11 +163,7 @@ while True:
                     cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
                     cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150),
                                 cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            # elif int(angle_deg_AC) < 80 and not(extended):
-            #     cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-            #     cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-            #     cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-            #     cv2.putText(img, str("get back to top position, and  ~90deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+
 
 
 
