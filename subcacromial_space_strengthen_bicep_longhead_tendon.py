@@ -84,6 +84,7 @@ while True:
         # cv2.putText(img, str(int(angle_deg_DB)), (points[12][0], points[12][1]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
 
         # print("Angle (degrees):", angle_deg_AC)
+        extended = False
 
         if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
             cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
@@ -92,55 +93,77 @@ while True:
             cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
         elif not up:
             if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter > 0:
-                cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2,
-                            (0, 0, 255), 2)
-
-            if points[16][1] < points[24][1] and points[16][1] > points[12][1] and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+                cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+            elif (int(angle_deg_AC) >= 10 and int(angle_deg_AC) <= 80) or (int(angle_deg_AC) >= 100):
+                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
+                cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255),
+                            2)
+            if points[14][1] > points[12][1] and  int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
                 cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
                 cv2.putText(img, str("~90 angle, good to go"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            elif points[16][1] < points[24][1] and points[16][1] > points[12][1] and not(int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80):
-                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-            elif points[16][1] < points[12][1] and abs(points[14][1] - points[12][1]) <= 20 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+            elif points[16][1] < points[12][1] and abs(points[14][1] - points[12][1]) <= 50 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
                 up = True
                 counter += 1
                 print(counter)
                 # voice.speak("it's UP, great, now bring it down slowly")
-                cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img, str("great, it's up"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (25, 50, 255), 2)
+                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+                cv2.putText(img, str("great, it's up"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+
         elif up:
-            if int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80 and abs(points[14][1] - points[12][1]) <= 50:
+            if points[16][1]+30 < points[14][1] and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+            # if points[16][1] < points[12][1] and abs(points[14][1] - points[12][1]) <= 50 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+
+            # if (points[14][1] + 20)  < points[12][1] and  int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
                 cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("go down slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-            elif abs(points[14][0] - points[12][0]) <= 100 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+                cv2.putText(img, str("go down slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+
+            elif points[16][1]+30 < points[14][1] and ((int(angle_deg_AC) >= 10 and int(angle_deg_AC) <= 80) or (int(angle_deg_AC) >= 100)):
+            # elif points[16][1]+30 < points[14][1] and int(angle_deg_AC) >= 100 and int(angle_deg_AC) <= 80:
+                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
+                cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+
+            if abs(points[14][1] - points[16][1]) <= 30 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+                    cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+                    cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+                    cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+                    cv2.putText(img, str("great, now extend the hand"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+
+            elif points[16][0]+30 >= points[14][0] and int(angle_deg_AC) < 80:
                 cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("great, now extend the hand"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-            elif abs(points[14][0] - points[12][0]) <= 100 and int(angle_deg_AC) < 80:
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                if  int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1]:
+                if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1]:
                     print("its down")
                     up = False
                     # # voice.speak("go up fast")
                     # # voice.speak("it's down, great, now bring it up slowly")
-                    # cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
-                    # cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
-                    # cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
-                    # cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                    cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150),
+                                cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+
+
+            # elif abs(points[14][1] - points[16][1]) <= 50 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
+            #     cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
+            #     cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
+            #     cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
+
+                # cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+
 
         print("--------------")
 
