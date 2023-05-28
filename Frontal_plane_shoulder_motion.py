@@ -1,4 +1,6 @@
 # https://www.youtube.com/watch?v=_GoXq9H0hqg
+import threading
+
 import mediapipe as mp
 import cv2
 import numpy as np
@@ -6,6 +8,7 @@ import numpy as np
 import tests.voice_tests.voice as voice
 import math
 import libs.visible as visible
+import threading
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -19,6 +22,7 @@ pose = mpPose.Pose()
 cap = cv2.VideoCapture(0)  # Use camera as the video source
 up = False
 counter = 0
+
 
 while True:
     success, img = cap.read()
@@ -104,18 +108,21 @@ while True:
                     up = True
                     counter += 1
                     print(counter)
-                    # voice.speak("go down slowly")
+                    # voice.speak("it's UP, great, now bring it down slowly")
                     cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
                     cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
                     cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
             elif up and points[16][1] > points[24][1] and points[14][1] > points[12][1]:
-                print("it's DOWN")
+                print("its down")
                 up = False
                 # voice.speak("go up fast")
+                # voice.speak("it's down, great, now bring it up slowly")
                 cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
                 cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
                 cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
         print("--------------")
+
+
 
     cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
 
