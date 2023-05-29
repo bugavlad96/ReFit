@@ -11,6 +11,7 @@ with mpHands.Hands(static_image_mode=False, max_num_hands=2, min_detection_confi
         mpPose.Pose(static_image_mode=False, min_detection_confidence=0.5) as pose:
     while True:
         success, img = cap.read()
+        img = cv2.resize(img, (1280, 960))
         imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
         # Process hand landmarks
