@@ -103,15 +103,15 @@ while True:
 
         # print("Angle (degrees):", angle_deg_AC)
 
-        if (int(angle_deg_AC) >= 165 and int(angle_deg_AC) >= 165) and (counter_left == counter_right == 0):
+        if (int(angle_deg_AC) >= 165 and int(angle_deg_EG) >= 165) and (counter_left == counter_right == 0):
             cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, "Great, now, begin the exercise :), bring both your ankles up ", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        elif (int(angle_deg_AC) >= 165 and int(angle_deg_AC) >= 165) and (counter_left == counter_right != 0):
+            cv2.putText(img, "Great, now, begin the exercise :), bring both your knees up ", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        elif (int(angle_deg_AC) >= 165 and int(angle_deg_EG) >= 165) and (counter_left == counter_right != 0):
             cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
@@ -122,7 +122,7 @@ while True:
                         2)
             left_up = False
             right_up = False
-        elif not (left_up and right_up) and (int(angle_deg_AC) < 165 and int(angle_deg_AC) < 165):
+        elif not (left_up and right_up) and (int(angle_deg_AC) < 165 and int(angle_deg_EG) < 165):
             cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
             cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
             cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
@@ -145,7 +145,7 @@ while True:
                 cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
                 cv2.putText(img, str("great, it's up. Now go down slowly in a controlled way, extend fully your feet"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
         elif (left_up and right_up):
-            if (int(angle_deg_AC) < 65 and int(angle_deg_AC) < 65):
+            if (int(angle_deg_AC) < 65 and int(angle_deg_EG) < 65):
                 cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
                 cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
                 cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
@@ -154,7 +154,7 @@ while True:
                 cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
                 cv2.putText(img, str("great, it's up. Now go down slowly in a controlled way, extend fully your feet"),
                             (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            if (int(angle_deg_AC) > 65 and int(angle_deg_AC) > 65) and (int(angle_deg_AC) <= 165 and int(angle_deg_AC) <= 165):
+            if (int(angle_deg_AC) > 65 and int(angle_deg_EG) > 65) and (int(angle_deg_AC) <= 165 and int(angle_deg_EG) <= 165):
                 cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
                 cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
                 cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
