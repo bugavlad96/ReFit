@@ -106,19 +106,84 @@ while True:
             cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
             cv2.putText(img, "Great, now, begin the exercise :), bring a knee at a time ", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        elif counter_left != 0 or counter_right != 0:
-            # if int(angle_deg_AC) >= 165 and int(angle_deg_EG) >= 165:
-            #     cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-            #     cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-            #     cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-            #     cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
-            #     cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
-            #     cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-            #     cv2.putText(img, str("good job, now go up again...."), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0),
-            #                 2)
-            #     left_up = False
-            #     right_up = False
-            if int(angle_deg_AC) >= 165 and int(angle_deg_EG) < 165:
+        elif (int(angle_deg_AC) >= 165 and int(angle_deg_EG) >= 165) and (counter_left != 0 and counter_right != 0):
+            cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
+            cv2.putText(img, str("good job, now go up again...."), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0),
+                        2)
+        else:
+            cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
+            cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
+        # elif counter_left != 0 and not(left_up):
+        #     if int(angle_deg_AC) > 165:
+        #         cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
+        #         cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
+        #         cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
+        #         cv2.putText(img, str("good job, LEFT is down. Now bring the left leg up...."), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2,
+        #                     (0, 255, 0),
+        #                     2)
+        #         # left_up = False
+        # elif counter_right != 0 and not(right_up):
+        #     if int(angle_deg_EG) > 165:
+        #         cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
+        #         cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
+        #         cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
+        #         cv2.putText(img, str("good job, RIGHT is down. Now bring the right leg up...."), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2,
+        #                     (0, 255, 0),
+        #                     2)
+        # #         right_up = False
+        if not(left_up):
+            if (int(angle_deg_AC) <= 165):
+                cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
+                cv2.putText(img, "a little more with your left", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                if int(angle_deg_AC) < 65:
+                    left_up = True
+                    counter_left += 1
+                    # print(counter)
+                    # voice.speak("it's UP, great, now bring it down slowly")
+                    cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.putText(img, str("great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        if not(right_up):
+            if (int(angle_deg_EG) <= 165):
+                cv2.circle(img, points[24], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[26], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[28], 15, (0, 0, 255), cv2.FILLED)
+                cv2.putText(img, "a little more with your right", (150, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                if int(angle_deg_EG) < 65:
+                    right_up = True
+                    counter_right += 1
+                    # print(counter)
+                    # voice.speak("it's UP, great, now bring it down slowly")
+                    cv2.circle(img, points[24], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[26], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
+                    cv2.putText(img,
+                                str("great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot"),
+                                (100, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        if left_up:
+            if int(angle_deg_AC) < 65:
+                cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
+                cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
+                cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
+                cv2.putText(img, str("great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+            elif int(angle_deg_AC) >= 65 and int(angle_deg_AC) <= 165:
+                cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
+                cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
+                cv2.putText(img, str("try to bring SLOWLY your LEFT knee as close as possible to the ground..."), (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            elif int(angle_deg_AC) > 165:
                 cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
                 cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
@@ -126,67 +191,26 @@ while True:
                             (0, 255, 0),
                             2)
                 left_up = False
-            if int(angle_deg_AC) < 165 and int(angle_deg_EG) >= 165:
-                cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("good job, RIGHT is down. Now bring the right leg up...."), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2,
-                            (0, 255, 0),
-                            2)
-                right_up = False
-        if not(left_up) and (int(angle_deg_AC) < 165):
-            cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
-            cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
-            cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
-            cv2.putText(img, "a little more with your left", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-            if int(angle_deg_AC) < 65:
-                left_up = True
-                counter_left += 1
-                # print(counter)
-                # voice.speak("it's UP, great, now bring it down slowly")
-                cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img, str("great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        if not(right_up) and (int(angle_deg_EG) < 165):
-            cv2.circle(img, points[24], 15, (0, 0, 255), cv2.FILLED)
-            cv2.circle(img, points[26], 15, (0, 0, 255), cv2.FILLED)
-            cv2.circle(img, points[28], 15, (0, 0, 255), cv2.FILLED)
-            cv2.putText(img, "a little more with your right", (150, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-            if int(angle_deg_EG) < 65:
-                right_up = True
-                counter_right += 1
-                # print(counter)
-                # voice.speak("it's UP, great, now bring it down slowly")
-                cv2.circle(img, points[24], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[26], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img,
-                            str("great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot"),
-                            (100, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        if left_up:
-            if int(angle_deg_AC) < 65:
-                cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img, str("great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            elif int(angle_deg_AC) > 65 and int(angle_deg_AC) <= 165:
-                cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("try to bring SLOWLY your LEFT knee as close as possible to the ground..."), (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+
         if right_up:
             if int(angle_deg_EG) < 65:
                 cv2.circle(img, points[24], 15, (255, 0, 0), cv2.FILLED)
                 cv2.circle(img, points[26], 15, (255, 0, 0), cv2.FILLED)
                 cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
                 cv2.putText(img,str("great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            elif int(angle_deg_EG) > 65 and int(angle_deg_EG) <= 165:
+            elif int(angle_deg_EG) >= 65 and int(angle_deg_EG) <= 165:
                 cv2.circle(img, points[24], 15, (0, 0, 255), cv2.FILLED)
                 cv2.circle(img, points[26], 15, (0, 0, 255), cv2.FILLED)
                 cv2.circle(img, points[28], 15, (0, 0, 255), cv2.FILLED)
                 cv2.putText(img, str("try to bring SLOWLY your RIGHT knee as close as possible to the ground..."), (150, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-
+            elif int(angle_deg_EG) > 165:
+                cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
+                cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
+                cv2.putText(img, str("good job, RIGHT is down. Now bring the right leg up...."), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2,
+                            (0, 255, 0),
+                            2)
+                right_up = False
         print("--------------")
 
 
