@@ -7,8 +7,8 @@ import numpy as np
 # import pyttsx3
 import tests.voice_tests.voice as voice
 import math
-import libs.visible as visible
 import threading
+import libs.color_landmark as color
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -87,10 +87,12 @@ while True:
         #end test here
         if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
             # poitns_right_hand
-            # color_points = [12, 14, 16]
-            cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+            color_this_points = [12, 14, 16]
+            color_code = [0, 255, 0]
+            color.color_landmark(img, points, color_this_points, color_code)
+            # cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+            # cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+            # cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
             cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
         elif int(angle_deg_AC) > 10:
             cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
