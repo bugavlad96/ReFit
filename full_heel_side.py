@@ -14,6 +14,10 @@ import tests.voice_tests.voice as voice
 import math
 import libs.visible as visible
 import threading
+import libs.color_landmark as color
+import libs.output_text as ot
+import libs.compute_angle as ca
+import libs.
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -67,6 +71,12 @@ while True:
         # 30 - right heel       # 30 - călcâiul drept
         # 31 - left foot index  # 31 - indicele piciorului stâng
         # 32 - right foot index # 32 - indicele piciorului drept
+        left_foot  = [23, 25, 27]
+        right_foot = [24, 26, 28]
+
+        angle_deg_AC = ca.compute_angle(points, left_foot)
+        angle_deg_EG = ca.compute_angle(points, right_foot)
+        ot.output_angle(img, points, 14, angle_deg_AC, red)
 
         #left leg
         vector_AB = (points[23][0] - points[25][0], points[23][1] - points[25][1])
