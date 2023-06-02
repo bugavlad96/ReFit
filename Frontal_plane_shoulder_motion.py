@@ -86,6 +86,8 @@ while True:
 
         #end test here
         if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
+            # poitns_right_hand
+            # color_points = [12, 14, 16]
             cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
             cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
