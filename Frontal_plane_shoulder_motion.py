@@ -23,6 +23,15 @@ cap = cv2.VideoCapture(0)  # Use camera as the video source
 up = False
 counter = 0
 
+red =   (255, 0, 0)
+green = (0, 255, 0)
+blue =  (0, 0, 255)
+
+# 12 - right shoulder
+# 14 - right elbow
+# 16 - right wrist
+right_hand = [12, 14, 16]
+
 
 while True:
     success, img = cap.read()
@@ -86,44 +95,47 @@ while True:
 
         #end test here
         if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
-            # poitns_right_hand
-            color_this_points = [12, 14, 16]
-            color_code = [0, 255, 0]
-            color.color_landmark(img, points, color_this_points, color_code)
             # cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
             # cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
             # cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+            color.color_landmark(img, points, right_hand, green)
             cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
         elif int(angle_deg_AC) > 10:
-            cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-            cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-            cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
+            # cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
+            # cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
+            # cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
+            color.color_landmark(img, points, right_hand, blue)
             cv2.putText(img, "please extend your hand", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
         else:
-            cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+            color.color_landmark(img, points, right_hand, green)
+            # cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+            # cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+            # cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
             if not up and int(angle_deg_DB) > 60 and int(angle_deg_DB) < 80:
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
+                color.color_landmark(img, points, right_hand, green)
+                # cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
+                # cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
+                # cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
                 if points[16][1] < points[5][1] and points[14][1] < points[5][1]:
                     print("it's UP")
                     up = True
                     counter += 1
                     print(counter)
+                    color.color_landmark(img, points, right_hand, red)
+
                     # voice.speak("it's UP, great, now bring it down slowly")
-                    cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
+                    # cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
+                    # cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
+                    # cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
             elif up and points[16][1] > points[24][1] and points[14][1] > points[12][1]:
                 print("its down")
                 up = False
+                color.color_landmark(img, points, right_hand, red)
                 # voice.speak("go up fast")
                 # voice.speak("it's down, great, now bring it up slowly")
-                cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
+                # cv2.circle(img, points[12], 15, (255, 0, 0), cv2.FILLED)
+                # cv2.circle(img, points[14], 15, (255, 0, 0), cv2.FILLED)
+                # cv2.circle(img, points[16], 15, (255, 0, 0), cv2.FILLED)
         print("--------------")
 
 
