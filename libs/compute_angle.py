@@ -19,7 +19,7 @@ import math
 # calculeaza unghiul dintre doi vectori concurenti
 # ia ca input un array 3 puncte relevante. ordinea conteaza
 def compute_angle(points, relevant_poits):
-    if len(relevant_poits) > 2:
+    if len(relevant_poits) > 3:
         print(" Functia Compute Angle calculeaza ungliul doar intre doi vectori concurenti")
         return False
     vector_AB = (points[relevant_poits[0]][0] - points[relevant_poits[1]][0], points[relevant_poits[0]][1] - points[relevant_poits[1]][1])
@@ -39,4 +39,4 @@ def compute_angle(points, relevant_poits):
     angle_rad_AC = math.acos(cosine_angle_AC)
 
     # Conversie din unghi in grade angle_deg_AC
-    return math.degrees(angle_rad_AC)
+    return abs(math.degrees(angle_rad_AC) - 180)

@@ -9,7 +9,7 @@ import tests.voice_tests.voice as voice
 import math
 import threading
 import libs.color_landmark as color
-import libs.output_text as out_text
+import libs.output_text as ot
 import libs.compute_angle as ca
 
 # Enable OpenCV to use CUDA
@@ -37,10 +37,13 @@ right_hand = [12, 14, 16]
 # left_shoulder -> right_shouler -> right elbow
 ls_rs_re = [11, 12, 14]
 
+# for text output
+first_lane = (150, 150)
+second_lane = ()
 
 while True:
     success, img = cap.read()
-    img = cv2.resize(img, (1280, 720))
+    img = cv2.resize(img, (1280, 960))
 
     # Create CUDA-based OpenCV matrix
     d_img = cv2.cuda_GpuMat()
@@ -62,61 +65,25 @@ while True:
             cx, cy = int(lm.x * w), int(lm.y * h)
             points[id] = (cx, cy)
 
-        # testing here
-        # vector_AB = umar cot
-        # vector_BC = cot incheietura
-        # vector_DA = (points[11][0] - points[12][0], points[11][1] - points[12][1])
-        # vector_AB = (points[12][0] - points[14][0], points[12][1] - points[14][1])
-        # vector_BC = (points[14][0] - points[16][0], points[14][1] - points[16][1])
-        #
-        #
-        # # Calculate the dot product of AB and BC
-        # dot_product_DB = vector_DA[0] * vector_AB[0] + vector_DA[1] * vector_AB[1]
-        # dot_product_AC = vector_AB[0] * vector_BC[0] + vector_AB[1] * vector_BC[1]
-        #
-        # # Calculate the magnitudes of AB and BC
-        # magnitude_DA = math.sqrt(vector_DA[0] ** 2 + vector_DA[1] ** 2)
-        # magnitude_AB = math.sqrt(vector_AB[0] ** 2 + vector_AB[1] ** 2)
-        # magnitude_BC = math.sqrt(vector_BC[0] ** 2 + vector_BC[1] ** 2)
-        #
-        # # Calculate the cosine of the angle between AB and BC
-        # cosine_angle_DB = dot_product_DB / (magnitude_DA * magnitude_AB)
-        # cosine_angle_AC = dot_product_AC / (magnitude_AB * magnitude_BC)
-        #
-        # # Calculate the angle in radians
-        # angle_rad_DB = math.acos(cosine_angle_DB)
-        # angle_rad_AC = math.acos(cosine_angle_AC)
-        #
-        # # Convert the angle to degrees
-        # angle_deg_DB = math.degrees(angle_rad_DB)
-        # angle_deg_AC = math.degrees(angle_rad_AC)
-
         angle_deg_AC = ca.compute_angle(points, right_hand)
-        out_text.output_angle(img, points, 14, angle_deg_AC, red)
+        ot.output_angle(img, points, 14, angle_deg_AC, red)
         angle_deg_DB = ca.compute_angle(points, ls_rs_re)
-        out_text.output_angle(img, points, 14, angle_deg_DB, red)
-
-        # angle_deg_AC = ca.compute_angle(points, right_hand)
-        # out_text.output_angle(img, points[14], angle_deg_AC, red)
-        # angle_deg_DB = ca.compute_angle(points, ls_rs_re)
-        # out_text.output_angle(img, points[14], angle_deg_DB, red)
-
-
-        # cv2.putText(img, str(int(angle_deg_AC)), (points[14][0], points[14][1]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
-        # cv2.putText(img, str(int(angle_deg_DB)), (points[12][0], points[12][1]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+        ot.output_angle(img, points, 11, angle_deg_DB, red)
 
         print("Angle (degrees):", angle_deg_AC)
 
         #end test here
-        if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
+        if int(angle_deg_AC) >= 170 and points[20][1] > points[24][1] and counter == 0:
             color.color_landmark(img, points, right_hand, green)
-            cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-        elif int(angle_deg_AC) > 10:
+            ot.output_text(img, "YOU CAN START THE EXERCISE", first_lane, green, 2)
+            # cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        elif int(angle_deg_AC) < 170:
             color.color_landmark(img, points, right_hand, blue)
-            cv2.putText(img, "please extend your hand", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+            ot.output_text(img, "please extend your hand", first_lane, blue, 2)
+            # cv2.putText(img, "please extend your hand", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
         else:
             color.color_landmark(img, points, right_hand, green)
-            if not up and int(angle_deg_DB) > 60 and int(angle_deg_DB) < 80:
+            if not up and int(angle_deg_DB) > 80 and int(angle_deg_DB) < 110:
                 color.color_landmark(img, points, right_hand, green)
                 if points[16][1] < points[5][1] and points[14][1] < points[5][1]:
                     print("it's UP")
@@ -134,8 +101,8 @@ while True:
         print("--------------")
 
 
-
-    cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
+    ot.output_text(img, str(counter), first_lane, red, 12)
+    # cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
 
     cv2.imshow("img", img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
