@@ -8,7 +8,10 @@ import numpy as np
 import tests.voice_tests.voice as voice
 import math
 import libs.visible as visible
-import threading
+import libs.color_landmark as color
+import libs.output_text as ot
+import libs.compute_angle as ca
+import libs.global_var as var
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -52,172 +55,100 @@ while True:
             cx, cy = int(lm.x * w), int(lm.y * h)
             points[id] = (cx, cy)
 
-        # 23 - left hip         # 23 - șold stâng
-        # 24 - right hip        # 24 - șold drept
-        # 25 - left knee        # 25 - genunchiul stâng
-        # 26 - right knee       # 26 - genunchiul drept
-        # 27 - left ankle       # 27 - glezna stângă
-        # 28 - right ankle      # 28 - glezna dreaptă
-        # 29 - left heel        # 29 - călcâiul stâng
-        # 30 - right heel       # 30 - călcâiul drept
-        # 31 - left foot index  # 31 - indicele piciorului stâng
-        # 32 - right foot index # 32 - indicele piciorului drept
-
-        #left leg
-        vector_AB = (points[23][0] - points[25][0], points[23][1] - points[25][1])
-        vector_BC = (points[25][0] - points[27][0], points[25][1] - points[27][1])
-        #right leg
-        vector_EF = (points[24][0] - points[26][0], points[24][1] - points[26][1])
-        vector_FG = (points[26][0] - points[28][0], points[26][1] - points[28][1])
-        # Calculate the dot product of AB and BC, rezulta un scalar
-        dot_product_AC = vector_AB[0] * vector_BC[0] + vector_AB[1] * vector_BC[1]
-        dot_product_EG = vector_EF[0] * vector_FG[0] + vector_EF[1] * vector_FG[1]
-
-        # Calculate the magnitudes of AB and BC
-        magnitude_AB = math.sqrt(vector_AB[0] ** 2 + vector_AB[1] ** 2)
-        magnitude_BC = math.sqrt(vector_BC[0] ** 2 + vector_BC[1] ** 2)
-        magnitude_EF = math.sqrt(vector_EF[0] ** 2 + vector_EF[1] ** 2)
-        magnitude_FG = math.sqrt(vector_FG[0] ** 2 + vector_FG[1] ** 2)
-
-        # Calculate the cosine of the angle between AB and BC
-        cosine_angle_AC = dot_product_AC / (magnitude_AB * magnitude_BC)
-        cosine_angle_EG = dot_product_EG / (magnitude_EF * magnitude_FG)
-
-        # Calculate the angle in radians
-        angle_rad_AC = math.acos(cosine_angle_AC)
-        angle_rad_EG = math.acos(cosine_angle_EG)
-
-        # Convert the angle to degrees
-        angle_deg_AC = abs(math.degrees(angle_rad_AC) - 180)
-        angle_deg_EG = abs(math.degrees(angle_rad_EG) - 180)
-
-
-
-        cv2.putText(img, str(int(angle_deg_AC)), (points[25][0], points[25][1]), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
-        cv2.putText(img, str(int(angle_deg_EG)), (points[26][0], points[26][1]), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
+        angle_deg_AC = ca.compute_angle(points, var.LEFT_FOOT)
+        angle_deg_EG = ca.compute_angle(points, var.RIGHT_FOOT)
+        ot.output_angle(img, points, var.LEFT_FOOT[1], angle_deg_AC, var.BLUE)
+        ot.output_angle(img, points, var.RIGHT_FOOT[1], angle_deg_EG, var.BLUE)
 
         # print("Angle (degrees):", angle_deg_AC)
 
         if (int(angle_deg_AC) >= 165 and int(angle_deg_EG) >= 165) and (counter_left == counter_right == 0):
-            cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, "Great, now, begin the exercise :), bring a knee at a time ", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+            color.color_landmark(img, points, var.LEFT_FOOT, var.GREEN)
+            color.color_landmark(img, points, var.RIGHT_FOOT, var.GREEN)
+            ot.output_text(img, "Great, now, begin the exercise :), bring a knee at a time ", var.FISRT_LANE,
+                           var.GREEN, var.SIZE_TXT_HINTS)
+
         elif (int(angle_deg_AC) >= 165 and int(angle_deg_EG) >= 165) and (counter_left != 0 and counter_right != 0):
-            cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, str("good job, now go up again...."), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0),
-                        2)
+            color.color_landmark(img, points, var.LEFT_FOOT, var.GREEN)
+            color.color_landmark(img, points, var.RIGHT_FOOT, var.GREEN)
+            ot.output_text(img, "good job, now go up again....", var.FISRT_LANE,
+                           var.GREEN, var.SIZE_TXT_HINTS)
         else:
-            cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-        # elif counter_left != 0 and not(left_up):
-        #     if int(angle_deg_AC) > 165:
-        #         cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-        #         cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-        #         cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-        #         cv2.putText(img, str("good job, LEFT is down. Now bring the left leg up...."), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2,
-        #                     (0, 255, 0),
-        #                     2)
-        #         # left_up = False
-        # elif counter_right != 0 and not(right_up):
-        #     if int(angle_deg_EG) > 165:
-        #         cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
-        #         cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
-        #         cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-        #         cv2.putText(img, str("good job, RIGHT is down. Now bring the right leg up...."), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2,
-        #                     (0, 255, 0),
-        #                     2)
-        # #         right_up = False
+            color.color_landmark(img, points, var.LEFT_FOOT, var.GREEN)
+            color.color_landmark(img, points, var.RIGHT_FOOT, var.GREEN)
         if not(left_up):
             if (int(angle_deg_AC) <= 165):
-                cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, "a little more with your left", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                color.color_landmark(img, points, var.LEFT_FOOT, var.YELLOW)
+                ot.output_text(img, "a little more with your left", var.FISRT_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
                 if int(angle_deg_AC) < 65:
                     left_up = True
                     counter_left += 1
                     # print(counter)
                     # voice.speak("it's UP, great, now bring it down slowly")
-                    cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.putText(img, str("great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                    color.color_landmark(img, points, var.LEFT_FOOT, var.GREEN)
+                    ot.output_text(img, "great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot", var.FISRT_LANE,
+                                   var.GREEN, var.SIZE_TXT_HINTS)
         if not(right_up):
             if (int(angle_deg_EG) <= 165):
-                cv2.circle(img, points[24], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[26], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[28], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, "a little more with your right", (150, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                color.color_landmark(img, points, var.RIGHT_FOOT, var.YELLOW)
+                ot.output_text(img, "a little more with your right",
+                               var.SECOND_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
                 if int(angle_deg_EG) < 65:
                     right_up = True
                     counter_right += 1
                     # print(counter)
                     # voice.speak("it's UP, great, now bring it down slowly")
-                    cv2.circle(img, points[24], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.circle(img, points[26], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
-                    cv2.putText(img,
-                                str("great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot"),
-                                (100, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                    color.color_landmark(img, points, var.RIGHT_FOOT, var.GREEN)
+                    ot.output_text(img, "great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot",
+                                   var.SECOND_LANE,
+                                   var.GREEN, var.SIZE_TXT_HINTS)
         if left_up:
             if int(angle_deg_AC) < 65:
-                cv2.circle(img, points[23], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img, str("great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                color.color_landmark(img, points, var.LEFT_FOOT, var.GREEN)
+                ot.output_text(img,
+                               "great, LEFT is up. Now go down slowly in a controlled way, extend fully your foot",
+                               var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
             elif int(angle_deg_AC) >= 65 and int(angle_deg_AC) <= 165:
-                cv2.circle(img, points[23], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("try to bring SLOWLY your LEFT knee as close as possible to the ground..."), (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                color.color_landmark(img, points, var.LEFT_FOOT, var.BLUE)
+                ot.output_text(img,
+                               "try to bring SLOWLY your LEFT knee as close as possible to the ground...",
+                               var.FISRT_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
             elif int(angle_deg_AC) > 165:
-                cv2.circle(img, points[23], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[25], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[27], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("good job, LEFT is down. Now bring the left leg up...."), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2,
-                            (0, 255, 0),
-                            2)
+                color.color_landmark(img, points, var.LEFT_FOOT, var.GREEN)
+                ot.output_text(img,
+                               "good job, LEFT is down. Now bring the left leg up....",
+                               var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
                 left_up = False
 
         if right_up:
             if int(angle_deg_EG) < 65:
-                cv2.circle(img, points[24], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[26], 15, (255, 0, 0), cv2.FILLED)
-                cv2.circle(img, points[28], 15, (255, 0, 0), cv2.FILLED)
-                cv2.putText(img,str("great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot"), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                color.color_landmark(img, points, var.RIGHT_FOOT, var.BLUE)
+                ot.output_text(img,
+                               "great, RIGHT is up. Now go down slowly in a controlled way, extend fully your foot",
+                               var.SECOND_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
             elif int(angle_deg_EG) >= 65 and int(angle_deg_EG) <= 165:
-                cv2.circle(img, points[24], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[26], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[28], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("try to bring SLOWLY your RIGHT knee as close as possible to the ground..."), (150, 200), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
+                color.color_landmark(img, points, var.RIGHT_FOOT, var.BLUE)
+                ot.output_text(img,
+                               "try to bring SLOWLY your RIGHT knee as close as possible to the ground...",
+                               var.SECOND_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
             elif int(angle_deg_EG) > 165:
-                cv2.circle(img, points[24], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[26], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[28], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("good job, RIGHT is down. Now bring the right leg up...."), (100, 200), cv2.FONT_HERSHEY_PLAIN, 2,
-                            (0, 255, 0),
-                            2)
+                color.color_landmark(img, points, var.RIGHT_FOOT, var.GREEN)
+                ot.output_text(img,
+                               "good job, RIGHT is down. Now bring the right leg up....",
+                               var.SECOND_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
                 right_up = False
         print("--------------")
 
-
-
-    cv2.putText(img, str(counter_left), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
-    cv2.putText(img, str(counter_right), (300, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
-
+    ot.output_text(img, str(counter_left), var.FISRT_LANE, var.BLUE, var.SIZE_TXT_KEY)
+    ot.output_text(img, str(counter_right), var.FISRT_LANE_SECOND_COUTER, var.BLUE, var.SIZE_TXT_KEY)
 
     cv2.imshow("img", img)
     if cv2.waitKey(1) & 0xFF == ord('q'):

@@ -60,11 +60,11 @@ while True:
         #end test here
         if int(angle_deg_AC) >= 170 and points[20][1] > points[24][1] and counter == 0:
             color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
-            ot.output_text(img, "YOU CAN START THE EXERCISE", var.FISRT_LANE, var.GREEN, 2)
+            ot.output_text(img, "YOU CAN START THE EXERCISE", var.FISRT_LANE, var.GREEN, var.TXT_HINTS)
             # cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
         elif int(angle_deg_AC) < 170:
             color.color_landmark(img, points, var.RIGHT_HAND, var.BLUE)
-            ot.output_text(img, "please extend your hand", var.FISRT_LANE, var.BLUE, 2)
+            ot.output_text(img, "please extend your hand", var.FISRT_LANE, var.BLUE, var.TXT_HINTS)
             # cv2.putText(img, "please extend your hand", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
         else:
             color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
@@ -86,7 +86,7 @@ while True:
         print("--------------")
 
 
-    ot.output_text(img, str(counter), var.FISRT_LANE, var.RED, 12)
+    ot.output_text(img, str(counter), var.FISRT_LANE, var.RED, var.TXT_KEY)
     # cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
 
     cv2.imshow("img", img)

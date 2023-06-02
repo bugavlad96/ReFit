@@ -8,7 +8,10 @@ import numpy as np
 import tests.voice_tests.voice as voice
 import math
 import libs.visible as visible
-import threading
+import libs.color_landmark as color
+import libs.output_text as ot
+import libs.compute_angle as ca
+import libs.global_var as var
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -20,14 +23,15 @@ mpPose = mp.solutions.pose
 pose = mpPose.Pose()
 
 cap = cv2.VideoCapture(0)  # Use camera as the video source
+
 up = False
 counter = 0
-
 extended = False
+
 while True:
     success, img = cap.read()
     # The default resolution that the models in the MediaPipe library were trained on is 640x480
-    img = cv2.resize(img, (1280, 960))
+    img = cv2.resize(img, var.STREAM_RESIZE)
 
     # Create CUDA-based OpenCV matrix
     d_img = cv2.cuda_GpuMat()
@@ -49,137 +53,69 @@ while True:
             cx, cy = int(lm.x * w), int(lm.y * h)
             points[id] = (cx, cy)
 
-        # testing here
-        # vector_AB = umar cot
-        # vector_BC = cot incheietura
-        # vector_DA = (points[11][0] - points[12][0], points[11][1] - points[12][1])
-        vector_AB = (points[12][0] - points[14][0], points[12][1] - points[14][1])
-        vector_BC = (points[14][0] - points[16][0], points[14][1] - points[16][1])
-
-
-        # Calculate the dot product of AB and BC, rezulta un scalar
-        # dot_product_DB = vector_DA[0] * vector_AB[0] + vector_DA[1] * vector_AB[1]
-        dot_product_AC = vector_AB[0] * vector_BC[0] + vector_AB[1] * vector_BC[1]
-
-        # Calculate the magnitudes of AB and BC
-        # magnitude_DA = math.sqrt(vector_DA[0] ** 2 + vector_DA[1] ** 2)
-        magnitude_AB = math.sqrt(vector_AB[0] ** 2 + vector_AB[1] ** 2)
-        magnitude_BC = math.sqrt(vector_BC[0] ** 2 + vector_BC[1] ** 2)
-
-        # Calculate the cosine of the angle between AB and BC
-        # cosine_angle_DB = dot_product_DB / (magnitude_DA * magnitude_AB)
-        cosine_angle_AC = dot_product_AC / (magnitude_AB * magnitude_BC)
-
-        # Calculate the angle in radians
-        # angle_rad_DB = math.acos(cosine_angle_DB)
-        angle_rad_AC = math.acos(cosine_angle_AC)
-
-        # Convert the angle to degrees
-        # angle_deg_DB = math.degrees(angle_rad_DB)
-        angle_deg_AC = math.degrees(angle_rad_AC)
-
-
-
-        cv2.putText(img, str(int(angle_deg_AC)), (points[14][0], points[14][1]), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
-        # cv2.putText(img, str(int(angle_deg_DB)), (points[12][0], points[12][1]), cv2.FONT_HERSHEY_PLAIN, 2, (255, 0, 0), 2)
+        angle_deg_AC = ca.compute_angle(points, var.RIGHT_HAND)
+        ot.output_angle(img, points, var.RIGHT_HAND[1], angle_deg_AC, var.BLUE)
 
         # print("Angle (degrees):", angle_deg_AC)
 
 
-        if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter == 0:
-            cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-            cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-            cv2.putText(img, "YOU CAN START THE EXERCISE", (150, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+        if int(angle_deg_AC) >= 170 and points[20][1] > points[24][1] and counter == 0:
+            color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+            ot.output_text(img, "YOU CAN START THE EXERCISE", var.FISRT_LANE,
+                           var.GREEN, var.SIZE_TXT_HINTS)
         elif not up:
-            if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1] and counter > 0:
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-            elif (int(angle_deg_AC) >= 10 and int(angle_deg_AC) <= 80) or (int(angle_deg_AC) >= 100):
-                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255),
-                            2)
+            if int(angle_deg_AC) >= 170 and points[20][1] > points[24][1] and counter > 0:
+                color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                ot.output_text(img, "great, it's down, now bring it up slowly", var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
+            elif (int(angle_deg_AC) < 170 and int(angle_deg_AC) > 100) or (int(angle_deg_AC) < 80):
+                color.color_landmark(img, points, var.RIGHT_HAND, var.RED)
+                ot.output_text(img, "elbow angle must be ~90 deg", var.FISRT_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
             if points[14][1] > points[12][1] and  int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("~90 angle, good to go"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
+                color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                ot.output_text(img, "~90 angle, good to go", var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
             elif points[16][1] < points[12][1] and abs(points[14][1] - points[12][1]) <= 50 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
                 up = True
                 counter += 1
                 print(counter)
                 # voice.speak("it's UP, great, now bring it down slowly")
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("great, it's up"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-
+                color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                ot.output_text(img, "great, it's up", var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
         elif up:
             if points[16][1]+30 < points[14][1] and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
-            # if points[16][1] < points[12][1] and abs(points[14][1] - points[12][1]) <= 50 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
-
-            # if (points[14][1] + 20)  < points[12][1] and  int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                cv2.putText(img, str("go down slowly"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-
-            elif points[16][1]+30 < points[14][1] and (int(angle_deg_AC) <= 80) or (int(angle_deg_AC) >= 100):
-            # elif points[16][1]+30 < points[14][1] and int(angle_deg_AC) >= 100 and int(angle_deg_AC) <= 80:
-                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-
+                color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                ot.output_text(img, "go down slowly", var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
+            elif points[16][1]+15 < points[14][1] and ((int(angle_deg_AC) < 80) or (int(angle_deg_AC) > 100)):
+                color.color_landmark(img, points, var.RIGHT_HAND, var.RED)
+                ot.output_text(img, "elbow angle must be ~90 deg", var.FISRT_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
             if abs(points[14][1] - points[16][1]) <= 30 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
-                    cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                    cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                    cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                    cv2.putText(img, str("great, now extend the hand"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-                    extended = True
-
-            elif points[16][1]+30 >= points[14][1] and int(angle_deg_AC) < 80 and not(extended):
-                cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-                cv2.putText(img, str("get back to top position, and  ~90deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-
-            elif points[16][1]+30 >= points[14][1] and int(angle_deg_AC) < 80 and extended:
-                cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                if int(angle_deg_AC) >= 0 and int(angle_deg_AC) <= 10 and points[20][1] > points[24][1]:
+                color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                ot.output_text(img, "great, now extend the hand", var.FISRT_LANE,
+                               var.GREEN, var.SIZE_TXT_HINTS)
+                extended = True
+            elif (points[16][1]+15 >= points[14][1] and int(angle_deg_AC) > 100) and not(extended):
+                color.color_landmark(img, points, var.RIGHT_HAND, var.RED)
+                ot.output_text(img, "get back to top position, and  ~90 deg", var.FISRT_LANE,
+                               var.RED, var.SIZE_TXT_HINTS)
+            elif points[16][1]+30 >= points[14][1] and int(angle_deg_AC) > 100 and extended:
+                color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                if int(angle_deg_AC) >= 170 and points[20][1] > points[24][1]:
                     print("its down")
                     up = False
                     extended = False
                     # # voice.speak("go up fast")
                     # # voice.speak("it's down, great, now bring it up slowly")
-                    cv2.circle(img, points[12], 15, (0, 255, 0), cv2.FILLED)
-                    cv2.circle(img, points[14], 15, (0, 255, 0), cv2.FILLED)
-                    cv2.circle(img, points[16], 15, (0, 255, 0), cv2.FILLED)
-                    cv2.putText(img, str("great, it's down, now bring it up slowly"), (100, 150),
-                                cv2.FONT_HERSHEY_PLAIN, 2, (0, 255, 0), 2)
-
-
-
-
-            # elif abs(points[14][1] - points[16][1]) <= 50 and int(angle_deg_AC) <= 100 and int(angle_deg_AC) >= 80:
-            #     cv2.circle(img, points[12], 15, (0, 0, 255), cv2.FILLED)
-            #     cv2.circle(img, points[14], 15, (0, 0, 255), cv2.FILLED)
-            #     cv2.circle(img, points[16], 15, (0, 0, 255), cv2.FILLED)
-
-                # cv2.putText(img, str("elbow angle must be ~90 deg"), (100, 150), cv2.FONT_HERSHEY_PLAIN, 2, (0, 0, 255), 2)
-
+                    color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
+                    ot.output_text(img, "great, it's down, now bring it up slowly", var.FISRT_LANE,
+                                   var.GREEN, var.SIZE_TXT_HINTS)
 
         print("--------------")
-
-
-
-    cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
+    ot.output_text(img, str(counter), var.FISRT_LANE, var.BLUE, var.SIZE_TXT_KEY)
 
     cv2.imshow("img", img)
     if cv2.waitKey(1) & 0xFF == ord('q'):
