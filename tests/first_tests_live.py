@@ -1,7 +1,7 @@
 import mediapipe as mp
 import cv2
-
-
+import libs.visible_landmark as vl
+import libs.global_var as var
 # config_path = r"config.pbtxt"
 
 # Create a MediaPipe pipeline with the configuration file
@@ -21,9 +21,11 @@ counter = 0
 
 while True:
     success, img = cap.read()
-    img = cv2.resize(img, (1280, 720))
+    img = cv2.resize(img, var.STREAM_RESIZE)
     imgRGB = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
     results = pose.process(imgRGB)
+
+    print(vl.are_points_visible(results, var.EXPOSED_FRONT))
 
     if results.pose_landmarks:
         mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)

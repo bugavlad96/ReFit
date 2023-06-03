@@ -8,9 +8,11 @@ YELLOW = (0, 255, 255)
 # 14 - right elbow
 # 16 - right wrist
 RIGHT_HAND = [12, 14, 16]
-
+LEFT_HAND = [11, 13, 15]
 # left_shoulder -> right_shouler -> right elbow
-LS_RS_RE = [11, 12, 14]
+RIGHT_SHOULDER = [11, 12, 14]
+# right shoulder -> left_shoulder -> left Elbow
+LEFT_SHOULDER = [12, 11, 13]
 
 # for text output
 FISRT_LANE = (50, 150)
@@ -34,3 +36,14 @@ RIGHT_FOOT = [24, 26, 28]
 
 SIZE_TXT_HINTS = 2
 SIZE_TXT_KEY = 12
+
+# Body orientation
+# EXPOSED_FRONT = "exposed_front"
+# EXPOSED_LEFT  = "exposed_right"
+# EXPOSED_RIGHT = "exposed_RIGHT"
+# Body orientation
+EXPOSED_FRONT = [25, 26, 23, 24, 11, 12, 15, 16, 0, 2, 5]
+EXPOSED_LEFT  = [11,13,15,7]
+EXPOSED_RIGHT = [12, 14, 16, 8]
+NOT_VISIBLE = False
+VISIBLE     = True
