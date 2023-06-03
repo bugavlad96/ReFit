@@ -1,8 +1,5 @@
-import libs.color_landmark as color
-import libs.output_text as ot
 import libs.compute_angle as ca
 import libs.global_var as var
-import libs.visible_landmark as vl
 import libs.utils as utils
 # orientation - will take a list of required landmarks from var.global_var. facing the camera or facing left to expose the right side, or right for left
 # this function will include by default the printing of the angle on the stream, to check if to include it in the interface only or not

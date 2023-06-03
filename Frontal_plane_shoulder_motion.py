@@ -15,6 +15,7 @@ import libs.prepare_stream_BGR2RGB as ps
 import libs.utils as utils
 import positions.hand as hand
 import positions.body as body
+import positions.foot as foot
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -41,9 +42,14 @@ while True:
         mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
         points = utils.collect_points(img, results)
 
-        print(body.body(var.EXPOSED_FRONT, results, img))
-        print(hand.left_hand(90, 10, results, img, 180))
-        print(hand.right_hand(90, 10, results, img, 180))
+        # Test new functions
+        # print(foot.left_foot(180, 10, results, img, 180))
+        # print(foot.right_foot(180, 10, results, img, 180))
+        # print(body.body(var.EXPOSED_UPPER_FRONT, results, img))
+        # print(hand.left_hand(90, 10, results, img, 180))
+        # print(hand.right_hand(90, 10, results, img, 180))
+        # end test
+
 
         # compute the angles
         angle_deg_AC = ca.compute_angle(points, var.RIGHT_HAND)

@@ -42,8 +42,12 @@ SIZE_TXT_KEY = 12
 # EXPOSED_LEFT  = "exposed_right"
 # EXPOSED_RIGHT = "exposed_RIGHT"
 # Body orientation
-EXPOSED_FRONT = [25, 26, 23, 24, 11, 12, 15, 16, 0, 2, 5]
-EXPOSED_LEFT  = [11,13,15,7]
+EXPOSED_UPPER_FRONT = [23, 24, 11, 12, 15, 16, 0, 2, 5]
+# from hips till ankles
+EXPOSED_LOWER_FRONT = [23, 24, 25, 26, 27, 28]
+EXPOSED_LEFT  = [11, 13, 15, 7]
 EXPOSED_RIGHT = [12, 14, 16, 8]
+LEFT_HIP = [11, 23, 25]
+RIGHT_HIP = [12, 24, 26]
 NOT_VISIBLE = False
 VISIBLE     = True
