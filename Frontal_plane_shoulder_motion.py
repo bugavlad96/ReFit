@@ -13,6 +13,8 @@ import libs.compute_angle as ca
 import libs.global_var as var
 import libs.prepare_stream_BGR2RGB as ps
 import libs.utils as utils
+import positions.hand as hand
+import positions.body as body
 
 # Enable OpenCV to use CUDA
 cv2.setUseOptimized(True)
@@ -38,6 +40,10 @@ while True:
         # printeaza punctele si conexiunile. Oferit de mdedia pipe
         mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
         points = utils.collect_points(img, results)
+
+        print(body.body(var.EXPOSED_FRONT, results, img))
+        print(hand.left_hand(90, 10, results, img, 180))
+        print(hand.right_hand(90, 10, results, img, 180))
 
         # compute the angles
         angle_deg_AC = ca.compute_angle(points, var.RIGHT_HAND)
