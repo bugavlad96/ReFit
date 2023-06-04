@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sign Up</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        .radio-group {
+            margin-bottom: 10px;
+            padding: 5px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Sign Up</h2>
+        <h2>Login</h2>
+        {% if error %}
+        <p style="color: red;">{{ error }}</p>
+        {% endif %}
+        <form method="POST" action="/signup">
+            <label for="name">Name:</label>
+            <input type="text" name="name" id="name" placeholder="Name" required>
+
+            <label for="surname">Surname:</label>
+            <input type="text" name="surname" id="surname" placeholder="Surname" required>
+
+            <label for="surname">Mail:</label>
+            <input type="text" name="mail" id="mail" placeholder="Mail" required>
+
+            <label for="username">Username:</label>
+            <input type="text" name="username" id="username" placeholder="Username" required>
+
+            <div class="radio-group">
+                <label><input type="radio" name="option" value="therapist" required> Fizioterapist </label>
+                <label><input type="radio" name="option" value="patient" required> Pacient </label>
+            </div>
+
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="Password" required>
+
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm Password" required>
+
+
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+</body>
+</html>
