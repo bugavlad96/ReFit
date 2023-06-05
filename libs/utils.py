@@ -1,5 +1,24 @@
 import libs.global_var as var
 import libs.compute_angle as ca
+import mediapipe as mp
+import cv2
+
+
+
+def exercise_initialization():
+    # Enable OpenCV to use CUDA
+    cv2.setUseOptimized(True)
+    cv2.cuda.setDevice(0)
+
+    # Create MediaPipe objects
+    mpDraw = mp.solutions.drawing_utils
+    mpPose = mp.solutions.pose
+    pose = mpPose.Pose()
+
+    cap = cv2.VideoCapture(0)  # Use camera as the video source
+
+    return mpDraw, mpPose, pose, cap
+
 
 def collect_points(img, results):
     points = {}

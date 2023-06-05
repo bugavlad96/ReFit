@@ -62,8 +62,8 @@ def is_step_completed(actual_values):
     for body_part_txt, (body_part_array, angle) in actual_values.items():
         if not angle[0]:
             return False
-        print(angle[0])
-        print(angle[1])
+        # print(angle[0])
+        # print(angle[1])
 
     return True
     # if break_occured:
