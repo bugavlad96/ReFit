@@ -17,7 +17,9 @@ import libs.output_text as ot
 
 # trebuie de implementat counter, oare n-ar fie o idee de a pune in pasul de steps
 # O lista de dictionare
-def exercise(body_parts, body_angles, permissive_error):
+
+            # body_parts, steps(va contine o succesiune de unghiuri) persmissive_error
+def exercise(body_parts, steps_angles, permissive_error, count_max = 0):
     # TREBUIE DE BAGAT TOT WHILE TRUE-ul pentru ca sa se execute aici!!!!!!!!!!!!!!!!!!
 
     # --------------------------------------------------------------------------------------------------
@@ -25,14 +27,18 @@ def exercise(body_parts, body_angles, permissive_error):
 
     # initialize some vars
     up = False
+
     counter = 0
     are_steps_completed = []
     actual_values = []
 
     first_half_exercise = False
+    second_half_exercise = False
 
-    for idx in range(len(body_parts)):
-        are_steps_completed[idx-1] = var.STEP_NOT_COMPLETED
+    # for idx in range(len(body_parts)):
+    #     are_steps_completed[idx] = var.STEP_NOT_COMPLETED
+    are_steps_completed =[False for _ in range(len(steps_angles))]
+    actual_values = [-1 for _ in range(len(steps_angles))]
 
     mpDraw, mpPose, pose, cap = utils.exercise_initialization()
 
@@ -49,42 +55,48 @@ def exercise(body_parts, body_angles, permissive_error):
             points = utils.collect_points(img, results)
 
             if not first_half_exercise:
+                print("am intrat")
                 for idx, is_step_completed in enumerate(are_steps_completed):
 
-                    if (not is_step_completed) and (not first_half_exercise):
-                        are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts[idx], body_angles[idx], permissive_error)
+                    if (not is_step_completed):
+                        # print(idx, is_step_completed)
+                        print(f"index {idx}")
+                        are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")
                             break
                         else:
                             print(f"{idx}  SUCCESS")
                             if idx == len(are_steps_completed) - 1:
-                                print("the last step")
+                                print("the last step up")
                                 first_half_exercise = True
                                 counter += 1
-                                for aux in range(len(body_parts)):
-                                    are_steps_completed[aux - 1] = var.STEP_NOT_COMPLETED
-                                # break
-                                # elif first_half_exercise:
+                                print(counter)
+                                are_steps_completed = [False for _ in range(len(steps_angles))]
+
 
             if first_half_exercise:
-                for idx, is_step_completed in reversed(list(enumerate(are_steps_completed))):
+                print("in intrat in sens invers")
 
-                    if (not is_step_completed) and (not first_half_exercise):
-                        are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts[idx], body_angles[idx], permissive_error)
+                for idx, is_step_completed in reversed(list(enumerate(are_steps_completed))):
+                    if (not is_step_completed):
+                        are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")
                             break
                         else:
                             print(f"{idx}  SUCCESS")
-                            counter+=1
                             if idx == 0:
-                                print("the last step")
+                                print("the last step dowm")
                                 first_half_exercise = False
-                                for aux in range(len(body_parts)):
-                                    are_steps_completed[aux - 1] = var.STEP_NOT_COMPLETED
-                                # break
-                                # elif first_half_exercise:
+                                # second_half_exercise = True
+                                are_steps_completed = [False for _ in range(len(steps_angles))]
+
+            #
+            # if second_half_exercise:
+            #     counter += 1
+            #     are_steps_completed = [False for _ in range(len(steps_angles))]
+            #     actual_values = [-1 for _ in range(len(steps_angles))]
 
             print("--------------")
 

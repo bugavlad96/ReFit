@@ -84,42 +84,42 @@ while True:
         body_angles_step2 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_140, var.ANGLE_140]
         body_angles_step3 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_160, var.ANGLE_160]
         body_angles_step4 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_180, var.ANGLE_180]
-        # collor the landmarks in blue
-        if not is_completed_step1:
-            is_completed_step1, actual_values = step.step(results, img, body_parts, body_angles_step1, var.ERROR_10)
-            libs.output_text.output_angles(img, points, actual_values, var.GREEN)
-            print("great step1 completed")
-        elif is_completed_step1:
-            libs.output_text.output_angles(img, points, actual_values, var.BLUE)
-            print("great step1 completed")
-
-            if not is_completed_step2:
-                is_completed_step2, actual_values = step.step(results, img, body_parts, body_angles_step2,var.ERROR_10)
-                libs.output_text.output_angles(img, points, actual_values, var.GREEN)
-                print("great step2 completed")
-            elif is_completed_step2:
-                libs.output_text.output_angles(img, points, actual_values, var.BLUE)
-                print("great step2 completed")
-
-                if not is_completed_step3:
-                    is_completed_step3, actual_values = step.step(results, img, body_parts, body_angles_step3, var.ERROR_10)
-                    libs.output_text.output_angles(img, points, actual_values, var.GREEN)
-                    print("great step3 completed")
-                elif is_completed_step3:
-                    libs.output_text.output_angles(img, points, actual_values, var.BLUE)
-                    print("great step3 completed")
-                    if not is_completed_step4:
-                        print("great step4 completed")
-                        is_completed_step4, actual_values = step.step(results, img, body_parts, body_angles_step4, var.ERROR_10)
-                        libs.output_text.output_angles(img, points, actual_values, var.GREEN)
-                    elif is_completed_step4:
-                        print("great step4 completed")
-                        libs.output_text.output_angles(img, points, actual_values, var.BLUE)
-                        counter += 1
-                        is_completed_step1 = False
-                        is_completed_step2 = False
-                        is_completed_step3 = False
-                        is_completed_step4 = False
+        # # collor the landmarks in blue
+        # if not is_completed_step1:
+        #     is_completed_step1, actual_values = step.step(results, img, body_parts, body_angles_step1, var.ERROR_10)
+        #     libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+        #     print("great step1 completed")
+        # elif is_completed_step1:
+        #     libs.output_text.output_angles(img, points, actual_values, var.BLUE)
+        #     print("great step1 completed")
+        #
+        #     if not is_completed_step2:
+        #         is_completed_step2, actual_values = step.step(results, img, body_parts, body_angles_step2,var.ERROR_10)
+        #         libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+        #         print("great step2 completed")
+        #     elif is_completed_step2:
+        #         libs.output_text.output_angles(img, points, actual_values, var.BLUE)
+        #         print("great step2 completed")
+        #
+        #         if not is_completed_step3:
+        #             is_completed_step3, actual_values = step.step(results, img, body_parts, body_angles_step3, var.ERROR_10)
+        #             libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+        #             print("great step3 completed")
+        #         elif is_completed_step3:
+        #             libs.output_text.output_angles(img, points, actual_values, var.BLUE)
+        #             print("great step3 completed")
+        #             if not is_completed_step4:
+        #                 print("great step4 completed")
+        #                 is_completed_step4, actual_values = step.step(results, img, body_parts, body_angles_step4, var.ERROR_10)
+        #                 libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+        #             elif is_completed_step4:
+        #                 print("great step4 completed")
+        #                 libs.output_text.output_angles(img, points, actual_values, var.BLUE)
+        #                 counter += 1
+        #                 is_completed_step1 = False
+        #                 is_completed_step2 = False
+        #                 is_completed_step3 = False
+        #                 is_completed_step4 = False
 
 
 
