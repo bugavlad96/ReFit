@@ -30,6 +30,7 @@ is_completed_step2 = False
 is_completed_step3 = False
 is_completed_step4 = False
 
+actual_values = {}
 
 
 while True:
@@ -63,32 +64,62 @@ while True:
 
 
 # !!!!!!!!!o idee: daca stepul presupune o crestere de unghi atunci mareste ca regula cu Eroarea admisibila + 10 grade?
-        body_parts =[var.LEFT_ELBOW, var.RIGHT_ELBOW]#, var.LEFT_SHOULDER, var.RIGHT_SHOULDER]
+#         body_parts =[var.LEFT_ELBOW, var.RIGHT_ELBOW]#, var.LEFT_SHOULDER, var.RIGHT_SHOULDER]
+#         # body_angles = [var.ANGLE_90, var.ANGLE_90, var.ANGLE_180, var.ANGLE_180]
+#         # step.step(results, img, body_parts, body_angles, var.ERROR_10)
+#         # body_parts_step1 =
+#         body_angles_step1 = [var.ANGLE_30, var.ANGLE_30]#, var.ANGLE_110, var.ANGLE_110]
+#         # body_parts_step2
+#         body_angles_step2 = [var.ANGLE_45, var.ANGLE_45]#, var.ANGLE_140, var.ANGLE_140]
+#         # body_parts_step3
+#         body_angles_step3 = [var.ANGLE_90, var.ANGLE_90]#, var.ANGLE_160, var.ANGLE_160]
+#         # body_parts_step4
+#         body_angles_step4 = [var.ANGLE_180, var.ANGLE_180]#, var.ANGLE_180, var.ANGLE_180]
+
+        body_parts =[var.LEFT_ELBOW, var.RIGHT_ELBOW, var.LEFT_SHOULDER, var.RIGHT_SHOULDER]
         # body_angles = [var.ANGLE_90, var.ANGLE_90, var.ANGLE_180, var.ANGLE_180]
         # step.step(results, img, body_parts, body_angles, var.ERROR_10)
         # body_parts_step1 =
-        body_angles_step1 = [var.ANGLE_30, var.ANGLE_30]#, var.ANGLE_110, var.ANGLE_110]
-        # body_parts_step2
-        body_angles_step2 = [var.ANGLE_45, var.ANGLE_45]#, var.ANGLE_140, var.ANGLE_140]
-        # body_parts_step3
-        body_angles_step3 = [var.ANGLE_90, var.ANGLE_90]#, var.ANGLE_160, var.ANGLE_160]
-        # body_parts_step4
-        body_angles_step4 = [var.ANGLE_180, var.ANGLE_180]#, var.ANGLE_180, var.ANGLE_180]
-
-        if not(is_completed_step1):
-            is_completed_step1, actual_values_step1 = step.step(results, img, body_parts, body_angles_step1, var.ERROR_10)
-            libs.output_text.output_angles(img, points, actual_values_step1, var.BLUE)
+        body_angles_step1 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_110, var.ANGLE_110]
+        body_angles_step2 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_140, var.ANGLE_140]
+        body_angles_step3 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_160, var.ANGLE_160]
+        body_angles_step4 = [var.ANGLE_170, var.ANGLE_170, var.ANGLE_180, var.ANGLE_180]
+        # collor the landmarks in blue
+        if not is_completed_step1:
+            is_completed_step1, actual_values = step.step(results, img, body_parts, body_angles_step1, var.ERROR_10)
+            libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+            print("great step1 completed")
+        elif is_completed_step1:
+            libs.output_text.output_angles(img, points, actual_values, var.BLUE)
             print("great step1 completed")
 
-            is_completed_step2, actual_values_step2 = step.step(results, img, body_parts, body_angles_step2, var.ERROR_10)
-            if is_completed_step2:
-                print("great step1 completed")
-                is_completed_step3, actual_values_step3 = step.step(results, img, body_parts, body_angles_step3, var.ERROR_10)
-                if is_completed_step3:
-                    print("great step1 completed")
-                    is_completed_step4, actual_values_step4 = step.step(results, img, body_parts, body_angles_step4, var.ERROR_10)
-                    if is_completed_step4:
+            if not is_completed_step2:
+                is_completed_step2, actual_values = step.step(results, img, body_parts, body_angles_step2,var.ERROR_10)
+                libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+                print("great step2 completed")
+            elif is_completed_step2:
+                libs.output_text.output_angles(img, points, actual_values, var.BLUE)
+                print("great step2 completed")
+
+                if not is_completed_step3:
+                    is_completed_step3, actual_values = step.step(results, img, body_parts, body_angles_step3, var.ERROR_10)
+                    libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+                    print("great step3 completed")
+                elif is_completed_step3:
+                    libs.output_text.output_angles(img, points, actual_values, var.BLUE)
+                    print("great step3 completed")
+                    if not is_completed_step4:
+                        print("great step4 completed")
+                        is_completed_step4, actual_values = step.step(results, img, body_parts, body_angles_step4, var.ERROR_10)
+                        libs.output_text.output_angles(img, points, actual_values, var.GREEN)
+                    elif is_completed_step4:
+                        print("great step4 completed")
+                        libs.output_text.output_angles(img, points, actual_values, var.BLUE)
                         counter += 1
+                        is_completed_step1 = False
+                        is_completed_step2 = False
+                        is_completed_step3 = False
+                        is_completed_step4 = False
 
 
 
