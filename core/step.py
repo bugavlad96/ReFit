@@ -13,29 +13,70 @@ import libs.global_var as var
 # voi primi array-uri cu landmark-uri din global_var.py
 
 
-def step_experiment(results, img, body_parts, body_angles, permissive_error):
+def step(results, img, body_parts, body_angles, permissive_error):
 
     if len(body_parts) == 0:
-        return print("no body parts requested in this step")
+        print("no body parts requested in this step")
+        return None
     if len(body_angles) == 0:
-        return print("no body angles requested in this step")
+        print("no body angles requested in this step")
+        return None
     if len(body_parts) != len(body_angles):
-        return print(" corresponding angles are missing for the requested body parts in the steps")
+        print("corresponding angles are missing for the requested body parts in the steps")
+        return None
 
-    for index, body_part_value in enumerate(body_parts):
+
+    actual_values = {}
+    break_occurred = False
+    for index, body_part_array in enumerate(body_parts):
 
         points = utils.collect_points(img, results)
-        body_part_name = var.find_variable_name(body_part_value)
+        body_part_name = var.find_variable_name(body_part_array)
 
-        if utils.are_points_visible(results, body_part_value):
+        if utils.are_points_visible(results, body_part_array):
             print(f"I can see your {body_part_name}")
-
-            if utils.is_body_angle_correct(body_part_value, body_angles[index], permissive_error, points):
+            is_good, actual_angle = utils.is_body_angle_correct(body_part_array, body_angles[index], permissive_error, points)
+            if is_good:
                 print(f"good {body_part_name} angle")
+                # actual_values += body_part_array, (True, actual_angle)
+                actual_values[body_part_name] = (body_part_array, (True, actual_angle))
             else:
                 print(f"Correct your {body_part_name} angle")
+                actual_values[body_part_name] = (body_part_array, (False, actual_angle))
+                break_occurred = True
+                break
         else:
             print(f"I cannot see your {body_part_name} ")
+            actual_values[body_part_name] = (body_part_array, (False, var.NOT_VALID))
+            break_occurred = True
+            break
+
+    if not is_step_completed(actual_values):
+        return var.STEP_NOT_COMPLETED, actual_values
+
+
+    # the returned value is a dict: var.STEP_COMPLETED, (key = "LEFT_HAND", value = [var.LEFT_HAND, [False, 180grade]]), (bool:daca unghiul e in range-ul potrivit, valoarea unghiului)
+    return var.STEP_COMPLETED, actual_values
+
+def is_step_completed(actual_values):
+    for body_part_txt, (body_part_array, angle) in actual_values.items():
+        if not angle[0]:
+            return False
+
+    return True
+    # if break_occured:
+    #     return None
+    # OR
+    # if len(actual_angles) == len(body_angles):
+    #     last_bool = list(actual_angle.keys())[-1]
+    #     if not last_bool:
+    #         return None
+    # else:
+    #     return None
+
+
+
+
 
 
 #

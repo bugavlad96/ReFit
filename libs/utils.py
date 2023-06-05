@@ -28,10 +28,10 @@ def is_body_angle_correct(body_part, desired_angle, permissible_angle_error, poi
     # print(f"({desired_angle - permissible_angle_error}) <= {actual_angle} <= ({desired_angle - permissible_angle_error})")
     if (desired_angle - permissible_angle_error) <= actual_angle <= (desired_angle + permissible_angle_error):
         print(f"body part: {var.find_variable_name(body_part)} with angle {actual_angle} - GOOD")
-        return True
+        return True, actual_angle
     else:
         print(f"body part: {var.find_variable_name(body_part)} with angle {actual_angle} - BAD")
-        return False
+        return False, actual_angle
 
 
 

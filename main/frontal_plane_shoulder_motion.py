@@ -3,6 +3,7 @@
 import mediapipe as mp
 import cv2
 import libs.color_landmark as color
+import libs.output_text
 import libs.output_text as ot
 import libs.global_var as var
 import libs.prepare_stream_BGR2RGB as ps
@@ -23,6 +24,13 @@ cap = cv2.VideoCapture(0)  # Use camera as the video source
 # intantiate some vars
 up = False
 counter = 0
+
+is_completed_step1 = False
+is_completed_step2 = False
+is_completed_step3 = False
+is_completed_step4 = False
+
+
 
 while True:
 
@@ -51,16 +59,45 @@ while True:
         #
         # angle_deg_DB = ca.compute_angle(points, var.RIGHT_SHOULDER)
         # ot.output_angle(img, points, var.LEFT_SHOULDER[1], angle_deg_DB, var.RED)
-# -------------------------------------------------------------
-#         step.step(results, img, permissive_error = var.ERROR_10, des_l_elbow=var.ANGLE_90, des_r_elbow=var.ANGLE_90,
-#                   des_l_shoulder=var.ANGLE_180, des_r_shoulder=var.ANGLE_180,
-#                   des_l_hip=var.ANGLE_90, des_r_hip=var.ANGLE_90,
-#                   des_l_knee=var.ANGLE_90, des_r_knee=var.ANGLE_90)
-#
-        body_parts =[var.LEFT_HAND, var.RIGHT_HAND, var.LEFT_SHOULDER, var.RIGHT_SHOULDER]
-        body_angles = [var.ANGLE_90, var.ANGLE_90, var.ANGLE_180, var.ANGLE_180]
 
-        step.step_experiment(results, img, body_parts, body_angles, var.ERROR_10)
+
+
+# !!!!!!!!!o idee: daca stepul presupune o crestere de unghi atunci mareste ca regula cu Eroarea admisibila + 10 grade?
+        body_parts =[var.LEFT_ELBOW, var.RIGHT_ELBOW]#, var.LEFT_SHOULDER, var.RIGHT_SHOULDER]
+        # body_angles = [var.ANGLE_90, var.ANGLE_90, var.ANGLE_180, var.ANGLE_180]
+        # step.step(results, img, body_parts, body_angles, var.ERROR_10)
+        # body_parts_step1 =
+        body_angles_step1 = [var.ANGLE_30, var.ANGLE_30]#, var.ANGLE_110, var.ANGLE_110]
+        # body_parts_step2
+        body_angles_step2 = [var.ANGLE_45, var.ANGLE_45]#, var.ANGLE_140, var.ANGLE_140]
+        # body_parts_step3
+        body_angles_step3 = [var.ANGLE_90, var.ANGLE_90]#, var.ANGLE_160, var.ANGLE_160]
+        # body_parts_step4
+        body_angles_step4 = [var.ANGLE_180, var.ANGLE_180]#, var.ANGLE_180, var.ANGLE_180]
+
+        if not(is_completed_step1):
+            is_completed_step1, actual_values_step1 = step.step(results, img, body_parts, body_angles_step1, var.ERROR_10)
+            libs.output_text.output_angles(img, points, actual_values_step1, var.BLUE)
+            print("great step1 completed")
+
+            is_completed_step2, actual_values_step2 = step.step(results, img, body_parts, body_angles_step2, var.ERROR_10)
+            if is_completed_step2:
+                print("great step1 completed")
+                is_completed_step3, actual_values_step3 = step.step(results, img, body_parts, body_angles_step3, var.ERROR_10)
+                if is_completed_step3:
+                    print("great step1 completed")
+                    is_completed_step4, actual_values_step4 = step.step(results, img, body_parts, body_angles_step4, var.ERROR_10)
+                    if is_completed_step4:
+                        counter += 1
+
+
+
+
+
+
+
+
+
             # ------------------------------stop here
             # if int(angle_deg_AC) >= 170 and points[20][1] > points[24][1] and counter == 0:
             #     color.color_landmark(img, points, var.RIGHT_HAND, var.GREEN)
