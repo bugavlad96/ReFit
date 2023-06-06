@@ -19,7 +19,7 @@ import libs.output_text as ot
 # O lista de dictionare
 
             # body_parts, steps(va contine o succesiune de unghiuri) persmissive_error
-def exercise(body_parts, steps_angles, permissive_error, count_max = 0):
+def exercise(body_parts, steps_angles, permissive_error, count_max):
     # TREBUIE DE BAGAT TOT WHILE TRUE-ul pentru ca sa se execute aici!!!!!!!!!!!!!!!!!!
 
     # --------------------------------------------------------------------------------------------------
@@ -70,7 +70,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max = 0):
                             if idx == len(are_steps_completed) - 1:
                                 print("the last step up")
                                 first_half_exercise = True
-                                counter += 1
+
                                 print(counter)
                                 are_steps_completed = [False for _ in range(len(steps_angles))]
 
@@ -88,15 +88,14 @@ def exercise(body_parts, steps_angles, permissive_error, count_max = 0):
                             print(f"{idx}  SUCCESS")
                             if idx == 0:
                                 print("the last step dowm")
+                                counter += 1
                                 first_half_exercise = False
                                 # second_half_exercise = True
                                 are_steps_completed = [False for _ in range(len(steps_angles))]
 
-            #
-            # if second_half_exercise:
-            #     counter += 1
-            #     are_steps_completed = [False for _ in range(len(steps_angles))]
-            #     actual_values = [-1 for _ in range(len(steps_angles))]
+
+            if counter == count_max:
+                break
 
             print("--------------")
 
@@ -112,10 +111,6 @@ def exercise(body_parts, steps_angles, permissive_error, count_max = 0):
     cv2.destroyAllWindows()
 
     return counter
-
-
-
-
 
 
 

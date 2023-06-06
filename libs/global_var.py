@@ -78,3 +78,9 @@ def find_variable_name(value):
         if val == value:
             return name
     return None
+
+def find_variable_value(req_name):
+    for name, val in globals().items():
+        if req_name == name:
+            return val
+    return None
