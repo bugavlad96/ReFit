@@ -1,0 +1,254 @@
+/* Adjust the layout */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+header {
+    background-color: #262626;
+    padding: 0px 20px 0 20px;
+    text-align: center;
+}
+
+nav {
+  display: flex;
+  align-items: center;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 15%;
+}
+
+
+
+nav ul li {
+    margin: 0 30px 0 30px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #fff;
+    font-weight: bold;
+}
+
+.space {
+    background-color: #000;
+    height: 70px;
+}
+
+.hero {
+    position: relative;
+    background: url("images/top.png");
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    align-items: center;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    text-align: left;
+    padding: 50px
+}
+
+.hero img {
+    height: 100%;
+    width: auto;
+}
+
+.hero h1 {
+    font-size: 36px;
+    margin: 0 0 20px 0;
+}
+
+.hero p {
+    font-size: 18px;
+    color: #666;
+    width: 500px;
+    padding-bottom: 30px;
+}
+
+.btn {
+    background-color: #f63366;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.btn:hover {
+    background-color: #cc0044;
+}
+
+.services {
+    padding: 20px;
+    text-align: center;
+}
+
+.services h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.service-item {
+    display: inline-block;
+    margin: 0 20px;
+    text-align: left;
+    max-width: 250px;
+}
+
+.service-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.service-item h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.service-item p {
+    color: #666;
+    font-size: 16px;
+}
+
+.contact {
+    background-color: #f5f5f5;
+    padding: 50px;
+    text-align: center;
+}
+
+.contact h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+}
+
+.contact form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.contact input,
+.contact textarea {
+    margin: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 300px;
+}
+
+.contact button {
+    background-color: #f63366;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    border: none;
+    cursor: pointer;
+}
+
+.contact button:hover {
+    background-color: #cc0044;
+}
+
+footer {
+    background-color: #f5f5f5;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo {
+    font-size: 50px;
+    font-weight: bold;
+    font-family: "Nunito", Arial, sans-serif;
+    color: #333;
+    padding: 15px;
+}
+
+.logo a {
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    color: #fff;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+.whom {
+    position: relative;
+    background: url("images/main_bottom.png");
+    background-size: cover;
+    background-position: center;
+    height: 420px;
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+}
+
+.whom .points-container  {
+    position: relative;
+    z-index: 1;
+    text-align: left;
+    padding: 0 100px;
+    margin-left: auto;
+    width: 400px;
+}
+
+.whom .points-container .p-title {
+    font-weight: bold;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+
+.whom .point {
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.whom .point .icon {
+    margin-right: 10px;
+    color: #f00; /* Update with desired color */
+}
+
+.fa-solid {
+    padding: 10px;
+}
+
+.point p {
+    margin-left: 55px;}

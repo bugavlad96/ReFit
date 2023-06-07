@@ -1,13 +1,63 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Main Page</title>
-</head>
-<body>
-    <h2>Welcome, {{ name }}!</h2>
-    <p>This is the main page.</p>
-    <form action="/logout" method="POST">
-        <input type="submit" value="Logout">
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="static/style.css">
+<script src="https://kit.fontawesome.com/81e412ef65.js" crossorigin="anonymous"></script>
+{% endblock %}
+
+{% block content %}
+<section class="hero" >
+    <div class="hero-content">
+        <h1 style="text-align: left;">Reabilitare de Acasă</h1>
+        <p style="text-align: left;">Descoperiți o varietate de exerciții predefinite, adaptate nevoilor dumneavoastră specifice, pentru a vă ajuta în procesul de recuperare și a vă îmbunătăți mobilitatea, direct de la domiciliu. Indiferent de afecțiunea medicală sau accidentarea suferită, beneficiați de instrucțiuni detaliate și demonstrații vizuale, oferindu-vă suportul necesar pentru a recăpăta funcționalitatea și a vă îmbunătăți calitatea vieții.</p>
+        <a href="#" class="btn">Programe</a>
+    </div>
+</section>
+
+<section class="services">
+    <!-- TO DO: Add category to database -->
+    <h2>Exerciții pe categorii</h2>
+    <div class="service-item">
+        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 1">
+        <h3>Picior</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+
+    <div class="service-item">
+        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 2">
+        <h3>Mana</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="service-item">
+        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 3">
+        <h3>Bazin</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+    <div class="service-item">
+        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 3">
+        <h3>Bazin</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+    </div>
+
+</section>
+
+<section class="whom">
+
+    <div class="points-container">
+        <h2 class="p-title">Serviciile noastre sunt recomandate:</h2>
+        <div class="point">
+            <h3><i class="fa-solid fa-laptop-medical fa-xl" style="color: #f63366;"></i>Persoanelor în proces de reabilitare</h3>
+            <p>Pentru cei în proces de recuperare, oferind exerciții predefinite adaptate pentru a accelera recuperarea și a restabili mobilitatea.</p>
+        </div>
+        <div class="point">
+            <h3><i class="fa-solid fa-laptop-medical fa-xl" style="color: #f63366;"></i>Persoanelor cu mobilitate redusă</h3>
+            <p>Pentru cei cu mobilitate redusă, oferind exerciții predefinite personalizate care ajută la creșterea forței, flexibilității și coordonării.</p>
+        </div>
+        <div class="point">
+            <h3><i class="fa-solid fa-laptop-medical fa-xl" style="color: #f63366;"></i>Persoanelor în vârstă</h3>
+            <p>Pentru persoanele în vârstă, oferind exerciții predefinite care îmbunătățesc starea fizică, mobilitatea și echilibrul.</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

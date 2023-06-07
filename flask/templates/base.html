@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>MedicalWebsite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@800&display=swap" rel="stylesheet">
+    {% block style %}{% endblock %}
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo"><a href="{{ url_for('main') }}">MedFit.</a></div>
+
+            <ul>
+                <li><a href="#">Exerciții</a></li>
+                <li><a href="#">Programe</a></li>
+                {% if logged_in and user_type != 'patient' and user_type == 'therapist' %}
+                    <li><a href="#">Pacienți</a></li>
+                {% endif %}
+
+                <li><a href="{{ url_for('about') }}">Despre noi</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropbtn">Cont</a>
+                    <div class="dropdown-content">
+                        {% if logged_in %}
+                            <a href="#">Hi, {{ user_name }}</a>
+                            <a href="{{ url_for('profile') }}">Account</a>
+                            <a href="{{ url_for('logout') }}">Logout</a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}">Login</a>
+                            <a href="{{ url_for('signup') }}">Sign up</a>
+                        {% endif %}
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <p>&copy; 2023 MedFit. Licență UPT.</p>
+    </footer>
+</body>
+</html>

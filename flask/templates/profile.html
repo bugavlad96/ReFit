@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/profile.css">
+{% endblock %}
+
+{% block content %}
+<div class="wrapper">
+    <div class="left">
+        <img src="static/images/{{photo}}" alt="user" width="100">
+        <h2>{{name}} {{surname}}</h2>
+         <p>{{type}}</p>
+    </div>
+    <div class="right">
+        <div class="info">
+            <h2>Informații generale</h2>
+            <div class="info_data">
+                 <div class="data">
+                    <h3>Email</h3>
+                    <p>{{mail}}</p>
+                 </div>
+                 <div class="data">
+                   <h3>Phone</h3>
+                    <p>0001-213-998761</p>
+              </div>
+            </div>
+        </div>
+
+      <div class="projects">
+            <h2>Projects</h2>
+            <div class="projects_data">
+                 <div class="data">
+                    <h3>Recent</h3>
+                    <p>Lorem ipsum dolor sit amet.</p>
+                 </div>
+                 <div class="data">
+                   <h3>Most Viewed</h3>
+                    <p>dolor sit amet.</p>
+              </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
