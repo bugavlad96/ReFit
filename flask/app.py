@@ -22,20 +22,19 @@ def index(logged_in=False):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
 
         if user and user[5] == password:
-            session['username'] = username
-            session['name'] = user[1]
-            session['surname'] = user[2]
-            session['mail'] = user[3]
-            session['type'] = user[6]
+            session['name'] = user[2]
+            session['surname'] = user[3]
+            session['email'] = user[6]
+            session['type'] = user[1]
             return render_template('main.html', logged_in=True, user_name=session['name'], user_type=session['type'])
         else:
             error = 'Invalid username or password'
@@ -46,8 +45,7 @@ def login():
 
 @app.route('/main')
 def main():
-    if 'username' in session:
-        username = session['username']
+    if 'email' in session:
         name = session['name']
         user_type = session['type']
         return render_template('main.html', logged_in=True, user_name=name, user_type=user_type)  # Pass the user's type to the template
@@ -66,8 +64,7 @@ def signup():
     if request.method == 'POST':
         name = request.form['name']
         surname = request.form['surname']
-        mail = request.form['mail']
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         option = request.form['option']
@@ -78,13 +75,13 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Check if the email is valid
-        if not validate_email(mail):
+        if not validate_email(email):
             error = 'Invalid email address'
             return render_template('signup.html', error=error)
 
         # Check if the username is already taken
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
         existing_user = cur.fetchone()
         cur.close()
 
@@ -94,8 +91,8 @@ def signup():
 
         # Insert the new user into the database
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (Name, Surname, Mail, Username, Password, Type) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (name, surname, mail, username, password, option))
+        cur.execute("INSERT INTO user (Name, Surname, Email, Pass, Type) VALUES (%s, %s, %s, %s, %s)",
+                    (name, surname, email, password, option))
         mysql.connection.commit()
         cur.close()
 
