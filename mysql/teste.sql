@@ -11,8 +11,8 @@ select * from category;
 SELECT * FROM `user`;
 /*type: therapist = 0 user = 1; 
   gender: male = 1, female = 2*/
--- CALL insert_user(0, 'Vlad', 'Buga', 1, '123', 'vb@gmail.com');
--- CALL insert_user(1, 'Iulia', 'Vrabie', 2, '123', 'iv@gmail.com');
+CALL add_user(0, 'Vlad', 'Buga', 1, '123', 'vb@gmail.com');
+CALL add_user(1, 'Iulia', 'Vrabie', 2, '123', 'iv@gmail.com');
 
 -- INSERT INTO `user` (`id`, `type`, `name`, `surname`, `gender`, `pass`, `email`) VALUES (UUID(), 0, 'Vlad', 'Buga', 1, '123', 'vlad.buga@example.com');
 -- INSERT INTO `user` (`id`, `type`, `name`, `surname`, `gender`, `pass`, `email`) VALUES (UUID(), 1, 'Iulia', 'Vrabie', 2, '123', 'iulia.vrabie@example.com');
