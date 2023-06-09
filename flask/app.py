@@ -1,6 +1,8 @@
 from flask import Flask, render_template, request, redirect, session
 from db import connect_db
 import re
+import uuid
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -67,7 +69,8 @@ def signup():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        option = request.form['option']
+        option_user = request.form['user_type']
+        option_gender = request.form['gender']
 
         # Check if the passwords match
         if password != confirm_password:
@@ -91,20 +94,25 @@ def signup():
 
         # Insert the new user into the database
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO user (Name, Surname, Email, Pass, Type) VALUES (%s, %s, %s, %s, %s)",
-                    (name, surname, email, password, option))
+        unique_id = str(uuid.uuid4())
+        cur.execute("INSERT INTO user (id, type, name, surname, gender, Email, Pass) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                    (unique_id, option_user, name, surname, option_gender, email, password))
         mysql.connection.commit()
         cur.close()
 
-        return redirect('/')
+        return redirect('login.html')
     else:
         return render_template('signup.html')
 
 
 @app.route('/about')
 def about():
-    user_type = session['type']
-    return render_template('about.html', logged_in=True, user_type=user_type)
+    if 'email' in session:
+        user_type = session['type']
+        name = session['name']
+        return render_template('about.html', logged_in=True, user_type=user_type, user_name=name)
+    else:
+        return render_template('about.html')
 
 
 @app.route('/profile')
@@ -114,7 +122,7 @@ def profile():
     user_type = session['type']
     mail = session['mail']
 
-    if user_type == "therapist":
+    if user_type == 1:
         photo = "doctor.jpg"
         # photo = "user.jpg"
         type = "Fizioterapeut"

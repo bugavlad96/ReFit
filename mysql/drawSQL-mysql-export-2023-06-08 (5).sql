@@ -26,10 +26,10 @@ ALTER TABLE
     `photo` ADD PRIMARY KEY(`id`);
 CREATE TABLE `user`(
     `id` CHAR(36) NOT NULL,
-    `type` BINARY(16) NOT NULL,
+    `type` SMALLINT NOT NULL,
     `name` VARCHAR(255) NOT NULL,
     `surname` VARCHAR(255) NOT NULL,
-    `gender` BINARY(16) NOT NULL,
+    `gender` SMALLINT NOT NULL,
     `pass` VARCHAR(255) NOT NULL,
     `email` VARCHAR(255) NOT NULL,
     `photo_id` VARCHAR(255)
@@ -120,3 +120,103 @@ ALTER TABLE
     `programs` ADD CONSTRAINT `programs_photo_id_foreign` FOREIGN KEY(`photo_id`) REFERENCES `photo`(`id`);
 ALTER TABLE
     `exercises` ADD CONSTRAINT `exercises_therapist_id_foreign` FOREIGN KEY(`therapist_id`) REFERENCES `therapist`(`id`);
+    
+    
+    
+-- Create the stored procedure
+DELIMITER //
+CREATE PROCEDURE insert_user (
+    IN p_type SMALLINT,
+    IN p_name VARCHAR(255),
+    IN p_surname VARCHAR(255),
+    IN p_gender SMALLINT,
+    IN p_pass VARCHAR(255),
+    IN p_email VARCHAR(255)
+--     IN p_Therapist_information LONGTEXT,
+--     IN p_diagnosis LONGTEXT
+)
+BEGIN
+	DECLARE unique_id char(36);
+    SET unique_id = UUID();
+
+    
+	-- Insert into user table
+	INSERT INTO user (id, type, name, surname, gender, pass, email)
+	VALUES (unique_id, p_type, p_name, p_surname, p_gender, p_pass, p_email);
+	-- if user_type = to 0 then therapist 
+    IF p_type = 0 then
+		-- Insert into therapist table
+		INSERT INTO therapist (id)
+		VALUES (unique_id);
+    end if;
+    -- if user_type = to 1 then patient
+    IF p_type = 1 then
+		-- Insert into therapist table
+		INSERT INTO patient (id)
+		VALUES (unique_id);
+    end if;
+END //
+DELIMITER ;
+-- DROP PROCEDURE IF EXISTS insert_therapist;
+
+-- add categories 
+DELIMITER //
+CREATE PROCEDURE add_categories()
+BEGIN
+	DECLARE unique_id_hands char(36);
+    DECLARE unique_id_shoulders char(36);
+    DECLARE unique_id_hips char(36);
+    DECLARE unique_id_feet char(36);
+    SET unique_id_hands = UUID();
+    SET unique_id_shoulders = UUID();
+    SET unique_id_hips = UUID();
+    SET unique_id_feet = UUID();
+
+    
+	INSERT INTO category (id, name, description)
+	VALUES (unique_id_hands, 'hands','hand related exercises');
+	INSERT INTO category (id, name, description)
+	VALUES (unique_id_shoulders, 'shoulders','shoulder related exercises');
+    INSERT INTO category (id, name, description)
+	VALUES (unique_id_hips, 'hips','hip related exercises');
+    INSERT INTO category (id, name, description)
+	VALUES (unique_id_feet, 'feet','feet related exercises');
+END //
+DELIMITER ;
+-- DROP PROCEDURE IF EXISTS add_categories;
+
+
+
+DELIMITER //
+CREATE PROCEDURE insert_user (
+    IN p_type SMALLINT,
+    IN p_name VARCHAR(255),
+    IN p_surname VARCHAR(255),
+    IN p_gender SMALLINT,
+    IN p_pass VARCHAR(255),
+    IN p_email VARCHAR(255)
+--     IN p_Therapist_information LONGTEXT,
+--     IN p_diagnosis LONGTEXT
+)
+BEGIN
+	DECLARE unique_id char(36);
+    SET unique_id = UUID();
+
+    
+	-- Insert into user table
+	INSERT INTO user (id, type, name, surname, gender, pass, email)
+	VALUES (unique_id, p_type, p_name, p_surname, p_gender, p_pass, p_email);
+	-- if user_type = to 0 then therapist 
+    IF p_type = 0 then
+		-- Insert into therapist table
+		INSERT INTO therapist (id)
+		VALUES (unique_id);
+    end if;
+    -- if user_type = to 1 then patient
+    IF p_type = 1 then
+		-- Insert into therapist table
+		INSERT INTO patient (id)
+		VALUES (unique_id);
+    end if;
+END //
+DELIMITER ;
