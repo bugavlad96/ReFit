@@ -30,10 +30,10 @@ BEGIN
 		`photo` ADD PRIMARY KEY(`id`);
 	CREATE TABLE `user`(
 		`id` CHAR(36) NOT NULL,
-		`type` BINARY(16) NOT NULL,
+		`type` SMALLINT(16) NOT NULL,
 		`name` VARCHAR(255) NOT NULL,
 		`surname` VARCHAR(255) NOT NULL,
-		`gender` BINARY(16) NOT NULL,
+		`gender` SMALLINT(16) NOT NULL,
 		`pass` VARCHAR(255) NOT NULL,
 		`email` VARCHAR(255) NOT NULL,
 		`photo_id` VARCHAR(255)
