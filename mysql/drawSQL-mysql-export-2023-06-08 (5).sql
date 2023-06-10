@@ -41,16 +41,15 @@ BEGIN
 	ALTER TABLE
 		`user` ADD PRIMARY KEY(`id`);
 	CREATE TABLE `body_part`(
-		`id` CHAR(36) NOT NULL,
 		`name` VARCHAR(255) NOT NULL,
-		`value` SMALLINT NOT NULL
+		`value` VARCHAR(255) NOT NULL
 	);
 	ALTER TABLE
-		`body_part` ADD PRIMARY KEY(`id`);
+		`body_part` ADD PRIMARY KEY(`name`);
 	CREATE TABLE `bp_info`(
 		`id` CHAR(36) NOT NULL,
 		`step_id` CHAR(36) NOT NULL,
-		`bd_id` CHAR(36) NOT NULL,
+		`bd_name` VARCHAR(255) NOT NULL,
 		`angle` SMALLINT NOT NULL
 	);
 	ALTER TABLE
@@ -98,7 +97,7 @@ BEGIN
 	ALTER TABLE
 		`exercises` ADD CONSTRAINT `exercises_category_name_foreign` FOREIGN KEY(`category_name`) REFERENCES `category`(`name`);
 	ALTER TABLE
-		`bp_info` ADD CONSTRAINT `bp_info_bd_id_foreign` FOREIGN KEY(`bd_id`) REFERENCES `body_part`(`id`);
+		`bp_info` ADD CONSTRAINT `bp_info_bd_name_foreign` FOREIGN KEY(`bd_name`) REFERENCES `body_part`(`name`);
 	ALTER TABLE
 		`step` ADD CONSTRAINT `step_exercise_id_foreign` FOREIGN KEY(`exercise_id`) REFERENCES `exercises`(`id`);
 	ALTER TABLE
