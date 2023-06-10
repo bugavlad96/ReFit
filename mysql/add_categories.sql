@@ -11,6 +11,8 @@ BEGIN
 	VALUES ('hips','hip related exercises');
     INSERT INTO category (name, description)
 	VALUES ('feet','feet related exercises');
+	INSERT INTO category (name, description)
+	VALUES ('user','user photo');
     
 END //
 DELIMITER ;

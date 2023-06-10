@@ -1,10 +1,4 @@
 
--- SHOW databases;
--- SHOW TABLES;
--- drop database rehab_app;
--- create database rehab_app;
--- use rehab_app;
-
 -- execute once when the databse is created call add_categories();
 select * from category;
 
@@ -14,8 +8,6 @@ SELECT * FROM `user`;
 CALL add_user(0, 'Vlad', 'Buga', 1, '123', 'vb@gmail.com');
 CALL add_user(1, 'Iulia', 'Vrabie', 2, '123', 'iv@gmail.com');
 
--- INSERT INTO `user` (`id`, `type`, `name`, `surname`, `gender`, `pass`, `email`) VALUES (UUID(), 0, 'Vlad', 'Buga', 1, '123', 'vlad.buga@example.com');
--- INSERT INTO `user` (`id`, `type`, `name`, `surname`, `gender`, `pass`, `email`) VALUES (UUID(), 1, 'Iulia', 'Vrabie', 2, '123', 'iulia.vrabie@example.com');
 select * from therapist;
 select * from patient;
 
@@ -35,16 +27,9 @@ select * from category;
 
 -- INSERT INTO `photo` (`id`, `path`, `category_id`) VALUES (UUID(), 'VladBuga.jpg', '9e8cf99e-06e8-11ee-9596-846993cbe512');
 select * from photo;
+select * from exercises;
 
--- UPDATE user SET photo_id = 'b8bc0261-06e8-11ee-9596-846993cbe512' WHERE id = '9183714c-06e8-11ee-9596-846993cbe512';
 
-select * from photo;
--- -- for type 1 means therapist, gender male = 1
-
-INSERT INTO therapist (id, info)
-SELECT id, 'Therapist info'  -- Replace 'Therapist info' with the actual information for the therapist
-FROM user
-WHERE id = '9183714c-06e8-11ee-9596-846993cbe512' AND 'type' = 0;  -- Replace 'your_user_id' with the ID of the existing user
 
 
 -- INSERT INTO `exercises` (`id`, `name`, `description`, `photo_id`, `category_id`, `therapist_id`, `max_count`, `exercise_order`) VALUES (uuid(), 'Exercise 1', 'Exercise 1 description', 'photo_id_1', 'category_id_1', 'therapist_id_1', 10, 1);

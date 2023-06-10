@@ -67,7 +67,7 @@ BEGIN
 	CREATE TABLE `patient`(
 		`id` CHAR(36) NOT NULL,
 		`diagnosis` LONGTEXT,
-		`program_ids` CHAR(36),
+		`program_id` CHAR(36),
 		`therapist_id` CHAR(36)
 	);
 	ALTER TABLE

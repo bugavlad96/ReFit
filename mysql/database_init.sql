@@ -24,22 +24,39 @@
 -- step 2
 -- CALL add_step('39fc9837-0788-11ee-93b8-846993cbe512', 'shoulders', 'right_shoulder_180', 'raise your right shoulder at 180 degrees', 10, 3);
 
-select * from step;
-select * from body_part;
--- step 0 
-CALL add_bp_info('a63f0220-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 90);
-CALL add_bp_info('a63f0220-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
--- step 1
-CALL add_bp_info('a640693d-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 120);
-CALL add_bp_info('a640693d-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
--- step 2
-CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 180);
-CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
+-- select * from step;
+-- select * from body_part;
+-- -- step 0 
+-- CALL add_bp_info('a63f0220-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 90);
+-- CALL add_bp_info('a63f0220-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
+-- -- step 1
+-- CALL add_bp_info('a640693d-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 120);
+-- CALL add_bp_info('a640693d-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
+-- -- step 2
+-- CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 180);
+-- CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
 
 
-select *  from bp_info;
+-- select *  from bp_info;
+-- select * from category;
+-- select * from therapist;
+-- CALL add_program('shoulder plane mobility ex', 'one is testing and extending the range of shoulder mobility', 'shoulders', '05b11bfd-0788-11ee-93b8-846993cbe512');
+-- select * from programs;
+
+-- select * from user;
+CALL add_therapist_to_patient(
+	'05b11bfd-0788-11ee-93b8-846993cbe512',
+    '450467f2-0788-11ee-93b8-846993cbe512',
+	'bad right shoulder'
+    );
+select * from patient;
+
+select * from programs;
+CALL add_program_to_patient(
+	'bdcd7711-078b-11ee-93b8-846993cbe512',
+    '450467f2-0788-11ee-93b8-846993cbe512');
 
 
 
--- 10.06 add program sau step?
 
+-- associate a program to a patient 
