@@ -44,17 +44,17 @@
 -- select * from programs;
 
 -- select * from user;
-CALL add_therapist_to_patient(
-	'05b11bfd-0788-11ee-93b8-846993cbe512',
-    '450467f2-0788-11ee-93b8-846993cbe512',
-	'bad right shoulder'
-    );
-select * from patient;
+-- CALL add_therapist_to_patient(
+-- 	'05b11bfd-0788-11ee-93b8-846993cbe512',
+--     '450467f2-0788-11ee-93b8-846993cbe512',
+-- 	'bad right shoulder'
+--     );
+-- select * from patient;
 
-select * from programs;
-CALL add_program_to_patient(
-	'bdcd7711-078b-11ee-93b8-846993cbe512',
-    '450467f2-0788-11ee-93b8-846993cbe512');
+-- select * from programs;
+-- CALL add_program_to_patient(
+-- 	'bdcd7711-078b-11ee-93b8-846993cbe512',
+--     '450467f2-0788-11ee-93b8-846993cbe512');
 
 
 
