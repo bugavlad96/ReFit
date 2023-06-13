@@ -8,11 +8,11 @@
 <body>
     <header>
         <nav>
-            <div class="logo"><a href="{{ url_for('main') }}">MedFit.</a></div>
+            <div class="logo"><a href="{{ url_for('main') }}">ReFit.</a></div>
 
             <ul>
-                <li><a href="#">Exerciții</a></li>
-                <li><a href="#">Programe</a></li>
+                <li><a href="{{ url_for('exercise') }}">Exerciții</a></li>
+                <li><a href="{{ url_for('programs') }}">Programe</a></li>
                 {% if logged_in and user_type != 'patient' and user_type == 'therapist' %}
                     <li><a href="#">Pacienți</a></li>
                 {% endif %}

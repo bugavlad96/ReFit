@@ -1,0 +1,84 @@
+
+
+h2 {
+  text-align: center;
+  margin: 50px 0 0 0;
+}
+
+.program-list {
+  flex-wrap: wrap;
+  text-align: -webkit-center;
+}
+
+.program {
+  display: flex;
+  margin: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 70%;
+}
+
+.program img {
+  height: 230px;
+  margin-right: 10px;
+  border-radius: 5px;
+}
+
+.program-info {
+  flex-grow: 1;
+  margin: 25px 35px;
+  float: left;
+  text-align: left;
+}
+
+.program-info h2 {
+  margin-top: 0;
+}
+
+.program-info p {
+  margin-bottom: 10px;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: flex-end;
+  float: right;
+  flex-direction: column;
+  height: 100%;
+}
+
+.btn-group button {
+  margin: 7px 28px 7px 0px;
+  padding: 10px 15px;
+  border-radius: 3px;
+  background-color: #f63366;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-group button:hover {
+  background-color: #555;
+}
+
+.prog-content {
+  width: 100%;
+}
+
+.add-button {
+  top: 20px;
+  right: 20px;
+  padding: 10px 35px;
+  background-color: #f63366;
+  color: #fff;
+  border: none;
+  border-radius: 45px;
+  cursor: pointer;
+  float: right;
+  margin: 10px 18% 15px 10px;
+}
+
+.add-button:hover {
+  background-color: #555;
+}

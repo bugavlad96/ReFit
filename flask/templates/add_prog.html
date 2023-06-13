@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="../static/add_exercise.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/add_ex.js"></script>
+{% endblock %}
+
+{% block content %}
+<h2 class="title">Add New Program</h2>
+<div class="form-container">
+  <form>
+    <div class="form-group">
+      <label for="program-name">Program Name</label>
+      <input type="text" id="program-name" required>
+    </div>
+    <div class="form-group">
+      <label for="program-description">Program Description</label>
+      <textarea id="program-description" rows="4" required></textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Program Image</label>
+      <div class="file-upload">
+        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+        <div class="image-upload-wrap">
+          <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+          <div class="drag-text">
+            <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
+          </div>
+        </div>
+        <div class="file-upload-content">
+          <img class="file-upload-image" src="#" alt="your image" />
+          <div class="image-title-wrap">
+            <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Select Exercises</label>
+      <div class="exercise-list">
+        <label>
+          <div class="round">
+            <input type="checkbox" name="exercise" checked id="checkbox" />
+            <label for="checkbox"></label>
+          </div>
+
+          <div class="program">
+            <img src="../static/images/img.jpg" alt="Exercise 1">
+            <div class="prog-content">
+
+              <div class="program-info">
+                <h2>Exercise 1</h2>
+                <p>Categorie: Category 1</p>
+                <p>Fizioterapist: pers </p>
+              </div>
+            </div>
+          </div>
+
+
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="submit-button">Submit</button>
+  </form>
+</div>
+{% endblock %}

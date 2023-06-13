@@ -10,7 +10,7 @@
 }
 
 .wrapper .left{
-  width: 35%;
+  width: 25%;
   background: linear-gradient(to right,#a42445,#f63366);
   padding: 80px 25px;
   border-top-left-radius: 5px;
@@ -37,7 +37,7 @@
 .wrapper .right{
   width: 65%;
   background: #fff;
-  padding: 30px 25px;
+  padding: 30px 95px;
   border-top-right-radius: 5px;
   border-bottom-right-radius: 5px;
   margin: auto 0;

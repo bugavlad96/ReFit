@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" type="text/css" href="../static/ex.css">
+  <link rel="stylesheet" type="text/css" href="../static/add_exercise.css">
+<!--  <link rel="stylesheet" type="text/css" href="../static/add_image2.css">-->
+  <script src="../static/ex.js"></script>
+  <script src="../static/add_ex.js"></script>
+  <script src="../static/add_image2.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+{% endblock %}
+
+{% block content %}
+  <div class="cards">
+    <form>
+    <div class="card fill-orange" data-card="0">
+      <h3 style="text-align: center; font-size: 1.4em; margin-top: 0;">General Info</h3>
+      <div class="form-group">
+        <label for="program-name">Nume Exercitiu</label>
+        <input type="text" id="program-name" style="margin: 5px 20px;" required>
+      </div>
+      <div class="form-group">
+        <label for="program-description">Descriere Exercitiu</label>
+        <textarea id="program-description" rows="4" style="margin: 5px 20px;" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagine Exercitiu</label>
+        <div class="file-upload">
+          <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+          <div class="image-upload-wrap">
+            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+            <div class="drag-text">
+              <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
+            </div>
+          </div>
+          <div class="file-upload-content">
+            <img class="file-upload-image" src="#" alt="your image" />
+            <div class="image-title-wrap">
+              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="card fill-blue step" data-card="1">
+      <p class="step">Step 1</p>
+      <div class="form-group">
+        <label for="step1-description">Descriere Exercitiu</label>
+        <textarea id="step1-description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+      <label>Imagine Exercitiu</label>
+      <div class="file-upload">
+        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+        <div class="image-upload-wrap">
+          <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+          <div class="drag-text">
+            <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
+          </div>
+        </div>
+        <div class="file-upload-content">
+          <img class="file-upload-image" src="#" alt="your image" />
+          <div class="image-title-wrap">
+            <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="body-parts">
+          <form method="POST" action="/signup">
+            <div class="angle">
+              <label for="re">Cot drept:</label>
+              <input type="text" name="re" id="re" required>
+            </div>
+
+            <div class="angle">
+              <label for="le">Cot stâng:</label>
+              <input type="text" name="le" id="le" required>
+            </div>
+
+            <div class="angle">
+              <label for="rs">Umăr drept:</label>
+              <input type="text" name="rs" id="rs" required>
+            </div>
+
+            <div class="angle">
+              <label for="ls">Umăr stâng:</label>
+              <input type="text" name="ls" id="ls" required>
+            </div>
+
+            <div class="angle">
+              <label for="rh">Șold drept:</label>
+              <input type="text" name="rh" id="rh" required>
+            </div>
+
+            <div class="angle">
+              <label for="lh">Șold stâng:</label>
+              <input type="text" name="lh" id="lh" required>
+            </div>
+
+            <div class="angle">
+              <label for="rk">Genunchi drept:</label>
+              <input type="text" name="rk" id="rk"  required>
+            </div>
+
+            <div class="angle">
+              <label for="lk">Genunchi stâng:</label>
+              <input type="text" name="lk" id="lk" required>
+            </div>
+
+          </form>
+        </div>
+    </div>
+    <div class="card fill-green" data-card="2">
+      <p class="step">Step 2</p>
+      <div class="form-group">
+        <label for="step2-description">Descriere Exercitiu</label>
+        <textarea id="step2-description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+      <label>Imagine Exercitiu</label>
+      <div class="file-upload">
+        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input2').trigger( 'click' )">Add Image</button>
+
+        <div class="image-upload-wrap">
+          <input class="file-upload-input" type='file' onchange="readURL2(this);" accept="image/*" />
+          <div class="drag-text">
+            <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
+          </div>
+        </div>
+        <div class="file-upload-content">
+          <img class="file-upload-image" src="#" alt="your image" />
+          <div class="image-title-wrap">
+            <button type="button" onclick="removeUpload2()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="body-parts">
+          <form method="POST" action="/signup">
+            <div class="angle">
+              <label for="re2">Cot drept:</label>
+              <input type="text" name="re" id="re2" required>
+            </div>
+
+            <div class="angle">
+              <label for="le2">Cot stâng:</label>
+              <input type="text" name="le" id="le2" required>
+            </div>
+
+            <div class="angle">
+              <label for="rs2">Umăr drept:</label>
+              <input type="text" name="rs" id="rs2" required>
+            </div>
+
+            <div class="angle">
+              <label for="ls2">Umăr stâng:</label>
+              <input type="text" name="ls" id="ls2" required>
+            </div>
+
+            <div class="angle">
+              <label for="rh2">Șold drept:</label>
+              <input type="text" name="rh" id="rh2" required>
+            </div>
+
+            <div class="angle">
+              <label for="lh2">Șold stâng:</label>
+              <input type="text" name="lh" id="lh2" required>
+            </div>
+
+            <div class="angle">
+              <label for="rk2">Genunchi drept:</label>
+              <input type="text" name="rk" id="rk2"  required>
+            </div>
+
+            <div class="angle">
+              <label for="lk2">Genunchi stâng:</label>
+              <input type="text" name="lk" id="lk2" required>
+            </div>
+
+          </form>
+        </div>
+    </div>
+    <div class="card fill-gray" data-card="3">
+      <p class="step">Step 3</p>
+      <div class="form-group">
+        <label for="step3-description">Descriere Exercitiu</label>
+        <textarea id="step3-description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+      <label>Imagine Exercitiu</label>
+      <div class="file-upload">
+        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
+
+        <div class="image-upload-wrap">
+          <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+          <div class="drag-text">
+            <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
+          </div>
+        </div>
+        <div class="file-upload-content">
+          <img class="file-upload-image" src="#" alt="your image" />
+          <div class="image-title-wrap">
+            <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+      <div class="body-parts">
+        <form method="POST" action="/signup">
+            <div class="angle">
+              <label for="re3">Cot drept:</label>
+              <input type="text" name="re" id="re3" required>
+            </div>
+
+            <div class="angle">
+              <label for="le3">Cot stâng:</label>
+              <input type="text" name="le" id="le3" required>
+            </div>
+
+            <div class="angle">
+              <label for="rs3">Umăr drept:</label>
+              <input type="text" name="rs" id="rs3" required>
+            </div>
+
+            <div class="angle">
+              <label for="ls3">Umăr stâng:</label>
+              <input type="text" name="ls" id="ls3" required>
+            </div>
+
+            <div class="angle">
+              <label for="rh3">Șold drept:</label>
+              <input type="text" name="rh" id="rh3" required>
+            </div>
+
+            <div class="angle">
+              <label for="lh3">Șold stâng:</label>
+              <input type="text" name="lh" id="lh3" required>
+            </div>
+
+            <div class="angle">
+              <label for="rk3">Genunchi drept:</label>
+              <input type="text" name="rk" id="rk3"  required>
+            </div>
+
+            <div class="angle">
+              <label for="lk3">Genunchi stâng:</label>
+              <input type="text" name="lk" id="lk3" required>
+            </div>
+
+          </form>
+      </div>
+
+      <button type="submit" class="submit-button">Submit</button>
+
+    </div>
+
+    </form>
+  </div>
+{% endblock %}

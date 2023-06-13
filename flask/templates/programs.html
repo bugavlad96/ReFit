@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/programs.css">
+{% endblock %}
+
+{% block content %}
+<h2>Programe</h2>
+<a href="{{ url_for('add_programs') }}" style="text-decoration: none;
+    color: white;"><button class="add-button">+ Adauga</button></a>
+<div class="program-list">
+  <div class="program">
+    <img src="../static/images/img.jpg" alt="Program 1">
+    <div class="prog-content">
+
+      <div class="program-info">
+        <h3>Program 1</h3>
+        <p>Description of Program 1</p>
+        <p>Categorie: Category 1</p>
+        <p>Fizioterapist: pers </p>
+      </div>
+
+      <div class="btn-group">
+        <button>Editeaza</button>
+        <button>Sterge</button>
+        <a href="{{ url_for('view_program') }}"><button class="view">Vizualizeaza</button></a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+{% endblock %}

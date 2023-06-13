@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, redirect, session
 from db import connect_db
 import re
-import uuid
-
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -24,19 +22,20 @@ def index(logged_in=False):
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        email = request.form['email']
+        username = request.form['username']
         password = request.form['password']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
         user = cur.fetchone()
         cur.close()
 
         if user and user[5] == password:
-            session['name'] = user[2]
-            session['surname'] = user[3]
-            session['email'] = user[6]
-            session['type'] = user[1]
+            session['username'] = username
+            session['name'] = user[1]
+            session['surname'] = user[2]
+            session['mail'] = user[3]
+            session['type'] = user[6]
             return render_template('main.html', logged_in=True, user_name=session['name'], user_type=session['type'])
         else:
             error = 'Invalid username or password'
@@ -47,7 +46,8 @@ def login():
 
 @app.route('/main')
 def main():
-    if 'email' in session:
+    if 'username' in session:
+        username = session['username']
         name = session['name']
         user_type = session['type']
         return render_template('main.html', logged_in=True, user_name=name, user_type=user_type)  # Pass the user's type to the template
@@ -66,11 +66,11 @@ def signup():
     if request.method == 'POST':
         name = request.form['name']
         surname = request.form['surname']
-        email = request.form['email']
+        mail = request.form['mail']
+        username = request.form['username']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        option_user = request.form['user_type']
-        option_gender = request.form['gender']
+        option = request.form['option']
 
         # Check if the passwords match
         if password != confirm_password:
@@ -78,13 +78,13 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Check if the email is valid
-        if not validate_email(email):
+        if not validate_email(mail):
             error = 'Invalid email address'
             return render_template('signup.html', error=error)
 
         # Check if the username is already taken
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
+        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
         existing_user = cur.fetchone()
         cur.close()
 
@@ -94,13 +94,12 @@ def signup():
 
         # Insert the new user into the database
         cur = mysql.connection.cursor()
-        unique_id = str(uuid.uuid4())
-        cur.execute("INSERT INTO user (id, type, name, surname, gender, Email, Pass) VALUES (%s, %s, %s, %s, %s, %s, %s)",
-                    (unique_id, option_user, name, surname, option_gender, email, password))
+        cur.execute("INSERT INTO users (Name, Surname, Mail, Username, Password, Type) VALUES (%s, %s, %s, %s, %s, %s)",
+                    (name, surname, mail, username, password, option))
         mysql.connection.commit()
         cur.close()
 
-        return redirect('login.html')
+        return redirect('/')
     else:
         return render_template('signup.html')
 
@@ -115,6 +114,46 @@ def about():
         return render_template('about.html')
 
 
+@app.route('/programs')
+def programs():
+    if 'username' in session:
+        user_type = session['type']
+        return render_template('programs.html', logged_in=True, user_type=user_type)
+    else:
+        return render_template('programs.html')
+
+
+@app.route('/add_programs')
+def add_programs():
+    # return render_template('add_prog.html', logged_in=True, user_type=user_type)
+    return render_template('add_prog.html')
+
+
+@app.route('/view_program')
+def view_program():
+    photo = "img.jpg"
+    # return render_template('add_prog.html', logged_in=True, user_type=user_type)
+    return render_template('view_program.html', photo=photo)
+
+
+@app.route('/exercise')
+def exercise():
+    if 'username' in session:
+        user_type = session['type']
+        return render_template('exercise.html', logged_in=True, user_type=user_type)
+    else:
+        return render_template('exercise.html')
+
+
+@app.route('/add_exercise')
+def add_exercise():
+    if 'username' in session:
+        user_type = session['type']
+        return render_template('add_ex.html', logged_in=True, user_type=user_type)
+    else:
+        return render_template('add_ex.html')
+
+
 @app.route('/profile')
 def profile():
     name = session['name']
@@ -122,7 +161,7 @@ def profile():
     user_type = session['type']
     mail = session['mail']
 
-    if user_type == 1:
+    if user_type == "therapist":
         photo = "doctor.jpg"
         # photo = "user.jpg"
         type = "Fizioterapeut"

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="static/style.css">
+<link rel="stylesheet" href="static/programs.css">
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center; margin-bottom: 0; margin-top: 3%;">Exercitii</h1>
+<a href="{{ url_for('add_exercise') }}"><button class="add-button">+ Adauga </button></a>>
+<div class="program-list">
+  <div class="program">
+    <img src="../static/images/img.jpg" alt="Program 1">
+    <div class="prog-content">
+
+      <div class="program-info">
+        <h2 style="text-align: left;">Exercitiu 1</h2>
+        <p>Description of Program 1</p>
+        <p>Categorie: Category 1</p>
+        <p>Fizioterapist: pers </p>
+      </div>
+
+      <div class="btn-group">
+        <button>Editeaza</button>
+        <button>Sterge</button>
+        <button class="view">View</button>
+      </div>
+    </div>
+  </div>
+  <div class="program">
+    <img src="../static/images/img.jpg" alt="Program 1">
+    <div class="prog-content">
+
+      <div class="program-info">
+        <h2 style="text-align: left;">Exercitiu 1</h2>
+        <p>Description of Program 1</p>
+        <p>Categorie: Category 1</p>
+        <p>Fizioterapist: pers </p>
+      </div>
+
+      <div class="btn-group">
+        <button>Editeaza</button>
+        <button>Sterge</button>
+        <button class="view">View</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
