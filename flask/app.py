@@ -154,17 +154,43 @@ def exercise():
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM exercise")
         all_ex = cur.fetchall()
-        print(all_ex)
+        # print(all_ex)
 
-        # print(type(all_ex))
-        cur.close()
+
+        # lista de dictionare
+        preprocessed_data = []
         for ex in all_ex:
             # print(type(ex))
-            for idx_info in ex:
-                print(idx_info)
-                print("ha")
+            # print(ex[0])
+            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+            # therapist_id ex[5]
+            # print(ex[5])
+            therapist_name_tuple = cur.fetchone()
+            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+            therapist_name = therapist_name
+            # print(therapist_name)
 
-        return render_template('exercise.html', )
+            preprocessed_item = {
+                # 'id': ex[0], no need to render photo's ID
+                'name': ex[1].capitalize(),
+                'description': ex[2].capitalize(),
+                # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+                'category_name': ex[4].capitalize(),
+                # 'therapist_id': ex[5], therapist ID no need to render to HTML
+                'max_reps': ex[6],
+                'therapist_name': therapist_name
+            }
+            preprocessed_data.append(preprocessed_item)
+            print(preprocessed_item)
+
+
+        cur.close()
+
+        # print(preprocessed_data)
+
+        # daca nu e poza atunci una default
+
+        return render_template('exercise.html', exercises=preprocessed_data)
 
 
 @app.route('/add_exercise')

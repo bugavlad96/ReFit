@@ -7,17 +7,22 @@
 
 {% block content %}
 <h1 style="text-align: center; margin-bottom: 0; margin-top: 3%;">Exercitii</h1>
-<a href="{{ url_for('add_exercise') }}"><button class="add-button">+ Adauga </button></a>>
+<a href="{{ url_for('add_exercise') }}"><button class="add-button">+ Adauga </button></a>
 <div class="program-list">
+  {% for exercise in exercises %}
   <div class="program">
     <img src="../static/images/img.jpg" alt="Program 1">
+    {% if exercise.show_prog_content %}
     <div class="prog-content">
+    {% else %}
+    <div>
+    {% endif %}
 
       <div class="program-info">
-        <h2 style="text-align: left;">Exercitiu 1</h2>
-        <p>Description of Program 1</p>
-        <p>Categorie: Category 1</p>
-        <p>Fizioterapist: pers </p>
+        <h2 style="text-align: left;">{{ exercise.name }}</h2>
+        <p>{{ exercise.description }}</p>
+        <p>Categorie: {{ exercise.category_name }}</p>
+        <p>Terapeut: {{ exercise.therapist_name }}</p>
       </div>
 
       <div class="btn-group">
@@ -27,24 +32,6 @@
       </div>
     </div>
   </div>
-  <div class="program">
-    <img src="../static/images/img.jpg" alt="Program 1">
-    <div class="prog-content">
-
-      <div class="program-info">
-        <h2 style="text-align: left;">Exercitiu 1</h2>
-        <p>Description of Program 1</p>
-        <p>Categorie: Category 1</p>
-        <p>Fizioterapist: pers </p>
-      </div>
-
-      <div class="btn-group">
-        <button>Editeaza</button>
-        <button>Sterge</button>
-        <button class="view">View</button>
-      </div>
-    </div>
-  </div>
-
+  {% endfor %}
 </div>
 {% endblock %}
