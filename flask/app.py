@@ -19,26 +19,26 @@ def index(logged_in=False):
     return render_template('main.html', logged_in=logged_in)
 
 
+# done conn db
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
 
         if user and user[5] == password:
-            session['username'] = username
-            session['name'] = user[1]
-            session['surname'] = user[2]
-            session['mail'] = user[3]
-            session['type'] = user[6]
+            session['name'] = user[2]
+            session['surname'] = user[3]
+            session['email'] = user[6]
+            session['type'] = user[1]
             return render_template('main.html', logged_in=True, user_name=session['name'], user_type=session['type'])
         else:
-            error = 'Invalid username or password'
+            error = 'Adresa de email sau parolă invalidă'
             return render_template('login.html', error=error, logged_in=False)
     else:
         return render_template('login.html')
@@ -61,16 +61,21 @@ def logout():
     return redirect('/')
 
 
+# db conn donne
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
         name = request.form['name']
         surname = request.form['surname']
-        mail = request.form['mail']
-        username = request.form['username']
+        email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
         option = request.form['option']
+        gender = request.form["gender"]
+        print(option)
+        print(type(option))
+        print(gender)
+        print(type(gender))
 
         # Check if the passwords match
         if password != confirm_password:
@@ -78,24 +83,26 @@ def signup():
             return render_template('signup.html', error=error)
 
         # Check if the email is valid
-        if not validate_email(mail):
+        if not validate_email(email):
             error = 'Invalid email address'
             return render_template('signup.html', error=error)
 
         # Check if the username is already taken
         cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM users WHERE username = %s", (username,))
+        cur.execute("SELECT * FROM user WHERE email = %s", (email,))
         existing_user = cur.fetchone()
         cur.close()
 
         if existing_user:
-            error = 'Username already exists'
+            error = 'User already exists'
             return render_template('signup.html', error=error)
 
+        # e nevoie de prelucrat datele inainte de a le trimite spre baza de
         # Insert the new user into the database
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO users (Name, Surname, Mail, Username, Password, Type) VALUES (%s, %s, %s, %s, %s, %s)",
-                    (name, surname, mail, username, password, option))
+        # cur.execute("",
+        #             (name, surname, mail, username, password, option))
+        cur.callproc("add_user", args=(int(option), name, surname, gender, password, email))
         mysql.connection.commit()
         cur.close()
 
@@ -142,7 +149,22 @@ def exercise():
         user_type = session['type']
         return render_template('exercise.html', logged_in=True, user_type=user_type)
     else:
-        return render_template('exercise.html')
+
+        # display all exercises
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM exercise")
+        all_ex = cur.fetchall()
+        print(all_ex)
+
+        # print(type(all_ex))
+        cur.close()
+        for ex in all_ex:
+            # print(type(ex))
+            for idx_info in ex:
+                print(idx_info)
+                print("ha")
+
+        return render_template('exercise.html', )
 
 
 @app.route('/add_exercise')

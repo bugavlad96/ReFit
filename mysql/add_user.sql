@@ -1,5 +1,10 @@
 -- Create the stored procedure
 DELIMITER //
+-- type: 0 - Terapeut
+-- 		 1 - Pacient
+-- Genul: 1 - Barbat
+--        2 - Femeie
+--        3 - "prefer sa nu spun" 
 CREATE PROCEDURE add_user (
     IN p_type SMALLINT,
     IN p_name VARCHAR(255),

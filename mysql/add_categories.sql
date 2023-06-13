@@ -12,7 +12,7 @@ BEGIN
     INSERT INTO category (name, description)
 	VALUES ('feet','feet related exercises');
 	INSERT INTO category (name, description)
-	VALUES ('user','user photo');
+	VALUES ('users','user photo');
     
 END //
 DELIMITER ;

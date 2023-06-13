@@ -5,8 +5,8 @@ def connect_db(app):
     # Configure MySQL
     app.config['MYSQL_HOST'] = '127.0.0.1'
     app.config['MYSQL_USER'] = 'root'
-    app.config['MYSQL_PASSWORD'] = 'LicentaVlad23'
-    app.config['MYSQL_DB'] = 'test'
+    app.config['MYSQL_PASSWORD'] = '29122417'
+    app.config['MYSQL_DB'] = 'refit'
 
     mysql = MySQL(app)
 

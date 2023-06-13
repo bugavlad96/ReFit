@@ -16,21 +16,26 @@
         <input type="text" name="name" id="name" placeholder="Nume" required>
 
         <label for="surname">Prename:</label>
-        <input type="text" name="surname" id="surname" placeholder="Prename" required>
+        <input type="text" name="surname" id="surname" placeholder="Prenume" required>
 
-        <label for="surname">Mail:</label>
-        <input type="text" name="mail" id="mail" placeholder="Mail" required>
+        <label for="email">Mail:</label>
+        <input type="text" name="email" id="email" placeholder="Email" required>
 
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" placeholder="Username" required>
-
-        <div class="radio-group">
-            <label><input type="radio" name="option" value="therapist" required> Fizioterapist </label>
-            <label><input type="radio" name="option" value="patient" required> Pacient </label>
+        <div class="radio-group" >
+            <label><input type="radio" name="option" value="0" required> Terapeut </label>
+            <label><input type="radio" name="option" value="1" required> Pacient </label>
+        </div>
+        <div class="radio-group" style="margin-bottom: 10px;">
+            <span> Genul: </span>
+            <select name = "gender">
+                <option value="1" > Bărbat </option>
+                <option value="2" > Femeie </option>
+                <option value="3" > Prefer sa nu spun </option>
+            </select>
         </div>
 
         <label for="password">Parola:</label>
-        <input type="password" name="password" id="password" placeholder="Password" required>
+        <input type="password" name="password" id="password" placeholder="Parola" required>
 
         <label for="confirm_password">Confirmă Parola:</label>
         <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmă Parola" required>
