@@ -102,15 +102,18 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
 
         ot.output_text(img, str(counter), var.FISRT_LANE, var.RED, var.SIZE_TXT_HINTS)
         # cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
+        _, encoded_frame = cv2.imencode('.jpg', img)
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + bytearray(encoded_frame) + b'\r\n')
 
-        cv2.imshow("img", img)
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
-
-    cap.release()
-    cv2.destroyAllWindows()
-
-    return counter
+    #     cv2.imshow("img", img)
+    #     if cv2.waitKey(1) & 0xFF == ord('q'):
+    #         break
+    #
+    # cap.release()
+    # cv2.destroyAllWindows()
+    #
+    # return counter
 
 
 
