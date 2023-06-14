@@ -55,6 +55,7 @@ def login():
         cur.close()
 
         if user and user[5] == password:
+            session['id'] = user[0]
             session['name'] = user[2]
             session['surname'] = user[3]
             session['email'] = user[6]
@@ -182,7 +183,7 @@ def programs():
         # print(therapist_name)
 
         preprocessed_item = {
-            # 'id': program[0], no need to render photo's ID
+            'id': program[0],
             'name': program[1].capitalize(),
             'description': program[2].capitalize(),
             # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
@@ -208,11 +209,71 @@ def programs():
         return render_template('programs.html', programs=preprocessed_data)
 
 
-@app.route('/add_programs')
+@app.route('/add_programs', methods=['GET', 'POST'])
+# @app.route('/add_programs')
 def add_programs():
-    # return render_template('add_prog.html', logged_in=True, user_type=user_type)
-    return render_template('add_prog.html')
+    # display all exercises
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM exercise")
+    all_ex = cur.fetchall()
+    # print(all_ex)
 
+    # lista de dictionare
+    preprocessed_data = []
+    for ex in all_ex:
+        # print(type(ex))
+        # print(ex[0])s
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+        # therapist_id ex[5]
+        # print(ex[5])
+        therapist_name_tuple = cur.fetchone()
+        therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+        therapist_name = therapist_name
+        # print(therapist_name)
+
+        preprocessed_item = {
+            'id': ex[0], #no need to render photo's ID
+            'name': ex[1].capitalize(),
+            'description': ex[2].capitalize(),
+            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'category_name': ex[4].capitalize(),
+            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'max_reps': ex[6],
+            'therapist_name': therapist_name
+        }
+        preprocessed_data.append(preprocessed_item)
+        # print(preprocessed_item)
+    # retreive exercise end
+
+    if request.method == 'POST':
+        checked_checkboxes = request.form.getlist('exercise_checkbox')
+        program_name = request.form['prog_name']
+        program_description = request.form['prog_descr']
+        category = request.form['categ']
+        therapist_id = session['id']
+
+        cur = mysql.connection.cursor()
+        cur.callproc('add_program', args=(program_name, program_description, category, therapist_id))
+
+        # retrieve last created UUID
+        mysql.connection.commit()
+        cur.execute("SELECT id FROM program WHERE id = LAST_INSERT_ID()")
+        result = cur.fetchone()
+        program_id = result[0]
+        print(program_id)
+
+        for cb in checked_checkboxes:
+            cur.execute("INSERT INTO exercise_to_prog (program_id, exercise_id) values (%s, %s)", (program_id, cb))
+            mysql.connection.commit()
+        cur.close()
+
+    if 'email' in session:
+        user_type = session['type']
+        name = session['name']
+    # return render_template('add_prog.html', logged_in=True, user_type=user_type)
+        return render_template('add_prog.html', exercises = preprocessed_data, user_name = name, logged_in=True, user_type=user_type, )
+    else:
+        return redirect('/')
 
 @app.route('/view_program')
 def view_program():

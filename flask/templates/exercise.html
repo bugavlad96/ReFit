@@ -15,12 +15,7 @@
   {% for exercise in exercises %}
   <div class="program">
     <img src="../static/images/img.jpg">
-    {% if exercise.show_prog_content %}
     <div class="prog-content">
-    {% else %}
-    <div>
-    {% endif %}
-
       <div class="program-info">
         <h2 style="text-align: left;">{{ exercise.name }}</h2>
         <p>{{ exercise.description }}</p>
@@ -40,5 +35,7 @@
     </div>
   </div>
   {% endfor %}
+  </div>
+
 </div>
 {% endblock %}

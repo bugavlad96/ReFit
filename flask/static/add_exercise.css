@@ -200,10 +200,11 @@ p.step {
 
 .returnable{
   position: absolute;
-    margin: 5px;
-    height: 25px;
-    width: 25px;
-    margin-top: 25px;
+  margin: 5px;
+  height: 25px;
+  width: 25px;
+  display: flex;
+  margin-top: 25px;
 }
 
 .returnable input[type=checkbox] {

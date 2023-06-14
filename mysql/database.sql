@@ -10,8 +10,7 @@ BEGIN
 	CREATE TABLE `patient_program`(
 		`patient_id` CHAR(36) ,
 		`therapist_id` CHAR(36) ,
-		`program_id` CHAR(36) ,
-		`program_order` SMALLINT
+		`program_id` CHAR(36)
 	);
 	ALTER TABLE
 		`patient_program` ADD PRIMARY KEY(`patient_id`, `therapist_id`, `program_id`);
@@ -44,14 +43,12 @@ BEGIN
 	);
 	ALTER TABLE
 		`user` ADD PRIMARY KEY(`id`);
-	CREATE TABLE `exercise_order`(
+	CREATE TABLE `exercise_to_prog`(
 		`program_id` CHAR(36) ,
-		`exercise_id` CHAR(36) ,
-		`therapist_id` CHAR(36) ,
-		`exercise_order` SMALLINT
+		`exercise_id` CHAR(36)
 	);
 	ALTER TABLE
-		`exercise_order` ADD PRIMARY KEY(`program_id`, `exercise_id`);
+		`exercise_to_prog` ADD PRIMARY KEY(`program_id`, `exercise_id`);
         
 	CREATE TABLE `body_part`(
 		`name` VARCHAR(255) ,
@@ -112,11 +109,9 @@ BEGIN
 	ALTER TABLE
 		`patient` ADD CONSTRAINT `patient_user_id_foreign` FOREIGN KEY(`id`) REFERENCES `user`(`id`);
 	ALTER TABLE
-		`exercise_order` ADD CONSTRAINT `exercise_order_to_program_id_foreign` FOREIGN KEY(`program_id`) REFERENCES `program`(`id`);
+		`exercise_to_prog` ADD CONSTRAINT `exercise_to_prog_to_program_id_foreign` FOREIGN KEY(`program_id`) REFERENCES `program`(`id`);
 	ALTER TABLE
-		`exercise_order` ADD CONSTRAINT `exercise_order_to_exercise_id_foreign` FOREIGN KEY(`exercise_id`) REFERENCES `exercise`(`id`);
-	ALTER TABLE
-		`exercise_order` ADD CONSTRAINT `exercise_order_therapist_id_foreign` FOREIGN KEY(`therapist_id`) REFERENCES `therapist`(`id`);
+		`exercise_to_prog` ADD CONSTRAINT `exercise_to_prog_to_exercise_id_foreign` FOREIGN KEY(`exercise_id`) REFERENCES `exercise`(`id`);
 	ALTER TABLE
 		`body_part_angle` ADD CONSTRAINT `body_part_angle_bd_name_foreign` FOREIGN KEY(`bd_name`) REFERENCES `body_part`(`name`);
 	ALTER TABLE
@@ -147,6 +142,3 @@ BEGIN
 		`photo` ADD CONSTRAINT `photo_category_name_foreign` FOREIGN KEY(`category_name`) REFERENCES `category`(`name`);
 	END //
 DELIMITER ;
-
-
-

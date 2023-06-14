@@ -7,7 +7,7 @@
 
 -- CALL add_user(0, 'Vlad', 'Buga', 1, '123', 'vb@gmail.com');
 -- b49dd32f-0a1d-11ee-93b8-846993cbe512 
-select * from user;
+-- select * from user;
 -- select * from programs;
 
 -- CALL add_categories();
@@ -15,11 +15,17 @@ select * from user;
 -- select * from body_part;
 -- CALL add_exercise('mobilitatea umarului', 'inbunatatim mobilitatatii umarului', 'shoulders', 'b49dd32f-0a1d-11ee-93b8-846993cbe512', 5);
 -- CALL add_exercise('mobilitatea cotului', 'inbunatatim mobilitatatii cotului', 'hands', 'b49dd32f-0a1d-11ee-93b8-846993cbe512', 5);
+-- CALL add_exercise('mobilitatea cotului', 'inbunatatim mobilitatatii cotului 2', 'hands', 'b49dd32f-0a1d-11ee-93b8-846993cbe512', 5);
+-- CALL add_exercise('mobilitatea cotului', 'inbunatatim mobilitatatii cotului 3', 'hands', 'b49dd32f-0a1d-11ee-93b8-846993cbe512', 5);
 -- select * from exercise;
-
-
+-- select * from program; -- 29997d4a-0a85-11ee-a04a-846993cbe512 facut de b8 Vlad 
+-- select * from user; -- b8
+-- select * from program
+-- call add_program('Vlad Program', 'very good program',  'shoulders', 'b49dd32f-0a1d-11ee-93b8-846993cbe512','265003a5-0a20-11ee-93b8-846993cbe512','6f919689-0ac4-11ee-a04a-846993cbe512','fc667798-0a1f-11ee-93b8-846993cbe512')
+-- select * from exercise_to_prog;
 -- select * from photo;
 -- CALL add_user(1, 'Iulia', 'Vrabie', 2, '123', 'iv@gmail.com');
+-- DELETE FROM exercise_to_prog;
 
 
 -- step 0
@@ -46,7 +52,8 @@ select * from user;
 -- select * from category;
 -- select * from therapist;
 -- CALL add_program('shoulder plane mobility ex', 'one is testing and extending the range of shoulder mobility', 'shoulders', 'b49dd32f-0a1d-11ee-93b8-846993cbe512');
--- select * from programs;
+-- CALL add_program('shoulder vertical mobility ex', 'one is testing and extending the range of shoulder mobility', 'shoulders', '4cad0129-0a85-11ee-a04a-846993cbe512');
+-- select * from program;
 
 -- select * from user;
 -- CALL add_therapist_to_patient(
