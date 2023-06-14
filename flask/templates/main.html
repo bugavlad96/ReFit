@@ -17,26 +17,42 @@
 <section class="services">
     <!-- TO DO: Add category to database -->
     <h2>Exerciții pe categorii</h2>
-    <div class="service-item">
-        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 1">
-        <h3>Picior</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
+    {% for category in categories %}
+        <div class="service-item">
+        <img src="../static/images/img.jpg" >
+        {% if category.show_prog_content %}
+        <div class="prog-content">
+        {% else %}
+            <div>
+            {% endif %}
 
-    <div class="service-item">
-        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 2">
-        <h3>Mana</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-    <div class="service-item">
-        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 3">
-        <h3>Bazin</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-    </div>
-    <div class="service-item">
-        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 3">
-        <h3>Bazin</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                <div class="category-info">
+                    <h3>{{ category.name }}</h3>
+                    <p>{{ category.description }}</p>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+<!--    <div class="service-item">-->
+<!--        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 1">-->
+<!--        <h3>Picior</h3>-->
+<!--        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+<!--    </div>-->
+<!--    <div class="service-item">-->
+<!--        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 2">-->
+<!--        <h3>Mana</h3>-->
+<!--        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+<!--    </div>-->
+<!--    <div class="service-item">-->
+<!--        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 3">-->
+<!--        <h3>Bazin</h3>-->
+<!--        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
+<!--    </div>-->
+<!--    <div class="service-item">-->
+<!--        <img src="{{ url_for('static', filename='images/img.jpg') }}" alt="Service 3">-->
+<!--        <h3>Bazin</h3>-->
+<!--        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>-->
     </div>
 
 </section>

@@ -16,7 +16,30 @@ def validate_email(email):
 
 @app.route('/')
 def index(logged_in=False):
-    return render_template('main.html', logged_in=logged_in)
+    # display all categories
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM category")
+    all_cat = cur.fetchall()
+    # print(all_cat)
+    #
+    # lista de dictionare
+    preprocessed_data = []
+    for category in all_cat:
+        if category[0] != 'user':
+            preprocessed_item = {
+                'name': category[0].capitalize(),
+                'description': category[1].capitalize(),
+            }
+
+            preprocessed_data.append(preprocessed_item)
+            print(preprocessed_item)
+
+    cur.close()
+
+    # daca nu e poza atunci una default
+
+
+    return render_template('main.html', categories = preprocessed_data, logged_in=logged_in)
 
 
 # done conn db
@@ -36,7 +59,8 @@ def login():
             session['surname'] = user[3]
             session['email'] = user[6]
             session['type'] = user[1]
-            return render_template('main.html', logged_in=True, user_name=session['name'], user_type=session['type'])
+            return redirect('/main')
+
         else:
             error = 'Adresa de email sau parolă invalidă'
             return render_template('login.html', error=error, logged_in=False)
@@ -46,11 +70,30 @@ def login():
 
 @app.route('/main')
 def main():
-    if 'username' in session:
-        username = session['username']
+    if 'email' in session:
         name = session['name']
         user_type = session['type']
-        return render_template('main.html', logged_in=True, user_name=name, user_type=user_type)  # Pass the user's type to the template
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM category")
+        all_cat = cur.fetchall()
+        # print(all_cat)
+        #
+        # lista de dictionare
+        preprocessed_data = []
+        for category in all_cat:
+            if category[0] != 'user':
+                preprocessed_item = {
+                    'name': category[0].capitalize(),
+                    'description': category[1].capitalize(),
+                }
+
+                preprocessed_data.append(preprocessed_item)
+                print(preprocessed_item)
+
+        cur.close()
+
+        return render_template('main.html', logged_in=True, user_name=name, user_type=user_type, categories = preprocessed_data)  # Pass the user's type to the template
     else:
         return redirect('/')
 
