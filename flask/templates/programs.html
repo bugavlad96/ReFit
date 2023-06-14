@@ -7,7 +7,9 @@
 
 {% block content %}
 <h2>Programe</h2>
-<a href="{{ url_for('add_programs') }}" style="text-decoration: none; color: white;"><button class="add-button">+ Adauga</button></a>
+{% if logged_in and user_type == 0 %}
+  <a href="{{ url_for('add_programs') }}" style="text-decoration: none; color: white;"><button class="add-button">+ Adauga</button></a>
+{% endif %}
 <div class="program-list">
   {% for program in programs %}
   <div class="program">
@@ -26,9 +28,14 @@
       </div>
 
       <div class="btn-group">
-        <button>Editeaza</button>
-        <button>Sterge</button>
-        <a href="{{ url_for('view_program') }}"><button class="view">Vizualizeaza</button></a>
+        {% if logged_in and user_type == 0 %}
+          <button>Editeaza</button>
+          <button>Sterge</button>
+          <a href="{{ url_for('view_program') }}"><button class="view">Vizualizeaza</button></a>
+        {% else %}
+          <a href="{{ url_for('view_program') }}"><button class="view">Vizualizeaza</button></a>
+        {% endif %}
+
       </div>
     </div>
   </div>
