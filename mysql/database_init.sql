@@ -15,9 +15,9 @@ select * from user;
 -- select * from body_part;
 -- CALL add_exercise('mobilitatea umarului', 'inbunatatim mobilitatatii umarului', 'shoulders', 'b49dd32f-0a1d-11ee-93b8-846993cbe512', 5);
 -- CALL add_exercise('mobilitatea cotului', 'inbunatatim mobilitatatii cotului', 'hands', 'b49dd32f-0a1d-11ee-93b8-846993cbe512', 5);
-select * from exercises;
+-- select * from exercise;
 
-select * from exercises;
+
 -- select * from photo;
 -- CALL add_user(1, 'Iulia', 'Vrabie', 2, '123', 'iv@gmail.com');
 
@@ -45,7 +45,7 @@ select * from exercises;
 -- select *  from bp_info;
 -- select * from category;
 -- select * from therapist;
--- CALL add_program('shoulder plane mobility ex', 'one is testing and extending the range of shoulder mobility', 'shoulders', '05b11bfd-0788-11ee-93b8-846993cbe512');
+-- CALL add_program('shoulder plane mobility ex', 'one is testing and extending the range of shoulder mobility', 'shoulders', 'b49dd32f-0a1d-11ee-93b8-846993cbe512');
 -- select * from programs;
 
 -- select * from user;

@@ -127,7 +127,43 @@ def programs():
         user_type = session['type']
         return render_template('programs.html', logged_in=True, user_type=user_type)
     else:
-        return render_template('programs.html')
+        # display all programs
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM program")
+        all_prog = cur.fetchall()
+        # print(all_ex)
+
+
+        # lista de dictionare
+        preprocessed_data = []
+        for program in all_prog:
+            # fetch therapist's name
+            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(program[5]),))
+            therapist_name_tuple = cur.fetchone()
+            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+            therapist_name = therapist_name
+            # print(therapist_name)
+
+            preprocessed_item = {
+                # 'id': program[0], no need to render photo's ID
+                'name': program[1].capitalize(),
+                'description': program[2].capitalize(),
+                # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
+                'category_name': program[4].capitalize(),
+                # 'therapist_id': program[5], therapist ID no need to render to HTML
+                'therapist_name': therapist_name
+            }
+            preprocessed_data.append(preprocessed_item)
+            print(preprocessed_item)
+
+
+        cur.close()
+
+        # print(preprocessed_data)
+
+        # daca nu e poza atunci una default
+
+        return render_template('programs.html', programs=preprocessed_data)
 
 
 @app.route('/add_programs')
