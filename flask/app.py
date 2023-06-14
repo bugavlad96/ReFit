@@ -295,22 +295,22 @@ def exercise():
     for ex in all_ex:
         # print(type(ex))
         # print(ex[0])
-        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[4]),))
         # therapist_id ex[5]
         # print(ex[5])
         therapist_name_tuple = cur.fetchone()
+        print()
         therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
         therapist_name = therapist_name
         # print(therapist_name)
 
         preprocessed_item = {
-            # 'id': ex[0], no need to render photo's ID
-            'name': ex[1].capitalize(),
-            'description': ex[2].capitalize(),
+            # 'id': ex[0], no need to render ex id
+            'description': ex[1].capitalize(),
             # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
-            'category_name': ex[4].capitalize(),
+            'category_name': ex[3].capitalize(),
             # 'therapist_id': ex[5], therapist ID no need to render to HTML
-            'max_reps': ex[6],
+            'max_reps': ex[5],
             'therapist_name': therapist_name
         }
         preprocessed_data.append(preprocessed_item)
@@ -333,13 +333,72 @@ def exercise():
         return render_template('exercise.html', exercises=preprocessed_data)
 
 
-@app.route('/add_exercise')
+@app.route('/add_exercise', methods=['GET', 'POST'])
 def add_exercise():
-    if 'email' in session:
-        user_type = session['type']
+
+    if request.method == 'POST':
+    #
+        exercise_name = request.form["exercise_name"]
+        exercise_description = request.form["exercise-description"]
+        therapist_id = session['id']
+        max_reps = request.form["rep"]
+        category = request.form["categ"]
+        print(exercise_name)
+        print(exercise_description)
+        print(therapist_id)
+        print(max_reps)
+
+        # cur = mysql.connection.cursor()
+        # cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, max_reps))
+        #
+        # # retrieve last created UUID
+        # mysql.connection.commit()
+        # cur.execute("SELECT id FROM exercise WHERE id = LAST_INSERT_ID()")
+        # result = cur.fetchone()
+        # exercis_id = result[0]
+        # print(exercis_id)
+
+
+
+
+
+        #
+        form_data = request.form.to_dict()
+        print(form_data)
+        # pattern = r'^[A-Z_]+\d+$'
+        # for key, value in form_data.items():
+        #     if re.match(pattern, key):
+        #         if value != '':
+        #
+
+
+
+        # cur = mysql.connection.cursor()
+        # cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id))
+        #
+        # # retrieve last created UUID
+        # mysql.connection.commit()
+        # cur.execute("SELECT id FROM program WHERE id = LAST_INSERT_ID()")
+        # result = cur.fetchone()
+        # program_id = result[0]
+        # print(program_id)
+        #
+        # for cb in checked_checkboxes:
+        #     cur.execute("INSERT INTO exercise_to_prog (program_id, exercise_id) values (%s, %s)", (program_id, cb))
+        #     mysql.connection.commit()
+        # cur.close()
+
+
+        if 'email' in session:
+            user_type = session['type']
+
+
         return render_template('add_ex.html', logged_in=True, user_type=user_type)
     else:
         return render_template('add_ex.html')
+
+
+
 
 
 @app.route('/profile')

@@ -28,4 +28,3 @@ END //
 DELIMITER ;
 
 -- DROP PROCEDURE IF EXISTS add_exercise;
-

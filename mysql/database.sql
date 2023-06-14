@@ -14,9 +14,8 @@ BEGIN
 	);
 	ALTER TABLE
 		`patient_program` ADD PRIMARY KEY(`patient_id`, `therapist_id`, `program_id`);
-	CREATE TABLE `exercise`(
+    CREATE TABLE `exercise`(
 		`id` CHAR(36) ,
-		`name` VARCHAR(255) ,
 		`description` LONGTEXT ,
 		`photo_id` CHAR(36) ,
 		`category_name` VARCHAR(255) ,
