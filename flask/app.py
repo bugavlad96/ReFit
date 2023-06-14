@@ -130,7 +130,7 @@ def signup():
             error = 'Invalid email address'
             return render_template('signup.html', error=error)
 
-        # Check if the username is already taken
+        # Check if the email is already taken
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM user WHERE email = %s", (email,))
         existing_user = cur.fetchone()
@@ -143,8 +143,6 @@ def signup():
         # e nevoie de prelucrat datele inainte de a le trimite spre baza de
         # Insert the new user into the database
         cur = mysql.connection.cursor()
-        # cur.execute("",
-        #             (name, surname, mail, username, password, option))
         cur.callproc("add_user", args=(int(option), name, surname, gender, password, email))
         mysql.connection.commit()
         cur.close()
@@ -166,45 +164,46 @@ def about():
 
 @app.route('/programs')
 def programs():
-    if 'username' in session:
+
+    # display all programs
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM program")
+    all_prog = cur.fetchall()
+    # print(all_ex)
+
+    # lista de dictionare
+    preprocessed_data = []
+    for program in all_prog:
+        # fetch therapist's name
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(program[5]),))
+        therapist_name_tuple = cur.fetchone()
+        therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+        therapist_name = therapist_name
+        # print(therapist_name)
+
+        preprocessed_item = {
+            # 'id': program[0], no need to render photo's ID
+            'name': program[1].capitalize(),
+            'description': program[2].capitalize(),
+            # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
+            'category_name': program[4].capitalize(),
+            # 'therapist_id': program[5], therapist ID no need to render to HTML
+            'therapist_name': therapist_name
+        }
+        preprocessed_data.append(preprocessed_item)
+        print(preprocessed_item)
+
+    cur.close()
+
+    # print(preprocessed_data)
+
+    # daca nu e poza atunci una default
+
+    if 'email' in session:
+        name = session['name']
         user_type = session['type']
-        return render_template('programs.html', logged_in=True, user_type=user_type)
+        return render_template('programs.html', user_name = name, logged_in=True, user_type=user_type, programs=preprocessed_data)
     else:
-        # display all programs
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM program")
-        all_prog = cur.fetchall()
-        # print(all_ex)
-
-
-        # lista de dictionare
-        preprocessed_data = []
-        for program in all_prog:
-            # fetch therapist's name
-            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(program[5]),))
-            therapist_name_tuple = cur.fetchone()
-            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
-            therapist_name = therapist_name
-            # print(therapist_name)
-
-            preprocessed_item = {
-                # 'id': program[0], no need to render photo's ID
-                'name': program[1].capitalize(),
-                'description': program[2].capitalize(),
-                # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
-                'category_name': program[4].capitalize(),
-                # 'therapist_id': program[5], therapist ID no need to render to HTML
-                'therapist_name': therapist_name
-            }
-            preprocessed_data.append(preprocessed_item)
-            print(preprocessed_item)
-
-
-        cur.close()
-
-        # print(preprocessed_data)
-
-        # daca nu e poza atunci una default
 
         return render_template('programs.html', programs=preprocessed_data)
 
@@ -224,57 +223,58 @@ def view_program():
 
 @app.route('/exercise')
 def exercise():
-    if 'username' in session:
+    # display all exercises
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM exercise")
+    all_ex = cur.fetchall()
+    # print(all_ex)
+
+    # lista de dictionare
+    preprocessed_data = []
+    for ex in all_ex:
+        # print(type(ex))
+        # print(ex[0])
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+        # therapist_id ex[5]
+        # print(ex[5])
+        therapist_name_tuple = cur.fetchone()
+        therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+        therapist_name = therapist_name
+        # print(therapist_name)
+
+        preprocessed_item = {
+            # 'id': ex[0], no need to render photo's ID
+            'name': ex[1].capitalize(),
+            'description': ex[2].capitalize(),
+            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'category_name': ex[4].capitalize(),
+            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'max_reps': ex[6],
+            'therapist_name': therapist_name
+        }
+        preprocessed_data.append(preprocessed_item)
+        print(preprocessed_item)
+
+    cur.close()
+
+    # print(preprocessed_data)
+
+    # daca nu e poza atunci una default
+
+    if 'email' in session:
         user_type = session['type']
-        return render_template('exercise.html', logged_in=True, user_type=user_type)
+        name = session['name']
+        return render_template('exercise.html', user_name = name, logged_in=True, user_type=user_type, exercises=preprocessed_data)
     else:
 
-        # display all exercises
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM exercise")
-        all_ex = cur.fetchall()
-        # print(all_ex)
 
-
-        # lista de dictionare
-        preprocessed_data = []
-        for ex in all_ex:
-            # print(type(ex))
-            # print(ex[0])
-            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
-            # therapist_id ex[5]
-            # print(ex[5])
-            therapist_name_tuple = cur.fetchone()
-            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
-            therapist_name = therapist_name
-            # print(therapist_name)
-
-            preprocessed_item = {
-                # 'id': ex[0], no need to render photo's ID
-                'name': ex[1].capitalize(),
-                'description': ex[2].capitalize(),
-                # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
-                'category_name': ex[4].capitalize(),
-                # 'therapist_id': ex[5], therapist ID no need to render to HTML
-                'max_reps': ex[6],
-                'therapist_name': therapist_name
-            }
-            preprocessed_data.append(preprocessed_item)
-            print(preprocessed_item)
-
-
-        cur.close()
-
-        # print(preprocessed_data)
-
-        # daca nu e poza atunci una default
 
         return render_template('exercise.html', exercises=preprocessed_data)
 
 
 @app.route('/add_exercise')
 def add_exercise():
-    if 'username' in session:
+    if 'email' in session:
         user_type = session['type']
         return render_template('add_ex.html', logged_in=True, user_type=user_type)
     else:
