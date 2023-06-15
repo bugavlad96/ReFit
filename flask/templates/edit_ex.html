@@ -61,7 +61,7 @@
     </div>
 
     <div class="step">
-      <p class="step">Step 1</p>
+      <p class="step">Pasul 1</p>
       <div class="form-group">
         <label for="step1-description">Descriere Pas</label>
         <textarea name="step_description_1" id="step1-description" rows="4" required>{{steps_list[0].description}}</textarea>
@@ -218,10 +218,10 @@
     </div>
 
     <div class="step">
-      <p class="step">Step 2</p>
+      <p class="step">Pasul 2</p>
       <div class="form-group">
         <label for="step2-description">Descriere Pas</label>
-        <textarea name="step_description_2" id="step2-description" rows="4" required></textarea>
+        <textarea name="step_description_2" id="step2-description" rows="4" required>{{steps_list[1].description}}</textarea>
       </div>
       <div class="form-group">
         <label>Imagine Pas</label>
@@ -370,10 +370,10 @@
     </div>
 
     <div class="step">
-      <p class="step">Step 3</p>
+      <p class="step">Pasul 3</p>
       <div class="form-group">
         <label for="step3-description">Descriere Pas</label>
-        <textarea name="step_description_3" id="step3-description" rows="4" required></textarea>
+        <textarea name="step_description_3" id="step3-description" rows="4" required>{{steps_list[2].description}}</textarea>
       </div>
       <div class="form-group">
         <label>Imagine Pas</label>
@@ -413,7 +413,7 @@
       {% if angle.bd_name == 'RIGHT_ELBOW' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="re">Cot drept:</label>
-          <input type="text" name="RIGHT_ELBOW_2" value="{{ angle.angle }}">
+          <input type="text" name="RIGHT_ELBOW_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'RIGHT_ELBOW' %}
@@ -425,7 +425,7 @@
       {% if angle.bd_name == 'LEFT_ELBOW' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="le">Cot stâng:</label>
-          <input type="text" name="LEFT_ELBOW_2" value="{{ angle.angle }}">
+          <input type="text" name="LEFT_ELBOW_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'LEFT_ELBOW' %}
@@ -437,7 +437,7 @@
       {% if angle.bd_name == 'RIGHT_SHOULDER' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="rs">Umăr drept:</label>
-          <input type="text" name="RIGHT_SHOULDER_2" value="{{ angle.angle }}">
+          <input type="text" name="RIGHT_SHOULDER_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'RIGHT_SHOULDER' %}
@@ -449,7 +449,7 @@
       {% if angle.bd_name == 'LEFT_SHOULDER' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="ls">Umăr stâng:</label>
-          <input type="text" name="LEFT_SHOULDER_2" value="{{ angle.angle }}">
+          <input type="text" name="LEFT_SHOULDER_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'LEFT_SHOULDER' %}
@@ -461,7 +461,7 @@
       {% if angle.bd_name == 'RIGHT_HIP' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="rh">Șold drept:</label>
-          <input type="text" name="RIGHT_HIP_2" value="{{ angle.angle }}">
+          <input type="text" name="RIGHT_HIP_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'RIGHT_HIP' %}
@@ -473,7 +473,7 @@
       {% if angle.bd_name == 'LEFT_HIP' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="lh">Șold stâng:</label>
-          <input type="text" name="LEFT_HIP_2" value="{{ angle.angle }}">
+          <input type="text" name="LEFT_HIP_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'LEFT_HIP' %}
@@ -485,7 +485,7 @@
       {% if angle.bd_name == 'RIGHT_KNEE' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="rk">Genunchi drept:</label>
-          <input type="text" name="RIGHT_KNEE_2" value="{{ angle.angle }}">
+          <input type="text" name="RIGHT_KNEE_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'RIGHT_KNEE' %}
@@ -497,7 +497,7 @@
       {% if angle.bd_name == 'LEFT_KNEE' and angle.bd_name not in rendered_angles %}
         <div class="angle">
           <label for="lk">Genunchi stâng:</label>
-          <input type="text" name="LEFT_KNEE_2" value="{{ angle.angle }}">
+          <input type="text" name="LEFT_KNEE_3" value="{{ angle.angle }}">
         </div>
         {% for remaining_angle in remaining_angles3 %}
         {% if remaining_angle.name == 'LEFT_KNEE' %}
