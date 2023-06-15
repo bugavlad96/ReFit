@@ -338,44 +338,117 @@ def add_exercise():
 
     if request.method == 'POST':
     #
-        exercise_name = request.form["exercise_name"]
-        exercise_description = request.form["exercise-description"]
+        # exercise_name = request.form["exercise_name"]
+        # exercise_description = request.form["exercise-description"]
         therapist_id = session['id']
-        max_reps = request.form["rep"]
-        category = request.form["categ"]
-        print(exercise_name)
-        print(exercise_description)
-        print(therapist_id)
-        print(max_reps)
+        # max_reps = request.form["rep"]
+        # category = request.form["categ"]
+        # print(exercise_name)
+        # print(exercise_description)
+        # print(therapist_id)
+        # print(max_reps)
 
         # cur = mysql.connection.cursor()
         # cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, max_reps))
         #
-        # # retrieve last created UUID
-        # mysql.connection.commit()
-        # cur.execute("SELECT id FROM exercise WHERE id = LAST_INSERT_ID()")
-        # result = cur.fetchone()
-        # exercis_id = result[0]
-        # print(exercis_id)
+
+
+        # body_parts = ["RIGHT_ELBOW",
+        #               "LEFT_ELBOW",
+        #               "RIGHT_SHOULDER",
+        #               "LEFT_SHOULDER",
+        #               "LEFT_HIP",
+        #               "RIGHT_HIP",
+        #               "LEFT_KNEE",
+        #               "RIGHT_KNEE"]
 
 
 
 
-
-        #
         form_data = request.form.to_dict()
-        print(form_data)
-        # pattern = r'^[A-Z_]+\d+$'
-        # for key, value in form_data.items():
-        #     if re.match(pattern, key):
-        #         if value != '':
-        #
+        # print(form_data)
+
+    # Extract exercise details
+        exercise_name = form_data['exercise_name']
+        exercise_description = form_data['exercise-description']
+        category = form_data['categ']
+        max_reps = form_data['rep']
+        permissive_error = form_data["permissive-error"]
+
+        # Extract step descriptions and joint values
+        step_descriptions = {}
+        joint_values = {}
+
+        for key, value in form_data.items():
+            if key.startswith('step_description_'):
+                step_number = key.split('_')[2]  # Extract the step number
+                step_descriptions[step_number] = value
+            elif key.startswith(('RIGHT_', 'LEFT_')):
+                joint, step_number = key.rsplit('_', 1)  # Split the joint name and step number
+                joint_values[(joint, step_number)] = value
+
+        # Print the extracted information
+        # print("Exercise Name:", exercise_name)
+        # print("Exercise Description:", exercise_description)
+        # print("Category:", category)
+        # print("Repetition:", max_reps)
+        # print("Step Descriptions:")
+        # for step_number, description in step_descriptions.items():
+        #     print("  Step", step_number + ":", description)
+        # print("Joint Values:")
+        # for (joint, step_number), value in joint_values.items():
+        #     print(f"  Joint: {joint}\tStep: {step_number}\tValue: {value}")
 
 
 
-        # cur = mysql.connection.cursor()
-        # cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id))
-        #
+
+        # #--------------------------
+
+
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps)))
+        # retrieve last created UUID
+        mysql.connection.commit()
+        cur.execute("SELECT id FROM exercise WHERE id = LAST_INSERT_ID()")
+        result = cur.fetchone()
+        exercis_id = result[0]
+        print(exercis_id)
+    # sus de bine
+
+        for step_number, description in step_descriptions.items():
+            cur = mysql.connection.cursor()
+            cur.callproc('add_step', args=(exercis_id, description, int(permissive_error), int(step_number)))
+            # retrieve last created UUID
+            mysql.connection.commit()
+
+            # retrieve last created step's UUID
+            cur.execute("SELECT id FROM step WHERE id = LAST_INSERT_ID()")
+            last_step = cur.fetchone()
+            print("the step is ", last_step)
+            step_id = last_step[0]
+            # print(step_id)
+            for (joint, joint_step_number), angle in joint_values.items():
+                if angle != '' and (step_number == joint_step_number):
+                    print("joint values: ", joint)
+                    print(step_id)
+                    print(joint)
+                    print(angle)
+                    cur.callproc('add_body_part_angle', args=(step_id, joint, int(angle)))
+                    mysql.connection.commit()
+            cur.close()
+
+
+
+
+
+
+
+
+
+
+
         # # retrieve last created UUID
         # mysql.connection.commit()
         # cur.execute("SELECT id FROM program WHERE id = LAST_INSERT_ID()")

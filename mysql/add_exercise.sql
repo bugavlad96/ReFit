@@ -8,6 +8,8 @@
 -- 		`max_reps` SMALLINT
 -- 	);
 
+-- ALTER TABLE exercise ADD name VARCHAR(255)
+-- select * from exercise;
 
 DELIMITER //
 CREATE PROCEDURE add_exercise (

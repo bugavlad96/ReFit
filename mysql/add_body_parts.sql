@@ -27,4 +27,5 @@ BEGIN
 END //
 DELIMITER ;
 
+call add_bodyparts;
 -- DROP PROCEDURE IF EXISTS add_bodyparts;

@@ -26,8 +26,9 @@
 -- select * from photo;
 -- CALL add_user(1, 'Iulia', 'Vrabie', 2, '123', 'iv@gmail.com');
 -- DELETE FROM exercise_to_prog;
-
-
+select * from exercise;
+select * from step;
+select * from body_part;
 -- step 0
 -- CALL add_step('961983ba-0a0b-11ee-93b8-846993cbe512', 'shoulders', 'right_shoulder_180', 'raise your right shoulder at 90 degrees', 10, 1);
 -- step 1
@@ -46,7 +47,8 @@
 -- -- step 2
 -- CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 180);
 -- CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
-
+use refit;
+select * from exercise;
 
 -- select *  from bp_info;
 -- select * from category;
@@ -68,7 +70,12 @@
 -- 	'bdcd7711-078b-11ee-93b8-846993cbe512',
 --     '450467f2-0788-11ee-93b8-846993cbe512');
 
-
+select * from exercise;
+select * from body_part_angle;
+select * from step;
+-- delete from body_part_angle;
+-- delete from step;
+-- delete from exercise;
 
 
 -- associate a program to a patient 
