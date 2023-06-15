@@ -6,10 +6,7 @@
 -- 	);
 -- 	ALTER TABLE
 -- 		`body_part_angle` ADD PRIMARY KEY(`id`);
-select * from body_part_angle;
 DELIMITER //
-call add_body_part_angle('0b4b4efe-0b62-11ee-8999-846993cbe512', 'RIGHT_ELBOW', 123);
-
 CREATE PROCEDURE add_body_part_angle (
     IN p_step_id CHAR(36),
     IN p_bd_name VARCHAR(255),
@@ -27,3 +24,5 @@ END //
 DELIMITER ;
 
 -- DROP PROCEDURE IF EXISTS add_body_part_angle;
+
+

@@ -86,7 +86,6 @@ BEGIN
         
 	CREATE TABLE `category`(
 		`name` VARCHAR(255) ,
-		`name` VARCHAR(255) ,
 		`description` LONGTEXT
 	);
 	ALTER TABLE
@@ -143,3 +142,5 @@ BEGIN
 		`photo` ADD CONSTRAINT `photo_category_name_foreign` FOREIGN KEY(`category_name`) REFERENCES `category`(`name`);
 	END //
 DELIMITER ;
+
+-- DROP PROCEDURE IF EXISTS create_database;

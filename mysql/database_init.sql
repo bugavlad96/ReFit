@@ -6,7 +6,7 @@
 -- CALL create_database();
 
 -- CALL add_user(0, 'Vlad', 'Buga', 1, '123', 'vb@gmail.com');
--- b49dd32f-0a1d-11ee-93b8-846993cbe512 
+-- 0a7d8329-0b84-11ee-8999-846993cbe512 
 -- select * from user;
 -- select * from programs;
 
@@ -64,14 +64,14 @@ select * from exercise;
 -- 	'bad right shoulder'
 --     );
 -- select * from patient;
-
+delete from exercise_to_prog;
 -- select * from programs;
 -- CALL add_program_to_patient(
 -- 	'bdcd7711-078b-11ee-93b8-846993cbe512',
 --     '450467f2-0788-11ee-93b8-846993cbe512');
-
+select * from user;
 select * from exercise where name = 'tralala tralala';
-select * from body_part_angle;
+select * from body_part_angle where step_id = '1d09112c-0b6f-11ee-8999-846993cbe512';
 select * from step;
 -- delete from body_part_angle;
 -- delete from step;

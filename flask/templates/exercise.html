@@ -25,7 +25,7 @@
 
       <div class="btn-group">
         {% if logged_in and user_type == 0 %}
-          <button>Editeaza</button>
+          <a href="{{ url_for('edit_exercise', exercise_id=exercise.id) }}"><button class="view">Editează</button></a>
           <button>Sterge</button>
           <button class="view">View</button>
         {% else %}

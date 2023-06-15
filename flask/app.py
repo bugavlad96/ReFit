@@ -223,7 +223,7 @@ def add_programs():
     for ex in all_ex:
         # print(type(ex))
         # print(ex[0])s
-        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[4]),))
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
         # therapist_id ex[5]
         # print(ex[5])
         therapist_name_tuple = cur.fetchone()
@@ -232,13 +232,13 @@ def add_programs():
         # print(therapist_name)
 
         preprocessed_item = {
-            'id': ex[0], #no need to render photo's ID
-            'name': ex[6].capitalize(),
-            'description': ex[1].capitalize(),
-            # 'photo_id': ex[2], !!!!!!!!!!!!!!!!!needed later
-            'category_name': ex[3].capitalize(),
-            # 'therapist_id': ex[4], therapist ID no need to render to HTML
-            'max_reps': ex[5],
+            'id': ex[0], #no need to render ID
+            'name': ex[1].capitalize(),
+            'description': ex[2].capitalize(),
+            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'category_name': ex[4].capitalize(),
+            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'max_reps': ex[6],
             'therapist_name': therapist_name
         }
         preprocessed_data.append(preprocessed_item)
@@ -295,7 +295,7 @@ def exercise():
     for ex in all_ex:
         # print(type(ex))
         # print(ex[0])
-        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[4]),))
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
         # therapist_id ex[5]
         # print(ex[5])
         therapist_name_tuple = cur.fetchone()
@@ -305,12 +305,13 @@ def exercise():
         # print(therapist_name)
 
         preprocessed_item = {
-            # 'id': ex[0], no need to render ex id
-            'description': ex[1].capitalize(),
+            'id': ex[0],
+            'name': ex[1].capitalize(),
+            'description': ex[2].capitalize(),
             # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
-            'category_name': ex[3].capitalize(),
+            'category_name': ex[4].capitalize(),
             # 'therapist_id': ex[5], therapist ID no need to render to HTML
-            'max_reps': ex[5],
+            'max_reps': ex[6],
             'therapist_name': therapist_name
         }
         preprocessed_data.append(preprocessed_item)
@@ -409,8 +410,19 @@ def add_exercise():
     else:
         return redirect('/exercise')
 
+@app.route('/edit_exercise', methods=['GET', 'POST'])
+def edit_exercise():
+    print(session['type'])
+    if int(session['type']) == 0:
+        user_type = session['type']
+        name = session['name']
 
+        exercise_id = request.args.get('exercise_id')
+        print(exercise_id)
 
+        return render_template('edit_ex.html', user_name=name, logged_in=True, user_type=user_type)
+    else:
+        return redirect('/exercise')
 
 
 @app.route('/profile')

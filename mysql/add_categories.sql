@@ -16,4 +16,6 @@ BEGIN
     
 END //
 DELIMITER ;
+-- select * from category;
+-- call add_categories();
 -- DROP PROCEDURE IF EXISTS add_categories;
