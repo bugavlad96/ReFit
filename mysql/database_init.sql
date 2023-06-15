@@ -4,12 +4,12 @@
 -- create database refit;
 -- use refit;
 -- CALL create_database();
-
+select * from exercise;
 -- CALL add_user(0, 'Vlad', 'Buga', 1, '123', 'vb@gmail.com');
 -- 0a7d8329-0b84-11ee-8999-846993cbe512 
 -- select * from user;
 -- select * from programs;
-
+select * from step where exercise_id = '4d314208-0b84-11ee-8999-846993cbe512';
 -- CALL add_categories();
 -- CALL add_bodyparts();
 -- select * from body_part;
