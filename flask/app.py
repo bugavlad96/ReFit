@@ -223,7 +223,7 @@ def add_programs():
     for ex in all_ex:
         # print(type(ex))
         # print(ex[0])s
-        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[4]),))
         # therapist_id ex[5]
         # print(ex[5])
         therapist_name_tuple = cur.fetchone()
@@ -233,12 +233,12 @@ def add_programs():
 
         preprocessed_item = {
             'id': ex[0], #no need to render photo's ID
-            'name': ex[1].capitalize(),
-            'description': ex[2].capitalize(),
-            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
-            'category_name': ex[4].capitalize(),
-            # 'therapist_id': ex[5], therapist ID no need to render to HTML
-            'max_reps': ex[6],
+            'name': ex[6].capitalize(),
+            'description': ex[1].capitalize(),
+            # 'photo_id': ex[2], !!!!!!!!!!!!!!!!!needed later
+            'category_name': ex[3].capitalize(),
+            # 'therapist_id': ex[4], therapist ID no need to render to HTML
+            'max_reps': ex[5],
             'therapist_name': therapist_name
         }
         preprocessed_data.append(preprocessed_item)

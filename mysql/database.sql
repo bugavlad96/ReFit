@@ -86,6 +86,7 @@ BEGIN
         
 	CREATE TABLE `category`(
 		`name` VARCHAR(255) ,
+		`name` VARCHAR(255) ,
 		`description` LONGTEXT
 	);
 	ALTER TABLE
