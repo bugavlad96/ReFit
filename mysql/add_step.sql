@@ -21,11 +21,12 @@
 
 DELIMITER //
 CREATE PROCEDURE add_step(
-    p_exercise_id CHAR(36),
+    IN p_exercise_id CHAR(36),
  --    p_photo_name CHAR(36),
-    p_description LONGTEXT,
-    p_permissive_error smallint,
-    p_step_order SMALLINT
+    IN p_description LONGTEXT,
+    IN p_permissive_error smallint,
+    IN p_step_order SMALLINT,
+	OUT p_generated_id CHAR(36)
     
 )
 BEGIN
@@ -33,6 +34,7 @@ BEGIN
  --    DECLARE unique_id_photo char(36);
 --     DECLARE path_to_photo VARCHAR(255);
     SET unique_id = UUID();
+    set p_generated_id = unique_id;
  --    SET unique_id_photo = UUID();
 --     SET path_to_photo = CONCAT('path/to/', p_photo_name, '.jpg');
 

@@ -70,7 +70,7 @@ select * from exercise;
 -- 	'bdcd7711-078b-11ee-93b8-846993cbe512',
 --     '450467f2-0788-11ee-93b8-846993cbe512');
 
-select * from exercise;
+select * from exercise where name = 'tralala tralala';
 select * from body_part_angle;
 select * from step;
 -- delete from body_part_angle;

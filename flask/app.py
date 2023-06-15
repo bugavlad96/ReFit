@@ -404,30 +404,29 @@ def add_exercise():
 
         # #--------------------------
 
-
-
-
         cur = mysql.connection.cursor()
-        cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps)))
-        # retrieve last created UUID
+
+        cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps), ''))
         mysql.connection.commit()
-        cur.execute("SELECT id FROM exercise WHERE id = LAST_INSERT_ID()")
-        result = cur.fetchone()
-        exercis_id = result[0]
-        print(exercis_id)
-    # sus de bine
+        cur.execute("SELECT @_add_exercise_5")
+        exercise_id = cur.fetchone()[0]
+        print("Generated ex ID:", exercise_id)
+
 
         for step_number, description in step_descriptions.items():
-            cur = mysql.connection.cursor()
-            cur.callproc('add_step', args=(exercis_id, description, int(permissive_error), int(step_number)))
+            # cur = mysql.connection.cursor()
+            cur.callproc('add_step', args=(exercise_id, description, int(permissive_error), int(step_number), ''))
             # retrieve last created UUID
             mysql.connection.commit()
-
+            cur.execute("SELECT @_add_step_4")
+            last_step_id = cur.fetchone()[0]
+            print("Generated step ID:", last_step_id)
             # retrieve last created step's UUID
-            cur.execute("SELECT id FROM step WHERE id = LAST_INSERT_ID()")
-            last_step = cur.fetchone()
-            print("the step is ", last_step)
-            step_id = last_step[0]
+            # cur.execute("SELECT id FROM step WHERE id = LAST_INSERT_ID()")
+            # cur.execute("SELECT LAST_INSERT_ID()")
+            # last_step = cur.fetchone()
+
+            step_id = last_step_id
             # print(step_id)
             for (joint, joint_step_number), angle in joint_values.items():
                 if angle != '' and (step_number == joint_step_number):
@@ -437,7 +436,7 @@ def add_exercise():
                     print(angle)
                     cur.callproc('add_body_part_angle', args=(step_id, joint, int(angle)))
                     mysql.connection.commit()
-            cur.close()
+        cur.close()
 
 
 
@@ -448,18 +447,6 @@ def add_exercise():
 
 
 
-
-        # # retrieve last created UUID
-        # mysql.connection.commit()
-        # cur.execute("SELECT id FROM program WHERE id = LAST_INSERT_ID()")
-        # result = cur.fetchone()
-        # program_id = result[0]
-        # print(program_id)
-        #
-        # for cb in checked_checkboxes:
-        #     cur.execute("INSERT INTO exercise_to_prog (program_id, exercise_id) values (%s, %s)", (program_id, cb))
-        #     mysql.connection.commit()
-        # cur.close()
 
 
         if 'email' in session:
