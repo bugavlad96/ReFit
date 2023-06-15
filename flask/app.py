@@ -335,127 +335,79 @@ def exercise():
 
 @app.route('/add_exercise', methods=['GET', 'POST'])
 def add_exercise():
+    print(session['type'])
+    if int(session['type']) == 0:
+        user_type = session['type']
+        name = session['name']
+        if request.method == 'POST':
 
-    if request.method == 'POST':
-    #
-        # exercise_name = request.form["exercise_name"]
-        # exercise_description = request.form["exercise-description"]
-        therapist_id = session['id']
-        # max_reps = request.form["rep"]
-        # category = request.form["categ"]
-        # print(exercise_name)
-        # print(exercise_description)
-        # print(therapist_id)
-        # print(max_reps)
+            therapist_id = session['id']
 
-        # cur = mysql.connection.cursor()
-        # cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, max_reps))
-        #
+            # retrive all inputs from html page
+            form_data = request.form.to_dict()
+            # print(form_data)
 
+            # Extract exercise details
+            exercise_name = form_data['exercise_name']
+            exercise_description = form_data['exercise-description']
+            category = form_data['categ']
+            max_reps = form_data['rep']
+            permissive_error = form_data["permissive-error"]
 
-        # body_parts = ["RIGHT_ELBOW",
-        #               "LEFT_ELBOW",
-        #               "RIGHT_SHOULDER",
-        #               "LEFT_SHOULDER",
-        #               "LEFT_HIP",
-        #               "RIGHT_HIP",
-        #               "LEFT_KNEE",
-        #               "RIGHT_KNEE"]
+            # Extract step descriptions and joint values
+            step_descriptions = {}
+            joint_values = {}
 
+            for key, value in form_data.items():
+                if key.startswith('step_description_'):
+                    step_number = key.split('_')[2]  # Extract the step number
+                    step_descriptions[step_number] = value
+                elif key.startswith(('RIGHT_', 'LEFT_')):
+                    joint, step_number = key.rsplit('_', 1)  # Split the joint name and step number
+                    joint_values[(joint, step_number)] = value
 
+            # Print the extracted information
+            # print("Exercise Name:", exercise_name)
+            # print("Exercise Description:", exercise_description)
+            # print("Category:", category)
+            # print("Repetition:", max_reps)
+            # print("Step Descriptions:")
+            # for step_number, description in step_descriptions.items():
+            #     print("  Step", step_number + ":", description)
+            # print("Joint Values:")
+            # for (joint, step_number), value in joint_values.items():
+            #     print(f"  Joint: {joint}\tStep: {step_number}\tValue: {value}")
 
-
-        form_data = request.form.to_dict()
-        # print(form_data)
-
-    # Extract exercise details
-        exercise_name = form_data['exercise_name']
-        exercise_description = form_data['exercise-description']
-        category = form_data['categ']
-        max_reps = form_data['rep']
-        permissive_error = form_data["permissive-error"]
-
-        # Extract step descriptions and joint values
-        step_descriptions = {}
-        joint_values = {}
-
-        for key, value in form_data.items():
-            if key.startswith('step_description_'):
-                step_number = key.split('_')[2]  # Extract the step number
-                step_descriptions[step_number] = value
-            elif key.startswith(('RIGHT_', 'LEFT_')):
-                joint, step_number = key.rsplit('_', 1)  # Split the joint name and step number
-                joint_values[(joint, step_number)] = value
-
-        # Print the extracted information
-        # print("Exercise Name:", exercise_name)
-        # print("Exercise Description:", exercise_description)
-        # print("Category:", category)
-        # print("Repetition:", max_reps)
-        # print("Step Descriptions:")
-        # for step_number, description in step_descriptions.items():
-        #     print("  Step", step_number + ":", description)
-        # print("Joint Values:")
-        # for (joint, step_number), value in joint_values.items():
-        #     print(f"  Joint: {joint}\tStep: {step_number}\tValue: {value}")
-
-
-
-
-        # #--------------------------
-
-        cur = mysql.connection.cursor()
-
-        cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps), ''))
-        mysql.connection.commit()
-        cur.execute("SELECT @_add_exercise_5")
-        exercise_id = cur.fetchone()[0]
-        print("Generated ex ID:", exercise_id)
-
-
-        for step_number, description in step_descriptions.items():
-            # cur = mysql.connection.cursor()
-            cur.callproc('add_step', args=(exercise_id, description, int(permissive_error), int(step_number), ''))
-            # retrieve last created UUID
+            cur = mysql.connection.cursor()
+            cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps), ''))
             mysql.connection.commit()
-            cur.execute("SELECT @_add_step_4")
-            last_step_id = cur.fetchone()[0]
-            print("Generated step ID:", last_step_id)
-            # retrieve last created step's UUID
-            # cur.execute("SELECT id FROM step WHERE id = LAST_INSERT_ID()")
-            # cur.execute("SELECT LAST_INSERT_ID()")
-            # last_step = cur.fetchone()
+            cur.execute("SELECT @_add_exercise_5")
+            exercise_id = cur.fetchone()[0]
+            # print("Generated ex ID:", exercise_id)
 
-            step_id = last_step_id
-            # print(step_id)
-            for (joint, joint_step_number), angle in joint_values.items():
-                if angle != '' and (step_number == joint_step_number):
-                    print("joint values: ", joint)
-                    print(step_id)
-                    print(joint)
-                    print(angle)
-                    cur.callproc('add_body_part_angle', args=(step_id, joint, int(angle)))
-                    mysql.connection.commit()
-        cur.close()
+            for step_number, description in step_descriptions.items():
+                # cur = mysql.connection.cursor()
+                cur.callproc('add_step', args=(exercise_id, description, int(permissive_error), int(step_number), ''))
+                # retrieve last created UUID
+                mysql.connection.commit()
+                cur.execute("SELECT @_add_step_4")
+                last_step_id = cur.fetchone()[0]
+                # print("Generated step ID:", last_step_id)
 
+                step_id = last_step_id
+                for (joint, joint_step_number), angle in joint_values.items():
+                    if angle != '' and (step_number == joint_step_number):
+                        # print("joint values: ", joint)
+                        # print(step_id)
+                        # print(joint)
+                        # print(angle)
+                        cur.callproc('add_body_part_angle', args=(step_id, joint, int(angle)))
+                        mysql.connection.commit()
+            cur.close()
 
-
-
-
-
-
-
-
-
-
-
-        if 'email' in session:
-            user_type = session['type']
-
-
-        return render_template('add_ex.html', logged_in=True, user_type=user_type)
+        return render_template('add_ex.html', user_name=name, logged_in=True, user_type=user_type)
     else:
-        return render_template('add_ex.html')
+        return redirect('/exercise')
 
 
 
