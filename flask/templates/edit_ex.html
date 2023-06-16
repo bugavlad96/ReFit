@@ -35,10 +35,10 @@
         <label for="reps">Nr de repetări</label>
         <input type="text" name="rep" id="reps" required value="{{exercise_dict.max_reps}}" >
       </div>
-      <div class="angle">
-        <label for="permissive-error">Eroarea admisa exercițiu</label>
-        <input type="text" name="permissive-error" id="permissive-error" required value="{{steps_list[0].permissive_error}}">
-      </div>
+<!--      <div class="angle">-->
+<!--        <label for="permissive-error">Eroarea admisa exercițiu</label>-->
+<!--        <input type="text" name="permissive-error" id="permissive-error" required value="{{steps_list[0].permissive_error}}">-->
+<!--      </div>-->
       <div class="form-group">
         <label>Imagine Exercitiu</label>
         <div class="file-upload">
@@ -65,6 +65,10 @@
       <div class="form-group">
         <label for="step1-description">Descriere Pas</label>
         <textarea name="step_description_1" id="step1-description" rows="4" required>{{steps_list[0].description}}</textarea>
+      </div>
+      <div class="angle">
+        <label for="permissive-error1">Eroarea admisa în grade: </label>
+        <input type="text" name="permissive-error1" id="permissive-error1" required value="{{steps_list[0].permissive_error}}">
       </div>
       <div class="form-group">
         <label>Imagine Pas</label>
@@ -223,6 +227,10 @@
         <label for="step2-description">Descriere Pas</label>
         <textarea name="step_description_2" id="step2-description" rows="4" required>{{steps_list[1].description}}</textarea>
       </div>
+      <div class="angle">
+        <label for="permissive-error2">Eroarea admisa în grade: </label>
+        <input type="text" name="permissive-error2" id="permissive-error2" required value="{{steps_list[1].permissive_error}}">
+      </div>
       <div class="form-group">
         <label>Imagine Pas</label>
         <div class="file-upload">
@@ -374,6 +382,10 @@
       <div class="form-group">
         <label for="step3-description">Descriere Pas</label>
         <textarea name="step_description_3" id="step3-description" rows="4" required>{{steps_list[2].description}}</textarea>
+      </div>
+      <div class="angle">
+        <label for="permissive-error3">Eroarea admisa în grade: </label>
+        <input type="text" name="permissive-error3" id="permissive-error3" required value="{{steps_list[2].permissive_error}}">
       </div>
       <div class="form-group">
         <label>Imagine Pas</label>
