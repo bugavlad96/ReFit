@@ -315,7 +315,7 @@ def exercise():
             'therapist_name': therapist_name
         }
         preprocessed_data.append(preprocessed_item)
-        print(preprocessed_item)
+        # print(preprocessed_item)
 
     cur.close()
 
@@ -628,7 +628,41 @@ def edit_exercise():
 @app.route('/delete_exercise')
 def delete_exercise():
 
-    return None
+    cur = mysql.connection.cursor()
+    # cur.callproc('update_body_part_angle', args=(existing_angle['id'], existing_angle['angle']))
+    # mysql.connection.commit()
+    exercise_id = request.args.get('exercise_id')
+    print("exercise_id: ", exercise_id)
+
+    cur.execute("SELECT * FROM exercise WHERE id = %s", (exercise_id,))
+    exercise = cur.fetchone()
+    print(exercise)
+
+
+    cur.execute("SELECT * FROM step WHERE exercise_id = %s", (exercise_id,))
+    steps = cur.fetchall()
+    print(steps)
+
+    # all body_part_angles for all steps
+    all_body_part_angles = []
+    for step in steps:
+
+        cur.execute("SELECT * FROM body_part_angle WHERE step_id = %s", (step[0],))
+        # for one step
+        bp_angles = cur.fetchall()
+        print(bp_angles)
+        for bp_angle in bp_angles:
+            cur.execute("DELETE FROM body_part_angle WHERE id = %s", (bp_angle[0],)) #bp_angle[0] e ID-ul la body_part_angle
+            mysql.connection.commit()
+
+        cur.execute("DELETE FROM step WHERE id = %s", (step[0],))  # step[0] e ID-ul la step
+        mysql.connection.commit()
+
+    cur.execute("DELETE FROM exercise WHERE id = %s", (exercise_id,))  # step[0] e ID-ul la step
+    mysql.connection.commit()
+    cur.close()
+
+    return redirect('/exercise')
 
 @app.route('/profile')
 def profile():
