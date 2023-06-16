@@ -499,10 +499,10 @@ def edit_exercise():
         return render_template('edit_ex.html', user_name=name, logged_in=True, user_type=user_type, exercise_dict=exercise_dict, steps_list=steps_list)
 
     if request.method == 'POST':
-        print("POST step_list: ", session['steps_list'])
+        # print("POST step_list: ", session['steps_list'])
         # retrive all inputs from html page
         form_data = request.form.to_dict()
-        # print(form_data)
+        print("form_data: ", form_data)
 
         exercise_dict['id'] = request.args.get('exercise_id')
         exercise_dict['name'] = form_data['exercise_name']
@@ -572,8 +572,10 @@ def edit_exercise():
 
         # Update the steps in exercise_dict
         for i, step in enumerate(session['steps_list']):
+            # old values
             step_id = step['id']
             body_part_angles = step['body_part_angles']
+            # new values
             existing_step = None
 
             # Find the corresponding step in exercise_dict
@@ -583,37 +585,51 @@ def edit_exercise():
                     # Update the existing step's description and permissive_error
                     step['description'] = existing_step['description']
                     step['permissive_error'] = existing_step['permissive_error']
+                    # new values
                     existing_angles = existing_step['body_part_angles']
                     print("intrat laupdate_step")
                     print(step['description'])
                     print(step['permissive_error'])
                     cur.callproc('update_step', args=(step['id'], step['description'], step['permissive_error']))
                     mysql.connection.commit()
-                #
-                # # Update or add body_part_angles in the existing step
-                # for angle in body_part_angles:
-                #     bd_name = angle['bd_name']
-                #     angle_value = angle['angle']
-                #     angle_id = angle['id']
-                #     existing_angle = None
-                #
-                #     # Find the corresponding angle in the existing step
-                #     for existing_angle in existing_angles:
-                #         if existing_angle['bd_name'] == bd_name:
-                #             break
-                #
-                #     if existing_angle is None:
-                #         # Angle doesn't exist in the existing step, create a new angle
-                #         new_angle = {
-                #             'bd_name': bd_name,
-                #             'angle': angle_value,
-                #             'id': angle_id
-                #         }
-                #         existing_angles.append(new_angle)
-                #     else:
-                #         # Update the existing angle's value
-                #         existing_angle['angle'] = angle_value
-                #
+
+                    # Update or add body_part_angles in the existing step
+                    for angle in body_part_angles:
+                        # old values, if exist, and new if does not
+                        bd_name = angle['bd_name']
+                        angle_value = angle['angle']
+                        angle_id = angle['id']
+                        existing_angle = None
+
+                        # Find the corresponding angle in the existing step
+                        # new values
+                        for existing_angle in existing_angles:
+                            if existing_angle['bd_name'] == bd_name:
+                                print(existing_angle['bd_name'], ' ', existing_angle['angle'])
+                                break
+
+                        if existing_angle is None:
+                            # Angle doesn't exist in the existing step, create a new angle
+                            # functia de adauagare de body_part_angle!!!
+                            new_angle = {
+                                'bd_name': bd_name,
+                                'angle': angle_value,
+                                'id': angle_id
+                            }
+                            existing_angles.append(new_angle)
+                            print("step_id: ", step['id'])
+                            print("bd_name: ", bd_name)
+                            print("angle_value: ", angle_value)
+                            cur.callproc('add_body_part_angle',
+                                args=(step['id'], bd_name, angle_value))
+                            mysql.connection.commit()
+
+                        else:
+                            cur.callproc('update_body_part_angle',
+                                         args=(existing_angle['id'], existing_angle['angle']))
+                            mysql.connection.commit()
+
+
                 # # Remove body_part_angles that were removed in the session['step_list']
                 # existing_angle_ids = {angle['bd_name']: angle['id'] for angle in existing_angles}
                 # for existing_angle in existing_angles:
