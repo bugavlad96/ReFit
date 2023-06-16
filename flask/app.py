@@ -275,6 +275,51 @@ def add_programs():
     else:
         return redirect('/')
 
+@app.route('/edit_program')
+def edit_program():
+    name = session['name']
+    user_type = session['type']
+    program_id = request.args.get('program_id')
+    cur = mysql.connection.cursor()
+
+    cur.execute("SELECT * FROM program WHERE id = %s", (program_id,))
+    program = cur.fetchone()
+    mysql.connection.commit()
+    program_dict = {
+        'id': program[0],
+        'name': program[1],
+        'description': program[2],
+        'photo_id': program[3],
+        'category_name': program[4],
+        'therapist_id': program[5]
+    }
+    print(program_dict)
+
+    if True:
+        return render_template('edit_program.html', program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
+    else:
+        return redirect('/programs')
+
+
+
+@app.route('/delete_program')
+def delete_program():
+    cur = mysql.connection.cursor()
+    program_id = request.args.get('program_id')
+
+    # delete from exercise_to_prog:
+    cur.execute("DELETE FROM exercise_to_prog WHERE program_id = %s", (program_id,))
+    mysql.connection.commit()
+
+    # delete program:
+    cur.execute("DELETE FROM program WHERE id = %s", (program_id,))  # step[0] e ID-ul la step
+    mysql.connection.commit()
+    cur.close()
+
+    print(program_id)
+    return redirect('/programs')
+
+
 @app.route('/view_program')
 def view_program():
     photo = "img.jpg"
@@ -336,7 +381,7 @@ def exercise():
 
 @app.route('/add_exercise', methods=['GET', 'POST'])
 def add_exercise():
-    print(session['type'])
+    # print(session['type'])
 
     if int(session['type']) == 0:
         user_type = session['type']
@@ -658,6 +703,12 @@ def delete_exercise():
         cur.execute("DELETE FROM step WHERE id = %s", (step[0],))  # step[0] e ID-ul la step
         mysql.connection.commit()
 
+    # delete from exercise_to_prog:
+    cur.execute("DELETE FROM exercise_to_prog WHERE exercise_id = %s", (exercise_id,))
+    mysql.connection.commit()
+
+
+    # delete_exercise:
     cur.execute("DELETE FROM exercise WHERE id = %s", (exercise_id,))  # step[0] e ID-ul la step
     mysql.connection.commit()
     cur.close()
@@ -669,7 +720,7 @@ def profile():
     name = session['name']
     surname = session['surname']
     user_type = session['type']
-    mail = session['mail']
+    mail = session['email']
 
     if user_type == "therapist":
         photo = "doctor.jpg"
@@ -680,7 +731,7 @@ def profile():
         user_type = "Pacient"
         photo = "user.jpg"
 
-    return render_template('profile.html', logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type, type=type)
+    return render_template('profile.html', logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type)
 
 
 if __name__ == '__main__':

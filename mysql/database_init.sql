@@ -28,14 +28,14 @@ select * from step where exercise_id = '4d314208-0b84-11ee-8999-846993cbe512';
 -- DELETE FROM exercise_to_prog;
 select * from exercise;
 select * from step;
-select * from body_part;
+select * from body_part_angle;
 -- step 0
 -- CALL add_step('961983ba-0a0b-11ee-93b8-846993cbe512', 'shoulders', 'right_shoulder_180', 'raise your right shoulder at 90 degrees', 10, 1);
 -- step 1
 -- CALL add_step('961983ba-0a0b-11ee-93b8-846993cbe512', 'shoulders', 'right_shoulder_180', 'raise your right shoulder at 120 degrees', 10, 2);
 -- step 2
 -- CALL add_step('961983ba-0a0b-11ee-93b8-846993cbe512', 'shoulders', 'right_shoulder_180', 'raise your right shoulder at 180 degrees', 10, 3);
-
+-- select * from program; select * from exercise; select * from step; select * from exercise_to_prog;  select * from step;
 -- select * from step;
 -- select * from body_part;
 -- -- step 0 

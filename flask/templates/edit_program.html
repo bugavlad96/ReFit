@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" href="static/style.css">
+  <link rel="stylesheet" href="static/add_exercise.css">
+  <link rel="stylesheet" href="static/programs.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/add_ex.js"></script>
+{% endblock %}
+
+{% block content %}
+<h2 class="title">Adaugă program nou</h2>
+<div class="form-container">
+  <form method="POST">
+    <div class="form-group">
+      <label for="program-name">Numele Programului</label>
+      <input type="text" name="prog_name" id="program-name" value="{{program.name}}" required>
+    </div>
+    <div class="form-group">
+      <label for="program-description">Descrieirea Programului</label>
+      <textarea id="program-description" name="prog_descr" rows="4" required>{{program.description}}</textarea>
+    </div>
+    <div class="radio-group" style="margin-bottom: 10px;">
+        <span> Categoria: </span>
+        <select name = "categ" id="category">
+            <option value="hands" > Mâini </option>
+            <option value="shoulders" > Umeri </option>
+            <option value="hips" > Șold </option>
+            <option value="feet" > Picioare </option>
+        </select>
+    </div>
+
+    <div class="form-group">
+      <label>Imaginea programului</label>
+      <div class="file-upload">
+        <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Adaugă Imaginea</button>
+
+        <div class="image-upload-wrap">
+          <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
+          <div class="drag-text">
+            <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
+          </div>
+        </div>
+        <div class="file-upload-content">
+          <img class="file-upload-image" src="#" alt="your image" />
+          <div class="image-title-wrap">
+            <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Selectează exercițiile</label>
+      <div class="exercise-list">
+        <label>
+          {% for exercise in exercises %}
+            <div class="program" style="width: 90%;">
+              <div class="returnable">
+                <input type="checkbox" name="exercise_checkbox" value="{{ exercise.id }}">
+                <div class="check"></div>
+                <div class="order"></div>
+              </div>
+
+              <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
+              <div class="prog-content">
+                <div class="program-info">
+                  <h2>{{ exercise.description }}</h2>
+                  <p>Categorie: {{ exercise.category_name }}</p>
+                  <p>Terapeut: {{ exercise.therapist_name }}</p>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="submit-button">Finalizare Program</button>
+  </form>
+</div>
+
+<script>
+    // Get the select element
+    var selectElement = document.getElementById('category');
+
+    // Set the value to compare against
+    var valueToCompare = "{{program.category_name}}";
+
+    // Loop through the options and set the selected attribute if the value matches
+    for (var i = 0; i < selectElement.options.length; i++) {
+        var option = selectElement.options[i];
+
+        if (option.value === valueToCompare) {
+            option.selected = true;
+            break;  // Exit the loop if a match is found
+        }
+    }
+</script>
+{% endblock %}
