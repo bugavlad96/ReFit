@@ -277,26 +277,69 @@ def add_programs():
 
 @app.route('/edit_program')
 def edit_program():
+
+    cur = mysql.connection.cursor()
     name = session['name']
     user_type = session['type']
     program_id = request.args.get('program_id')
-    cur = mysql.connection.cursor()
 
-    cur.execute("SELECT * FROM program WHERE id = %s", (program_id,))
-    program = cur.fetchone()
-    mysql.connection.commit()
-    program_dict = {
-        'id': program[0],
-        'name': program[1],
-        'description': program[2],
-        'photo_id': program[3],
-        'category_name': program[4],
-        'therapist_id': program[5]
-    }
-    print(program_dict)
+    cur.execute("SELECT * FROM exercise")
+    all_ex = cur.fetchall()
+    # print(all_ex)
 
-    if True:
-        return render_template('edit_program.html', program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
+    # lista de dictionare
+    preprocessed_data = []
+    for ex in all_ex:
+        # print(type(ex))
+        # print(ex[0])s
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+        # therapist_id ex[5]
+        # print(ex[5])
+        therapist_name_tuple = cur.fetchone()
+        therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+        therapist_name = therapist_name
+        # print(therapist_name)
+
+        preprocessed_item = {
+            'id': ex[0],  # no need to render ID
+            'name': ex[1].capitalize(),
+            'description': ex[2].capitalize(),
+            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'category_name': ex[4].capitalize(),
+            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'max_reps': ex[6],
+            'therapist_name': therapist_name
+        }
+        preprocessed_data.append(preprocessed_item)
+    print('vashee tati: ', preprocessed_data)
+
+    if request.method == 'GET':
+
+
+        cur.execute("SELECT * FROM program WHERE id = %s", (program_id,))
+        program = cur.fetchone()
+        mysql.connection.commit()
+        program_dict = {
+            'id': program[0],
+            'name': program[1],
+            'description': program[2],
+            'photo_id': program[3],
+            'category_name': program[4],
+            'therapist_id': program[5]
+        }
+        # print(program_dict)
+
+        cur.execute("SELECT * FROM exercise_to_prog WHERE program_id = %s", (program_id,))
+        all_exercise_to_prog = cur.fetchall()
+        mysql.connection.commit()
+        exercise_ids = []
+        print("all_exercise_to_prog: ", all_exercise_to_prog)
+        for _, exercise_id in all_exercise_to_prog:
+            print("Program ID:", program_id)
+            print("Exercise ID:", exercise_id)
+            exercise_ids.apend(exercise_id)
+
+        return render_template('edit_program.html', exercise_ids=exercise_ids,  exercises=preprocessed_data, program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
     else:
         return redirect('/programs')
 
