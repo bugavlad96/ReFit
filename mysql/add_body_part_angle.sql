@@ -25,4 +25,5 @@ DELIMITER ;
 
 -- DROP PROCEDURE IF EXISTS add_body_part_angle;
 
+-- select * from exercise;
 

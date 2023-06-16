@@ -55,12 +55,12 @@
       <div class="exercise-list">
         <label>
           {% for exercise in exercises %}
-            <div class="program" style="width: 90%;">
-              <div class="returnable">
-                <input type="checkbox" name="exercise_checkbox" value="{{ exercise.id }}">
-                <div class="check"></div>
-                <div class="order"></div>
-              </div>
+             <div class="program" style="width: 90%;">
+                <div class="returnable">
+                  <input type="checkbox" name="exercise_checkbox_{{ loop.index }}" value="{{ exercise.id }}">
+                  <div class="check"></div>
+                  <div class="order"></div>
+                </div>
 
               <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
               <div class="prog-content">
@@ -101,15 +101,14 @@
 <script>
   // Activate checkboxes based on exercise IDs
   var exerciseIDs = {{ exercise_ids|tojson }};
-  var checkboxes = document.getElementsByName('exercise_checkbox');
 
-  for (var i = 0; i < checkboxes.length; i++) {
-    var checkbox = checkboxes[i];
-    var exerciseID = checkbox.value;
+  for (var i = 1; i <= exerciseIDs.length; i++) {
+    var checkbox = document.getElementsByName('exercise_checkbox_' + i)[0];
 
-    if (exerciseIDs.includes(exerciseID)) {
+    if (exerciseIDs.includes(checkbox.value)) {
       checkbox.checked = true;
     }
   }
 </script>
+
 {% endblock %}

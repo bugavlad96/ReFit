@@ -21,11 +21,13 @@ CREATE PROCEDURE add_program(
 	IN p_name varchar(255),
     IN p_description longtext,
     IN p_category_name varchar(255),
-    IN p_therapist_id char(36)
+    IN p_therapist_id char(36),
+    OUT p_generated_id CHAR(36)
 )
 BEGIN
 	DECLARE unique_id_program char(36);
     SET unique_id_program = UUID();
+    SET p_generated_id = unique_id_program;
 
 	INSERT INTO program(id, name, description, category_name, therapist_id)
     values (unique_id_program, p_name, p_description, p_category_name, p_therapist_id);

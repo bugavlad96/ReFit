@@ -75,6 +75,7 @@ def main():
         name = session['name']
         user_type = session['type']
 
+
         cur = mysql.connection.cursor()
         cur.execute("SELECT * FROM category")
         all_cat = cur.fetchall()
@@ -192,7 +193,7 @@ def programs():
             'therapist_name': therapist_name
         }
         preprocessed_data.append(preprocessed_item)
-        print(preprocessed_item)
+        # print(preprocessed_item)
 
     cur.close()
 
@@ -253,20 +254,19 @@ def add_programs():
         therapist_id = session['id']
 
         cur = mysql.connection.cursor()
-        cur.callproc('add_program', args=(program_name, program_description, category, therapist_id))
+        cur.callproc('add_program', args=(program_name, program_description, category, therapist_id, ''))
+        mysql.connection.commit()
 
         # retrieve last created UUID
-        mysql.connection.commit()
-        cur.execute("SELECT id FROM program WHERE id = LAST_INSERT_ID()")
-        result = cur.fetchone()
-        program_id = result[0]
-        print(program_id)
+        cur.execute("SELECT @_add_program_4")
+        program_id = cur.fetchone()[0]
+        print("Generated ex ID:", program_id)
 
         for cb in checked_checkboxes:
             cur.execute("INSERT INTO exercise_to_prog (program_id, exercise_id) values (%s, %s)", (program_id, cb))
             mysql.connection.commit()
         cur.close()
-
+    cur.close()
     if 'email' in session:
         user_type = session['type']
         name = session['name']
@@ -275,45 +275,44 @@ def add_programs():
     else:
         return redirect('/')
 
-@app.route('/edit_program')
+@app.route('/edit_program', methods=['GET', 'POST'])
 def edit_program():
-
-    cur = mysql.connection.cursor()
-    name = session['name']
-    user_type = session['type']
-    program_id = request.args.get('program_id')
-
-    cur.execute("SELECT * FROM exercise")
-    all_ex = cur.fetchall()
-    # print(all_ex)
-
-    # lista de dictionare
-    preprocessed_data = []
-    for ex in all_ex:
-        # print(type(ex))
-        # print(ex[0])s
-        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
-        # therapist_id ex[5]
-        # print(ex[5])
-        therapist_name_tuple = cur.fetchone()
-        therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
-        therapist_name = therapist_name
-        # print(therapist_name)
-
-        preprocessed_item = {
-            'id': ex[0],  # no need to render ID
-            'name': ex[1].capitalize(),
-            'description': ex[2].capitalize(),
-            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
-            'category_name': ex[4].capitalize(),
-            # 'therapist_id': ex[5], therapist ID no need to render to HTML
-            'max_reps': ex[6],
-            'therapist_name': therapist_name
-        }
-        preprocessed_data.append(preprocessed_item)
-    print('vashee tati: ', preprocessed_data)
-
     if request.method == 'GET':
+        cur = mysql.connection.cursor()
+        name = session['name']
+        user_type = session['type']
+        program_id = request.args.get('program_id')
+
+        cur.execute("SELECT * FROM exercise")
+        all_ex = cur.fetchall()
+        # print(all_ex)
+
+        # lista de dictionare
+        preprocessed_data = []
+        for ex in all_ex:
+            # print(type(ex))
+            # print(ex[0])s
+            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+            # therapist_id ex[5]
+            # print(ex[5])
+            therapist_name_tuple = cur.fetchone()
+            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+            therapist_name = therapist_name
+            # print(therapist_name)
+
+            preprocessed_item = {
+                'id': ex[0],  # no need to render ID
+                'name': ex[1].capitalize(),
+                'description': ex[2].capitalize(),
+                # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+                'category_name': ex[4].capitalize(),
+                # 'therapist_id': ex[5], therapist ID no need to render to HTML
+                'max_reps': ex[6],
+                'therapist_name': therapist_name
+            }
+            preprocessed_data.append(preprocessed_item)
+        #   print('vashee tati: ', preprocessed_data)
+
 
 
         cur.execute("SELECT * FROM program WHERE id = %s", (program_id,))
@@ -333,14 +332,73 @@ def edit_program():
         all_exercise_to_prog = cur.fetchall()
         mysql.connection.commit()
         exercise_ids = []
-        print("all_exercise_to_prog: ", all_exercise_to_prog)
+        # print("all_exercise_to_prog: ", all_exercise_to_prog)
         for _, exercise_id in all_exercise_to_prog:
-            print("Program ID:", program_id)
-            print("Exercise ID:", exercise_id)
-            exercise_ids.apend(exercise_id)
+            # print("Program ID:", program_id)
+            # print("Exercise ID:", exercise_id)
+            exercise_ids.append(exercise_id)
 
+        cur.close()
         return render_template('edit_program.html', exercise_ids=exercise_ids,  exercises=preprocessed_data, program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
-    else:
+
+    if request.method == 'POST':
+        form_data = request.form.to_dict()
+        # print("form_data: ", form_data)
+
+        program = {}
+        # extract program details:
+        program_id = request.args.get('program_id')
+        program['id'] = program_id
+        program['name'] = form_data['prog_name']
+        program['description'] = form_data['prog_descr']
+        program['category_name'] = form_data['categ']
+
+
+        cur = mysql.connection.cursor()
+        cur.callproc('update_program', args=(program_id, program['name'], program['description'], program['category_name']))
+        mysql.connection.commit()
+
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM exercise_to_prog WHERE program_id = %s", (program_id,))
+        # existing_exercises from db before update
+        existing_exercises = cur.fetchall()
+        print('existing exercises: ', existing_exercises)
+
+        selected_exercises = []
+        # parse the parsed from html template in POST
+        for key, value in form_data.items():
+            if key.startswith('exercise_checkbox_'):
+                selected_exercises.append(value)
+        print("selected_exercises: ", selected_exercises)
+
+        existing_exercises_set = set(existing_exercises)
+        exercises_to_add = []
+        exercises_to_remove = []
+
+        # Find newly added exercises
+        for exercise_id in selected_exercises:
+            if (program_id, exercise_id) not in existing_exercises_set:
+                exercises_to_add.append((program_id, exercise_id))
+
+        # Find exercises to remove
+        for exercise in existing_exercises:
+            if exercise[1] not in selected_exercises:
+                exercises_to_remove.append(exercise)
+
+        print("exercises_to_add: ", exercises_to_add)
+        print("exercises_to_remove: ", exercises_to_remove)
+
+        # Add newly added exercises to the database
+        for exercise in exercises_to_add:
+            cur.execute("INSERT INTO exercise_to_prog (program_id, exercise_id) VALUES (%s, %s)", exercise)
+
+        # Remove exercises that are no longer selected from the database
+        for exercise in exercises_to_remove:
+            cur.execute("DELETE FROM exercise_to_prog WHERE program_id = %s AND exercise_id = %s", exercise)
+
+        mysql.connection.commit()
+        cur.close()
+
         return redirect('/programs')
 
 
@@ -775,6 +833,14 @@ def profile():
         photo = "user.jpg"
 
     return render_template('profile.html', logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type)
+
+@app.route('/view_exercise')
+def view_ex():
+    return redirect('/exercise')
+
+# @app.route('/video_feed')
+# def video_feed():
+#     return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

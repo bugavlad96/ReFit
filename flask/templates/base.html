@@ -13,7 +13,7 @@
             <ul>
                 <li><a href="{{ url_for('exercise') }}">Exerciții</a></li>
                 <li><a href="{{ url_for('programs') }}">Programe</a></li>
-                {% if logged_in and user_type != 'patient' and user_type == 'therapist' %}
+                {% if logged_in and user_type != 1 and user_type == 0 %}
                     <li><a href="#">Pacienți</a></li>
                 {% endif %}
 

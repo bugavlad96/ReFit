@@ -33,6 +33,6 @@ BEGIN
 
 END //
 DELIMITER ;
-
+select * from step;
 -- DROP PROCEDURE IF EXISTS update_step;
 
