@@ -454,13 +454,9 @@ def edit_exercise():
             exercise_dict['max_reps'] = exercise_data[6]
             # print(exercise_dict)
 
-
-
             cur.execute("SELECT * FROM step WHERE exercise_id = %s", (exercise_id,))
             steps = cur.fetchall()
             # print(steps)
-
-
 
             for step in steps:
                 step_dict = {}
@@ -494,7 +490,7 @@ def edit_exercise():
         # for step in steps_list:
         #     print("step:", step)
             # print("body_part_angles:", step['body_part_angles'])
-        print(steps_list)
+        # print(steps_list)
         session['steps_list']=steps_list
         return render_template('edit_ex.html', user_name=name, logged_in=True, user_type=user_type, exercise_dict=exercise_dict, steps_list=steps_list)
 
@@ -502,7 +498,7 @@ def edit_exercise():
         # print("POST step_list: ", session['steps_list'])
         # retrive all inputs from html page
         form_data = request.form.to_dict()
-        print("form_data: ", form_data)
+        # print("form_data: ", form_data)
 
         exercise_dict['id'] = request.args.get('exercise_id')
         exercise_dict['name'] = form_data['exercise_name']
@@ -532,7 +528,7 @@ def edit_exercise():
 
         exercise_dict['steps'] = steps
 
-        # add the missing IDs from session['steps_list']
+        # add the missing IDs from session['steps_list'], the ones I could not retrieve from form
         for i, step in enumerate(exercise_dict['steps']):
             step_order = i + 1  # Step order starts from 1
             for original_step in session['steps_list']:
@@ -545,11 +541,8 @@ def edit_exercise():
                                 break
                     break
 
-
         # Print the parsed data
-        print("POST exercise_dict: ", exercise_dict)
-
-
+        # print("POST exercise_dict: ", exercise_dict)
         cur = mysql.connection.cursor()
 
 
@@ -587,18 +580,15 @@ def edit_exercise():
                     step['permissive_error'] = existing_step['permissive_error']
                     # new values
                     existing_angles = existing_step['body_part_angles']
-                    print("intrat laupdate_step")
-                    print(step['description'])
-                    print(step['permissive_error'])
                     cur.callproc('update_step', args=(step['id'], step['description'], step['permissive_error']))
                     mysql.connection.commit()
 
                     # Update or add body_part_angles in the existing step
-                    for angle in body_part_angles:
-                        # old values, if exist, and new if does not
-                        bd_name = angle['bd_name']
-                        angle_value = angle['angle']
-                        angle_id = angle['id']
+                    for bd_part_angle in body_part_angles:
+                        # old values, if exists, and new if does not
+                        bd_name = bd_part_angle['bd_name']
+                        angle_value = bd_part_angle['angle']
+                        # angle_id = angle['id']
                         existing_angle = None
 
                         # Find the corresponding angle in the existing step
@@ -609,14 +599,15 @@ def edit_exercise():
                                 break
 
                         if existing_angle is None:
+                            print("new body_part_angle")
                             # Angle doesn't exist in the existing step, create a new angle
                             # functia de adauagare de body_part_angle!!!
-                            new_angle = {
-                                'bd_name': bd_name,
-                                'angle': angle_value,
-                                'id': angle_id
-                            }
-                            existing_angles.append(new_angle)
+                            # new_angle = {
+                            #     'bd_name': bd_name,
+                            #     'angle': angle_value,
+                            #     'id': angle_id
+                            # }
+                            # existing_angles.append(new_angle)
                             print("step_id: ", step['id'])
                             print("bd_name: ", bd_name)
                             print("angle_value: ", angle_value)
@@ -625,80 +616,19 @@ def edit_exercise():
                             mysql.connection.commit()
 
                         else:
+                            print("update")
                             cur.callproc('update_body_part_angle',
                                          args=(existing_angle['id'], existing_angle['angle']))
                             mysql.connection.commit()
 
+        cur.close()
 
-                # # Remove body_part_angles that were removed in the session['step_list']
-                # existing_angle_ids = {angle['bd_name']: angle['id'] for angle in existing_angles}
-                # for existing_angle in existing_angles:
-                #     if existing_angle['bd_name'] not in existing_angle_ids:
-                #         existing_angles.remove(existing_angle)
+    return redirect('/exercise')
 
-        # Update the database with the modified exercise_dict
-        # Your code to update the database goes here
+@app.route('/delete_exercise')
+def delete_exercise():
 
-        # steps = exercise_dict['steps']
-        # for step in steps:
-        #     step_id = step['id']
-        #     description = step['description']
-        #     permissive_error = step['permissive_error']
-        #     body_part_angles = step['body_part_angles']
-        #     # update current step
-        #     cur.callproc('update_step', args=(step['id'], step['description'], step['permissive_error']))
-        #     mysql.connection.commit()
-        #
-        #     print(f"Step ID: {step_id}")
-        #     print(f"Description: {description}")
-        #     print(f"Permissive Error: {permissive_error}")
-        #     print("Body Part Angles:")
-        #     # for body_angle in body_part_angles:
-        #     #     # update step after making the updade_step:
-        #     #     # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        #     #     bd_name = int(angle['bd_name'])
-        #     #     angle_value = angle['angle']
-        #     #     angle_id = angle['id']
-        #     #     print(f"- Body Part: {bd_name}, Angle: {angle_value}, ID: {angle_id}")
-        #     # print()
-
-
-
-
-        # for step in steps_list:
-        #     # print("important ", step)
-        #     # cur = mysql.connection.cursor()
-        #     cur.callproc('update_step', args=(step['id'], step['description'], step['permissive_error']))
-        #     mysql.connection.commit()
-
-
-
-
-
-
-
-
-
-
-        #     cur.execute("SELECT @_add_step_4")
-        #     last_step_id = cur.fetchone()[0]
-        #     # print("Generated step ID:", last_step_id)
-        #
-        #     step_id = last_step_id
-        #     for (joint, joint_step_number), angle in joint_values.items():
-        #         if angle != '' and (step_number == joint_step_number):
-        #             # print("joint values: ", joint)
-        #             # print(step_id)
-        #             # print(joint)
-        #             # print(angle)
-        #             cur.callproc('add_body_part_angle', args=(step_id, joint, int(angle)))
-        #             mysql.connection.commit()
-        # cur.close()
-
-
-
-        return redirect('/exercise')
-
+    return None
 
 @app.route('/profile')
 def profile():
