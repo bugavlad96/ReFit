@@ -1,0 +1,60 @@
+.service-item {
+    margin: 0 50px;
+    max-width: 280px;
+}
+
+h1 {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+img.stream {
+    border-radius: 10px;
+    width: 100%;
+}
+
+section.webstream {
+    display: flex;
+    flex-direction: row;
+}
+
+div.web {
+    width: 50%;
+    padding: 50px 50px 50px 50px;
+    margin: 0;
+}
+
+img.step {
+    width: 94%;
+    border-radius: 10px;
+}
+
+div.next-step {
+    width: 40%;
+    overflow: hidden;
+    padding: 50px 50px 50px 0;
+}
+
+p.info {
+    padding-left: 115px;
+    font-size: 1.3em;
+}
+
+.services {
+    display: flex;
+    justify-content: center;
+}
+
+p.counter {
+    text-align: center;
+    font-size: 3.3em;
+    padding: 10px 0px;
+    margin: 0;
+}
+
+p.done {
+    color: red;
+    font-size: 1.5em;
+    text-align: center;
+    margin: 0;
+}
