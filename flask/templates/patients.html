@@ -35,19 +35,26 @@
 {% block content %}
 <h1 style="text-align: center; margin-bottom: 0; margin-top: 3%;">Pacientii Mei</h1>
 <div class="search-container">
-    <input type="text" id="search" placeholder="Cauta dupa email...">
-    <a href="#"><input type="submit" value="Adauga pacient"></a>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <br>
+    <form method="post">
+    <input type="text" name="add_patient" id="search" placeholder="Cauta dupa email...">
+    <button type="submit">Adauga pacient</button>
+    </form>
 </div>
 
 
 <div class="program-list">
+   {% for patient in patients %}
   <div class="program">
     <img src="../static/images/img.jpg">
     <div class="prog-content">
       <div class="program-info">
-        <h2 style="text-align: left;">Nume Prenume</h2>
-        <p>Sex: fem</p>
-        <p>Email: email</p>
+        <h2 style="text-align: left;"> {{patient.name}} </h2>
+        <p>Sex: {{patient.gender}}</p>
+        <p>Email: {{patient.email}}</p>
       </div>
 
       <div class="btn-group">
@@ -55,5 +62,6 @@
       </div>
     </div>
   </div>
+    {% endfor %}
 </div>
 {% endblock %}

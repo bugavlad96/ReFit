@@ -925,32 +925,91 @@ json_data = '''{
 def video_feed():
     return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
 
-@app.route('/patients')
+@app.route('/patients', methods=['GET', 'POST'])
 def patients():
-
+    # therapist_data
+    id = session['id']
     name = session['name']
     surname = session['surname']
     user_type = session['type']
     mail = session['email']
     program = {'id':"program"}
+    cur = mysql.connection.cursor()
+    default_program = "c14396cc-0c7c-11ee-8999-846993cbe512"
+    error = ''
+    all_patients_of_therapist = []
 
-
-    # pasul 1
-        # adaug mail de pacient in input box
-        # asociez in patient_to_program programul default pacientul
-        # fac redirect la /patients unde trebuie sa apara pacientul
-
-    # pasul 2
+    if request.method == 'GET':
+        # pasul 2
         # trebuie sa chem patient_to_program unde terapist_id e din session
         # de acolo extrag lsta de pacienti
         # chem toti pacientii cu detaliile necesare si ii afisez in patients
+
+        # Step 1: Retrieve the list of patients with therapist_id="0001000" from patient_program table
+        cur.execute("SELECT patient_id FROM patient_program WHERE therapist_id = %s", (id,))
+        db_patients = cur.fetchall()
+        if db_patients is not None:
+
+            # Step 2: Look up the patient information in the user table for each patient_id
+
+            for patient_id in db_patients:
+                cur.execute("SELECT * FROM user WHERE id = %s", (patient_id,))
+                patient_data = cur.fetchone()
+                if patient_data is not None:
+                    gender = ''
+                    if patient_data[4] == 1:
+                        gender = 'Bărbat'
+                    if patient_data[4] == 2:
+                        gender = 'Femeie'
+                    patient = {
+                        'id': patient_data[0],
+                        'name': patient_data[2] + " " + patient_data[3],
+                        'gender': gender,
+                        'email': patient_data[6],
+                        'photo_id': patient_data[7]
+                    }
+
+                    all_patients_of_therapist.append(patient)
+
+            # Display the patient information
+
+        return render_template('patients.html', patients=all_patients_of_therapist, program=program, logged_in=True,
+                               user_name=name, mail=mail, name=name, surname=surname, user_type=user_type)
+
+
+    if request.method == 'POST':
+
+        # pasul 1
+        # adaug mail de pacient in input box
+        # asociez in patient_to_program programul default pacientul
+        # fac redirect la /patients unde trebuie sa apara pacientul
+        add_email_patient = request.form.get('add_patient')
+        print(add_email_patient)
+        if not validate_email(add_email_patient):
+            error = 'Invalid email address'
+            return render_template('patients.html', logged_in=True, program=program, user_name=name, user_type=user_type, error=error)
+
+        # cauta pacientul, daca el nu exista returnezi o eroare, daca exitsa doar il adaugi
+        cur.execute("SELECT * FROM user WHERE email = %s AND type = %s", (add_email_patient, '1',))
+        fetched_patient = cur.fetchone()
+        print(fetched_patient[0])
+        if fetched_patient is None:
+            error = 'Patient does not have an account'
+            return render_template('patients.html', logged_in=True, program=program, user_name=name, user_type=user_type, error=error)
+        elif fetched_patient is not None:
+            cur.callproc("add_patient_to_therapist", args=(fetched_patient[0], id, default_program))
+            mysql.connection.commit()
+            return redirect('/patients')
+
+
+
 
     # pasul3
         # asociez butonului vizualizeaza id_ul pacientului si redirect la /view_patient
         #
 
 
-    return render_template('patients.html', program=program, logged_in=True, user_name=name, mail=mail, name=name, surname=surname, user_type=user_type)
+
 
 @app.route('/view_patient')
 def view_patient():

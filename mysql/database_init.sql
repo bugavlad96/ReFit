@@ -48,8 +48,12 @@ select * from body_part_angle;
 -- CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_SHOULDER', 180);
 -- CALL add_bp_info('a6416033-0788-11ee-93b8-846993cbe512', 'RIGHT_ELBOW', 180);
 use refit;
-select * from exercise;
-
+select * from exercise_to_prog;
+select * from program;
+select * from user;
+select * from patient;
+select * from program;
+select * from patient_program;
 -- select *  from bp_info;
 -- select * from category;
 -- select * from therapist;
