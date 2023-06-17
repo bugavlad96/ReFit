@@ -973,6 +973,7 @@ def patients():
 
             # Display the patient information
 
+
         return render_template('patients.html', patients=all_patients_of_therapist, program=program, logged_in=True,
                                user_name=name, mail=mail, name=name, surname=surname, user_type=user_type)
 
@@ -1002,24 +1003,139 @@ def patients():
             return redirect('/patients')
 
 
-
-
-    # pasul3
-        # asociez butonului vizualizeaza id_ul pacientului si redirect la /view_patient
-        #
-
-
-
-
-@app.route('/view_patient')
+@app.route('/view_patient', methods=['GET', 'POST'])
 def view_patient():
+    id = session['id']
     name = session['name']
     surname = session['surname']
     user_type = session['type']
     mail = session['email']
+    cur = mysql.connection.cursor()
+    patient_id = request.args.get('patient_id')
 
-    return render_template('view_patient.html', logged_in=True, user_name=name, mail=mail, name=name, surname=surname,
-                           user_type=user_type)
+
+    if request.method == 'GET':
+
+        # look up for patient
+        cur.execute("SELECT diagnosis FROM patient WHERE id = %s", (patient_id,))
+        patient_diag = cur.fetchone()[0]
+
+        cur.execute("SELECT * FROM user WHERE id = %s", (patient_id,))
+        db_patient = cur.fetchone()
+        if patient_diag is None:
+            patient_diag = ''
+        patient = {
+            'id': db_patient[0],
+            'name': db_patient[2] + " " + db_patient[3],
+            'gender': db_patient[4],
+            'email': db_patient[6],
+            'photo_id': db_patient[7],
+            "diagnosis": patient_diag
+        }
+
+        # display all programs
+        cur = mysql.connection.cursor()
+        cur.execute("SELECT * FROM program")
+        all_prog = cur.fetchall()
+        total_nr_of_programs = len(all_prog)
+        # print(all_ex)
+
+        # lista de dictionare
+        preprocessed_data = []
+        for program in all_prog:
+            # fetch therapist's name
+            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(program[5]),))
+            therapist_name_tuple = cur.fetchone()
+            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+            therapist_name = therapist_name
+            # print(therapist_name)
+
+            preprocessed_item = {
+                'id': program[0],
+                'name': program[1].capitalize(),
+                'description': program[2].capitalize(),
+                # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
+                'category_name': program[4].capitalize(),
+                # 'therapist_id': program[5], therapist ID no need to render to HTML
+                'therapist_name': therapist_name
+            }
+            preprocessed_data.append(preprocessed_item)
+            # print(preprocessed_item)
+
+        cur.execute("SELECT program_id FROM patient_program WHERE therapist_id = %s AND patient_id = %s", (id, patient_id,))
+        db_existing_programs = cur.fetchall()
+        mysql.connection.commit()
+        program_ids = []
+        # print("all_exercise_to_prog: ", all_exercise_to_prog)
+        for row in db_existing_programs:
+            for prg_id in row:
+                program_ids.append(prg_id)
+
+
+        return render_template('view_patient.html', program_ids=program_ids, total_nr_of_programs=total_nr_of_programs, programs=preprocessed_data, patient=patient, logged_in=True, user_name=name, mail=mail,
+                               name=name, surname=surname,
+                               user_type=user_type)
+
+    if request.method == 'POST':
+        # pasul 1 update diagnosis
+        diagnosis = request.form.get('diagnosis')
+        cur.execute("UPDATE patient SET diagnosis = %s WHERE id = %s", (diagnosis, patient_id, ))
+        mysql.connection.commit()
+
+        form_data = request.form.to_dict()
+        # print("form data: ", form_data)
+        # pasul 2: asciaza programe
+
+        # --------------------------------------
+        cur.execute("SELECT program_id FROM patient_program WHERE therapist_id = %s AND patient_id = %s", (id, patient_id,))
+        # existing_exercises from db before update
+        existing_programs = cur.fetchall()
+        print('existing exercises: ', existing_programs)
+
+        selected_programs = []
+        # parse the parsed from html template in POST
+        for key, value in form_data.items():
+            if key.startswith('program_checkbox_'):
+                selected_programs.append(value)
+        print("selected_programs: ", selected_programs)
+
+        # created existing_programs_set by extracting the first element from each tuple
+        existing_programs_set = set(program[0] for program in existing_programs)
+        print("set: ", existing_programs_set)
+        programs_to_add = []
+        programs_to_remove = []
+
+        # Find newly added programs
+        for program_id in selected_programs:
+            print("for: ", program_id)
+            if program_id not in existing_programs_set:
+                print("program_id:", program_id)
+                print("existing_programs_set: ", existing_programs_set)
+                programs_to_add.append(program_id)
+
+        # Find programs to remove
+        for program in existing_programs:
+            if program[0] not in selected_programs:
+                programs_to_remove.append(program)
+
+        print("exercises_to_add: ", programs_to_add)
+        print("exercises_to_remove: ", programs_to_remove)
+
+        # Add newly added exercises to the database
+        for program in programs_to_add:
+            cur.execute("INSERT INTO patient_program (program_id, patient_id, therapist_id) VALUES (%s, %s, %s)", (program, patient_id, id))
+
+        # Remove exercises that are no longer selected from the database
+        for program in programs_to_remove:
+            cur.execute("DELETE FROM patient_program WHERE program_id = %s AND patient_id = %s AND therapist_id = %s", (program, patient_id, id))
+
+        mysql.connection.commit()
+        cur.close()
+
+        return redirect('/patients')
+
+
+
 
 
 if __name__ == '__main__':

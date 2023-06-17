@@ -67,11 +67,11 @@
               <img src="../static/images/vlad.jpg">
           </div>    
           <div class="info">
-              <p><b>Nume:</b> Nume Prenume</p>
-              <p><b>Email:</b> Mail</p>
+              <p><b>Nume:</b> {{patient.name}}</p>
+              <p><b>Email:</b> {{patient.email}}</p>
               <div class="form-group">
                   <label for="diagnostic"><b>Diagnostic</b></label>
-                  <textarea name="diagnostic" id="diagnostic" required>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus posuere magna, id placerat lectus laoreet et. Praesent suscipit tempor libero, ac ornare urna vestibulum bibendum. Vivamus in mattis nisl. Vivamus ut orci ac magna pharetra semper sit amet vel libero. Nam elit orci, mattis eu sapien ac, imperdiet mattis tellus. Nulla rutrum aliquet quam eget auctor. Duis eget velit est. Nunc scelerisque lacinia nisi, vel accumsan nisi dictum id. </textarea>
+                  <textarea name="diagnosis" id="diagnostic" required> {{patient.diagnosis}} </textarea>
                 </div>
           </div>
       </div>
@@ -79,10 +79,11 @@
     <div class="form-group">
       <label>Asociaza programe:</label>
       <div class="exercise-list">
-        <label>
+        {% for program in programs %}
+          <label>
             <div class="program" style="width: 90%;">
               <div class="returnable">
-                <input type="checkbox" name="exercise_checkbox" value="">
+                <input type="checkbox" name="program_checkbox_{{ loop.index }}" value="{{ program.id }}">
                 <div class="check"></div>
                 <div class="order"></div>
               </div>
@@ -90,17 +91,31 @@
               <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
               <div class="prog-content">
                 <div class="program-info">
-                  <h2>Nume prog</h2>
-                  <p>Categorie:</p>
-                  <p>Terapeut:</p>
+                  <h2>{{program.name}}</h2>
+                  <p>Categorie: {{program.category}}</p>
+                  <p>Terapeut:{{program.therapist}}</p>
                 </div>
               </div>
             </div>
 
         </label>
+      {% endfor %}
       </div>
     </div>
     <button type="submit" class="submit-button">Finalizare</button>
   </form>
 </div>
+
+<script>
+  // Activate checkboxes based on exercise IDs
+  var exerciseIDs = {{ program_ids|tojson }};
+
+  for (var i = 1; i <= {{ total_nr_of_programs }}; i++) {
+    var checkbox = document.getElementsByName('program_checkbox_' + i)[0];
+
+    if (exerciseIDs.includes(checkbox.value)) {
+      checkbox.checked = true;
+    }
+  }
+</script>
 {% endblock %}
