@@ -23,6 +23,7 @@ CREATE PROCEDURE add_program(
     IN p_category_name varchar(255),
     IN p_therapist_id char(36),
     OUT p_generated_id CHAR(36)
+    
 )
 BEGIN
 	DECLARE unique_id_program char(36);

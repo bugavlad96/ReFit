@@ -1,12 +1,16 @@
+import uuid
+
 from flask import Flask, render_template, request, redirect, session, Response
 from db import connect_db
 import re
+import os
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 mysql = connect_db(app)
 
+app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 def validate_email(email):
     # Regular expression for email validation
@@ -209,6 +213,21 @@ def programs():
 
         return render_template('programs.html', programs=preprocessed_data)
 
+def add_photo(cur, file, category):
+    # filename = str(uuid.uuid4())
+    cur.callproc('add_photo', args=(category,''))
+    mysql.connection.commit()
+    # return photo's uuid
+    cur.execute("SELECT @_add_photo_1")
+    photo_id = cur.fetchone()[0]
+
+    # Create a directory path based on the category and UUID
+    category_folder = os.path.join(app.config['UPLOAD_FOLDER'], category)
+    os.makedirs(category_folder, exist_ok=True)
+    file_path = os.path.join(category_folder, photo_id)
+    file.save(file_path + ".png")
+
+    return photo_id
 
 @app.route('/add_programs', methods=['GET', 'POST'])
 # @app.route('/add_programs')
@@ -252,13 +271,19 @@ def add_programs():
         program_description = request.form['prog_descr']
         category = request.form['categ']
         therapist_id = session['id']
-
+        photo = request.form.get('photo_program')
+        print(photo)
         cur = mysql.connection.cursor()
-        cur.callproc('add_program', args=(program_name, program_description, category, therapist_id, ''))
+        # Access the uploaded file
+        file = request.files['photo_program']
+        # add photo to database and retrieve photo_id
+        photo_id = add_photo(cur, file, category)
+
+        cur.callproc('add_program', args=(program_name, program_description, photo_id, category, therapist_id, ''))
         mysql.connection.commit()
 
         # retrieve last created UUID
-        cur.execute("SELECT @_add_program_4")
+        cur.execute("SELECT @_add_program_5")
         program_id = cur.fetchone()[0]
         print("Generated ex ID:", program_id)
 
@@ -328,6 +353,10 @@ def edit_program():
             'therapist_id': program[5]
         }
         # print(program_dict)
+
+        # ------------------
+
+        # ------------------
 
         cur.execute("SELECT * FROM exercise_to_prog WHERE program_id = %s", (program_id,))
         all_exercise_to_prog = cur.fetchall()
