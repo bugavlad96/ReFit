@@ -25,7 +25,7 @@ def index(logged_in=False):
     # lista de dictionare
     preprocessed_data = []
     for category in all_cat:
-        if category[0] != 'user':
+        if category[0] != 'users':
             preprocessed_item = {
                 'name': category[0].capitalize(),
                 'description': category[1].capitalize(),
@@ -84,7 +84,7 @@ def main():
         # lista de dictionare
         preprocessed_data = []
         for category in all_cat:
-            if category[0] != 'user':
+            if category[0] != 'users':
                 preprocessed_item = {
                     'name': category[0].capitalize(),
                     'description': category[1].capitalize(),
@@ -880,23 +880,77 @@ def delete_exercise():
 
     return redirect('/exercise')
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
+    id = session['id']
+    print(id)
     name = session['name']
     surname = session['surname']
     user_type = session['type']
     mail = session['email']
+    user_type_str = ''
 
-    if user_type == "therapist":
-        photo = "doctor.jpg"
-        # photo = "user.jpg"
-        type = "Fizioterapeut"
+    user_info = ''
+    cur = mysql.connection.cursor()
+    if request.method == 'GET':
+        if user_type == 0:
+            photo = "doctor.jpg"
+            # photo = "user.jpg"
+            user_type_str = "Terapeut"
+            cur.execute("SELECT info FROM therapist WHERE id = %s", (id,))
+            user_info = cur.fetchone()[0]
 
-    else:
-        user_type = "Pacient"
-        photo = "user.jpg"
+        else:
+            photo = "user.jpg"
+            user_type_str = "Pacient"
+            cur.execute("SELECT diagnosis FROM patient WHERE id = %s", (id,))
+            user_info = cur.fetchone()[0]
+            print(user_info)
+        if user_info is None:
+            user_info = ''
+        # -------------------------
+            # display all programs
+        cur.execute("SELECT * FROM program where therapist_id = %s", (id,))
+        all_prog = cur.fetchall()
 
-    return render_template('profile.html', logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type)
+        # lista de dictionare
+        preprocessed_data = []
+        for program in all_prog:
+            # fetch therapist's name
+            cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(program[5]),))
+            therapist_name_tuple = cur.fetchone()
+            therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+            therapist_name = therapist_name
+            # print(therapist_name)
+
+            preprocessed_item = {
+                'id': program[0],
+                'name': program[1].capitalize(),
+                'description': program[2].capitalize(),
+                # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
+                'category_name': program[4].capitalize(),
+                # 'therapist_id': program[5], therapist ID no need to render to HTML
+                'therapist_name': therapist_name
+            }
+            preprocessed_data.append(preprocessed_item)
+            print(preprocessed_item)
+        return render_template('profile.html', programs=preprocessed_data, logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type, user_type_str=user_type_str, info=user_info)
+
+    # -----------------------
+
+
+    if request.method == 'POST':
+        print("am intrat")
+        update_info = request.form.get("info")
+        print("update_info: ", update_info)
+        cur = mysql.connection.cursor()
+        cur.execute("UPDATE therapist SET info = %s WHERE id = %s", (update_info, id,))
+        mysql.connection.commit()
+        return redirect('/profile')
+
+
+    return render_template('profile.html', logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type, user_type_str=user_type_str, info=user_info)
+
 
 @app.route('/view_exercise')
 def view_ex():
@@ -933,48 +987,50 @@ def patients():
     surname = session['surname']
     user_type = session['type']
     mail = session['email']
-    program = {'id':"program"}
+
     cur = mysql.connection.cursor()
     default_program = "c14396cc-0c7c-11ee-8999-846993cbe512"
     error = ''
     all_patients_of_therapist = []
 
-    if request.method == 'GET':
-        # pasul 2
-        # trebuie sa chem patient_to_program unde terapist_id e din session
-        # de acolo extrag lsta de pacienti
-        # chem toti pacientii cu detaliile necesare si ii afisez in patients
 
-        # Step 1: Retrieve the list of patients with therapist_id="0001000" from patient_program table
-        cur.execute("SELECT patient_id FROM patient_program WHERE therapist_id = %s", (id,))
-        db_patients = cur.fetchall()
-        if db_patients is not None:
+    # pasul 2
+    # trebuie sa chem patient_to_program unde terapist_id e din session
+    # de acolo extrag lsta de pacienti
+    # chem toti pacientii cu detaliile necesare si ii afisez in patients
 
-            # Step 2: Look up the patient information in the user table for each patient_id
+    # Step 1: Retrieve the list of patients with therapist_id="0001000" from patient_program table
+    cur.execute("SELECT DISTINCT patient_id FROM patient_program WHERE therapist_id = %s", (id,))
+    db_patients = cur.fetchall()
+    print("len(db_patients): ", db_patients)
+    if db_patients is not None:
 
-            for patient_id in db_patients:
-                cur.execute("SELECT * FROM user WHERE id = %s", (patient_id,))
-                patient_data = cur.fetchone()
-                if patient_data is not None:
-                    gender = ''
-                    if patient_data[4] == 1:
-                        gender = 'Bărbat'
-                    if patient_data[4] == 2:
-                        gender = 'Femeie'
-                    patient = {
-                        'id': patient_data[0],
-                        'name': patient_data[2] + " " + patient_data[3],
-                        'gender': gender,
-                        'email': patient_data[6],
-                        'photo_id': patient_data[7]
-                    }
+        # Step 2: Look up the patient information in the user table for each patient_id
+        for patient_id in db_patients:
+            cur.execute("SELECT * FROM user WHERE id = %s", (patient_id,))
+            patient_data = cur.fetchone()
+            if patient_data is not None:
+                gender = ''
+                if patient_data[4] == 1:
+                    gender = 'Bărbat'
+                if patient_data[4] == 2:
+                    gender = 'Femeie'
+                patient = {
+                    'id': patient_data[0],
+                    'name': patient_data[2] + " " + patient_data[3],
+                    'gender': gender,
+                    'email': patient_data[6],
+                    'photo_id': patient_data[7]
+                }
 
-                    all_patients_of_therapist.append(patient)
+                all_patients_of_therapist.append(patient)
 
-            # Display the patient information
+        # Display the patient information
+        print("all_patients_of_therapist: ", all_patients_of_therapist)
 
+        if request.method == 'GET':
 
-        return render_template('patients.html', patients=all_patients_of_therapist, program=program, logged_in=True,
+            return render_template('patients.html', patients=all_patients_of_therapist, logged_in=True,
                                user_name=name, mail=mail, name=name, surname=surname, user_type=user_type)
 
 
@@ -988,15 +1044,15 @@ def patients():
         print(add_email_patient)
         if not validate_email(add_email_patient):
             error = 'Invalid email address'
-            return render_template('patients.html', logged_in=True, program=program, user_name=name, user_type=user_type, error=error)
+            return render_template('patients.html', logged_in=True, patients=all_patients_of_therapist, user_name=name, user_type=user_type, error=error)
 
         # cauta pacientul, daca el nu exista returnezi o eroare, daca exitsa doar il adaugi
         cur.execute("SELECT * FROM user WHERE email = %s AND type = %s", (add_email_patient, '1',))
         fetched_patient = cur.fetchone()
-        print(fetched_patient[0])
+        # print(fetched_patient[0])
         if fetched_patient is None:
             error = 'Patient does not have an account'
-            return render_template('patients.html', logged_in=True, program=program, user_name=name, user_type=user_type, error=error)
+            return render_template('patients.html', logged_in=True, patients=all_patients_of_therapist, user_name=name, user_type=user_type, error=error)
         elif fetched_patient is not None:
             cur.callproc("add_patient_to_therapist", args=(fetched_patient[0], id, default_program))
             mysql.connection.commit()

@@ -43,7 +43,7 @@ h2 {
 
 .btn-group {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   float: right;
   flex-direction: column;
   height: 100%;

@@ -4,6 +4,22 @@
 <link rel="stylesheet" href="static/style.css">
 <link rel="stylesheet" href="static/profile.css">
 <link rel="stylesheet" href="static/programs.css">
+<style>
+    form {
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+    }
+
+    button {
+        width: 101%;
+        background-color: #f63366;
+        border-color: #f63366;
+        color: white;
+
+    }
+
+</style>
 {% endblock %}
 
 {% block content %}
@@ -11,52 +27,45 @@
     <div class="left">
         <img src="static/images/{{photo}}" alt="user" width="100">
         <h2>{{name}} {{surname}}</h2>
-         <p>{{user_type}}</p>
+         <p>{{user_type_str}}</p>
         <p>{{mail}}</p>
     </div>
     <div class="right">
         <div class="info">
             <h2>Informații generale</h2>
             <div class="info_data">
-                 Descriere medic/ diagnoza
+                <form method="post">
+                <textarea name="info" rows="10" style="width: 100%; font-family: arial; font-size: 1em;">{{info}}</textarea>
+                    <br>
+                {% if user_type==0 %}
+                    <button type="submit">Update info</button>
+                {% endif %}
+                </form>
             </div>
         </div>
 
-      <div class="projects">
+        <div class="projects">
             <h2>Projects</h2>
-<!--            <div class="projects_data">-->
-<!--                 <div class="data">-->
-<!--                    <h3>Recent</h3>-->
-<!--                    <p>Lorem ipsum dolor sit amet.</p>-->
-<!--                 </div>-->
-<!--                 <div class="data">-->
-<!--                   <h3>Most Viewed</h3>-->
-<!--                    <p>dolor sit amet.</p>-->
-<!--                 </div>-->
-<!--            </div>-->
+            <div class="program-list">
+                {% for program in programs %}
+                <div class="program" style="width: 100%;">
+                    <img src="../static/images/img.jpg" alt="Program 1" style="height: 190px;
+                    ">
+                    <div class="prog-content">
+                        <div class="program-info">
+                            <h3>{{ program.name }}</h3>
+                            <p>Categorie: {{ program.category_name }}</p>
+                            <p>Fizioterapist: {{program.therapist_name}} </p>
+                        </div>
 
-
-        <div class="program-list">
-          <div class="program" style="width: 100%;">
-            <img src="../static/images/img.jpg" alt="Program 1" style="height: 190px;
-">
-            <div class="prog-content">
-
-              <div class="program-info">
-                <h3>Program 1</h3>
-                <p>Categorie: Category 1</p>
-                <p>Fizioterapist: pers </p>
-              </div>
-
-              <div class="btn-group">
-                <button class="view">Vizualizeaza</button>
-              </div>
+                        <div class="btn-group">
+                            <a href="{{ url_for('view_program' , program_id=program.id) }}"><button class="view">Vizualizeaza</button></a>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
             </div>
-          </div>
-
         </div>
-
-      </div>
 
     </div>
 </div>
