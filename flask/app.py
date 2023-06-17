@@ -427,8 +427,6 @@ def view_program():
     photo = "img.jpg"
 
     cur = mysql.connection.cursor()
-    name = session['name']
-    user_type = session['type']
     program_id = request.args.get('program_id')
 
 
@@ -889,7 +887,7 @@ def profile():
     user_type = session['type']
     mail = session['email']
     user_type_str = ''
-
+    all_prog = []
     user_info = ''
     cur = mysql.connection.cursor()
     if request.method == 'GET':
@@ -899,19 +897,27 @@ def profile():
             user_type_str = "Terapeut"
             cur.execute("SELECT info FROM therapist WHERE id = %s", (id,))
             user_info = cur.fetchone()[0]
+            cur.execute("SELECT * FROM program where therapist_id = %s", (id,))
+            all_prog = cur.fetchall()
 
         else:
             photo = "user.jpg"
             user_type_str = "Pacient"
             cur.execute("SELECT diagnosis FROM patient WHERE id = %s", (id,))
             user_info = cur.fetchone()[0]
-            print(user_info)
+            cur.execute("SELECT program_id FROM patient_program where patient_id = %s", (id,))
+            list_all_prog = cur.fetchall()
+            all_prog = []
+            for prg in list_all_prog:
+                cur.execute("SELECT * FROM program where id = %s", (prg,))
+                prog = cur.fetchone()
+                all_prog.append(prog)
+
         if user_info is None:
             user_info = ''
         # -------------------------
             # display all programs
-        cur.execute("SELECT * FROM program where therapist_id = %s", (id,))
-        all_prog = cur.fetchall()
+
 
         # lista de dictionare
         preprocessed_data = []
