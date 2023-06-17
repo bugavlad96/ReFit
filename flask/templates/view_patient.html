@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/add_exercise.css">
+  <link rel="stylesheet" href="../static/programs.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/add_ex.js"></script>
+
+    <style>
+        .info {
+            margin-left: 25px;
+            font-size: 1em;
+            width: 100%
+        }
+
+        form {
+            padding: 30px;
+            border-radius: 10px;
+            background-color: #e9eaf9a6;
+        }
+
+        .form-container {
+            max-width: 75%;
+        }
+
+        img {
+            width: 260px;
+        }
+
+        .patient {
+            display: flex;
+        }
+
+        .returnable input[type=checkbox]:checked ~ .check {
+            border: 5px solid #f63366;
+        }
+
+        .returnable input[type=checkbox]:checked ~ .check::before {
+            background: #f63366;
+        }
+
+        .submit-button {
+            width: 100%;
+        }
+
+        label {
+            margin: 20px 0 0 0px;
+        }
+
+        .form-group input[type="text"], .form-group textarea {
+            margin: 0;
+            font-family: Arial;
+            height: 130px;
+        }
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<h2 class="title">Pacientul meu</h2>
+<div class="form-container">
+  <form method="POST">
+      <div class="patient">
+          <div class="img">
+              <img src="../static/images/vlad.jpg">
+          </div>    
+          <div class="info">
+              <p><b>Nume:</b> Nume Prenume</p>
+              <p><b>Email:</b> Mail</p>
+              <div class="form-group">
+                  <label for="diagnostic"><b>Diagnostic</b></label>
+                  <textarea name="diagnostic" id="diagnostic" required>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam cursus posuere magna, id placerat lectus laoreet et. Praesent suscipit tempor libero, ac ornare urna vestibulum bibendum. Vivamus in mattis nisl. Vivamus ut orci ac magna pharetra semper sit amet vel libero. Nam elit orci, mattis eu sapien ac, imperdiet mattis tellus. Nulla rutrum aliquet quam eget auctor. Duis eget velit est. Nunc scelerisque lacinia nisi, vel accumsan nisi dictum id. </textarea>
+                </div>
+          </div>
+      </div>
+
+    <div class="form-group">
+      <label>Asociaza programe:</label>
+      <div class="exercise-list">
+        <label>
+            <div class="program" style="width: 90%;">
+              <div class="returnable">
+                <input type="checkbox" name="exercise_checkbox" value="">
+                <div class="check"></div>
+                <div class="order"></div>
+              </div>
+
+              <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
+              <div class="prog-content">
+                <div class="program-info">
+                  <h2>Nume prog</h2>
+                  <p>Categorie:</p>
+                  <p>Terapeut:</p>
+                </div>
+              </div>
+            </div>
+
+        </label>
+      </div>
+    </div>
+    <button type="submit" class="submit-button">Finalizare</button>
+  </form>
+</div>
+{% endblock %}

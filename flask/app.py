@@ -925,6 +925,43 @@ json_data = '''{
 def video_feed():
     return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/patients')
+def patients():
+
+    name = session['name']
+    surname = session['surname']
+    user_type = session['type']
+    mail = session['email']
+    program = {'id':"program"}
+
+
+    # pasul 1
+        # adaug mail de pacient in input box
+        # asociez in patient_to_program programul default pacientul
+        # fac redirect la /patients unde trebuie sa apara pacientul
+
+    # pasul 2
+        # trebuie sa chem patient_to_program unde terapist_id e din session
+        # de acolo extrag lsta de pacienti
+        # chem toti pacientii cu detaliile necesare si ii afisez in patients
+
+    # pasul3
+        # asociez butonului vizualizeaza id_ul pacientului si redirect la /view_patient
+        #
+
+
+    return render_template('patients.html', program=program, logged_in=True, user_name=name, mail=mail, name=name, surname=surname, user_type=user_type)
+
+@app.route('/view_patient')
+def view_patient():
+    name = session['name']
+    surname = session['surname']
+    user_type = session['type']
+    mail = session['email']
+
+    return render_template('view_patient.html', logged_in=True, user_name=name, mail=mail, name=name, surname=surname,
+                           user_type=user_type)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

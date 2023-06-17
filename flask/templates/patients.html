@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/programs.css">
+    <style>
+
+        .search-container {
+          display: flex;
+          justify-content: center;
+          padding: 30px 10px 10px 10px;
+        }
+
+        .search-container input[type=text] {
+          padding: 10px;
+          width: 300px;
+          border-radius: 5px;
+          border: 1px solid black;
+          outline: none;
+          margin-right: 10px;
+        }
+
+        .search-container input[type=submit] {
+          padding: 10px 20px;
+          background-color: #f63366;
+          color: white;
+          border: none;
+          border-radius: 5px;
+          cursor: pointer;
+          outline: none;
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<h1 style="text-align: center; margin-bottom: 0; margin-top: 3%;">Pacientii Mei</h1>
+<div class="search-container">
+    <input type="text" id="search" placeholder="Cauta dupa email...">
+    <a href="#"><input type="submit" value="Adauga pacient"></a>
+</div>
+
+
+<div class="program-list">
+  <div class="program">
+    <img src="../static/images/img.jpg">
+    <div class="prog-content">
+      <div class="program-info">
+        <h2 style="text-align: left;">Nume Prenume</h2>
+        <p>Sex: fem</p>
+        <p>Email: email</p>
+      </div>
+
+      <div class="btn-group">
+          <a href="{{ url_for('view_patient' , program_id=program.id) }}"><button class="view">Vizualizeaza</button></a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
