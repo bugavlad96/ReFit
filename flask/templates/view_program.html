@@ -10,14 +10,15 @@
 <div class="wrapper">
     <div class="left">
         <img src="../static/images/{{photo}}" alt="user" width="100">
-        <h2>Program Name</h2>
-         <p>Category</p>
+        <h2>{{ program.name }}</h2>
+         <p>Categoria: {{ program.category_name }}</p>
+         <p>Terapeut: {{ program.therapist_name }}</p>
     </div>
     <div class="right">
         <div class="info">
             <h2>Informații generale/Descriere</h2>
             <div class="info_data">
-                 <p>Descriere </p>
+                 <p>{{ program.description }} </p>
             </div>
         </div>
 
@@ -36,22 +37,23 @@
 
 
         <div class="program-list">
-          <div class="program" style="width: 100%;">
-            <img src="../static/images/img.jpg" alt="Program 1" style="height: 190px;
-">
-            <div class="prog-content">
+          {% for exercise in exercises %}
+              <div class="program" style="width: 100%;">
+                <img src="../static/images/img.jpg" alt="Program 1" style="height: 190px;
+                <div class="prog-content">
 
-              <div class="program-info">
-                <h3>Exrcitiu 1</h3>
-                <p>Categorie: Category 1</p>
-                <p>Fizioterapist: pers </p>
-              </div>
+                  <div class="program-info">
+                    <h3>{{ exercise.name }}</h3>
+                    <p>Categorie: {{ exercise.category_name }}</p>
+                    <p>Fizioterapist: {{ exercise.therapist_name }} </p>
+                  </div>
 
-              <div class="btn-group">
-                <button class="view">Start</button>
+                  <div class="btn-group">
+                    <a href="{{ url_for('view_ex', exercise_id=exercise.id) }}"><button class="view">Start</button></a>
+                  </div>
               </div>
-            </div>
-          </div>
+          {% endfor %}
+        </div>
 
         </div>
 

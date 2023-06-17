@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, session
+from flask import Flask, render_template, request, redirect, session, Response
 from db import connect_db
 import re
 
@@ -286,6 +286,7 @@ def edit_program():
         cur.execute("SELECT * FROM exercise")
         all_ex = cur.fetchall()
         # print(all_ex)
+        total_nr_of_ex = len(all_ex)
 
         # lista de dictionare
         preprocessed_data = []
@@ -339,7 +340,7 @@ def edit_program():
             exercise_ids.append(exercise_id)
 
         cur.close()
-        return render_template('edit_program.html', exercise_ids=exercise_ids,  exercises=preprocessed_data, program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
+        return render_template('edit_program.html', total_nr_of_ex = total_nr_of_ex, exercise_ids=exercise_ids,  exercises=preprocessed_data, program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
 
     if request.method == 'POST':
         form_data = request.form.to_dict()
@@ -424,8 +425,71 @@ def delete_program():
 @app.route('/view_program')
 def view_program():
     photo = "img.jpg"
+
+    cur = mysql.connection.cursor()
+    name = session['name']
+    user_type = session['type']
+    program_id = request.args.get('program_id')
+
+
+    cur.execute("SELECT * FROM program WHERE id = %s", (program_id,))
+    db_program = cur.fetchone()
+    cur.execute("SELECT * FROM user WHERE id = %s", (db_program[5],))
+    db_user = cur.fetchone()
+    therapist_name = db_user[2] + " " + db_user[3]
+
+    program = {
+        'id': db_program[0],
+        'name': db_program[1],
+        'description': db_program[2],
+        'photo_id': db_program[3],
+        'category_name': db_program[4],
+        'therapist_name': therapist_name
+    }
+
+    cur.execute("SELECT * FROM exercise_to_prog WHERE program_id = %s", (program_id,))
+    # toate exercitiile care au program id-ul meu
+    db_tuple_pro_ex = cur.fetchall()
+    print(db_tuple_pro_ex)
+
+    all_ex = []
+    for _, exercise_id in db_tuple_pro_ex:
+        cur.execute("SELECT * FROM exercise WHERE id = %s", (exercise_id,))
+        result = cur.fetchone()
+        all_ex.append(result)
+    print(all_ex)
+
+    # lista de dictionare
+    preprocessed_data = []
+    for ex in all_ex:
+        # print(type(ex))
+        # print(ex[0])s
+        cur.execute("SELECT name, surname FROM user WHERE id = %s", (str(ex[5]),))
+        # therapist_id ex[5]
+        # print(ex[5])
+        therapist_name_tuple = cur.fetchone()
+        therapist_name = therapist_name_tuple[0] + ' ' + therapist_name_tuple[1]
+        therapist_name = therapist_name
+        # print(therapist_name)
+
+        preprocessed_item = {
+            'id': ex[0],  # no need to render ID
+            'name': ex[1].capitalize(),
+            'description': ex[2].capitalize(),
+            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'category_name': ex[4].capitalize(),
+            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'max_reps': ex[6],
+            'therapist_name': therapist_name
+        }
+        preprocessed_data.append(preprocessed_item)
+    #   print('vashee tati: ', preprocessed_data)
+
+
+
+
     # return render_template('add_prog.html', logged_in=True, user_type=user_type)
-    return render_template('view_program.html', photo=photo)
+    return render_template('view_program.html', program=program, exercises=preprocessed_data, photo=photo)
 
 
 @app.route('/exercise')
@@ -836,11 +900,30 @@ def profile():
 
 @app.route('/view_exercise')
 def view_ex():
-    return redirect('/exercise')
+    return render_template('view_ex.html', logged_in=True)
 
-# @app.route('/video_feed')
-# def video_feed():
-#     return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+import core.interpret_JSON as js
+
+json_data = '''{
+  "Name": "Exercise Hand",
+  "Count_max": 4,
+  "Permissive_error": 10,
+  "Steps": {
+            "step_0": {
+              "RIGHT_ELBOW": 90,
+              "LEFT_ELBOW": 90
+            },
+            "step_1": {
+              "RIGHT_ELBOW": 180,
+              "LEFT_ELBOW": 180
+            }
+  }
+}'''
+@app.route('/video_feed')
+def video_feed():
+    return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == '__main__':

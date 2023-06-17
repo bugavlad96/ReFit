@@ -65,7 +65,7 @@
               <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
               <div class="prog-content">
                 <div class="program-info">
-                  <h2>{{ exercise.description }}</h2>
+                  <h2>{{ exercise.name }}</h2>
                   <p>Categorie: {{ exercise.category_name }}</p>
                   <p>Terapeut: {{ exercise.therapist_name }}</p>
                 </div>
@@ -76,7 +76,7 @@
         </label>
       </div>
     </div>
-    <button type="submit" class="submit-button">Finalizare Program</button>
+    <button type="submit" class="submit-button">Finalizare Editare Program</button>
   </form>
 </div>
 
@@ -102,7 +102,7 @@
   // Activate checkboxes based on exercise IDs
   var exerciseIDs = {{ exercise_ids|tojson }};
 
-  for (var i = 1; i <= exerciseIDs.length; i++) {
+  for (var i = 1; i <= {{ total_nr_of_ex }}; i++) {
     var checkbox = document.getElementsByName('exercise_checkbox_' + i)[0];
 
     if (exerciseIDs.includes(checkbox.value)) {
