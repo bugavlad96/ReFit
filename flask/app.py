@@ -10,7 +10,7 @@ app.secret_key = 'your_secret_key'
 
 mysql = connect_db(app)
 
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = 'static\\uploads'
 
 def validate_email(email):
     # Regular expression for email validation
@@ -191,8 +191,8 @@ def programs():
             'id': program[0],
             'name': program[1].capitalize(),
             'description': program[2].capitalize(),
-            # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
-            'category_name': program[4].capitalize(),
+            'photo_id': program[3],
+            'category_name': program[4],
             # 'therapist_id': program[5], therapist ID no need to render to HTML
             'therapist_name': therapist_name
         }
@@ -271,8 +271,8 @@ def add_programs():
         program_description = request.form['prog_descr']
         category = request.form['categ']
         therapist_id = session['id']
-        photo = request.form.get('photo_program')
-        print(photo)
+        # photo = request.form.get('photo_program')
+        # print(photo)
         cur = mysql.connection.cursor()
         # Access the uploaded file
         file = request.files['photo_program']
@@ -355,7 +355,14 @@ def edit_program():
         # print(program_dict)
 
         # ------------------
+        photo_id = program_dict['photo_id']  # Update with the correct column name
+        category = program_dict['category_name']  # Update with the correct column name
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], category, photo_id, ".png")
+        category_folder = os.path.join(app.config['UPLOAD_FOLDER'], category)
+        file_path = os.path.join(category_folder, photo_id)
+        file_path += '.png'
 
+        print(file_path)
         # ------------------
 
         cur.execute("SELECT * FROM exercise_to_prog WHERE program_id = %s", (program_id,))
@@ -369,7 +376,7 @@ def edit_program():
             exercise_ids.append(exercise_id)
 
         cur.close()
-        return render_template('edit_program.html', total_nr_of_ex = total_nr_of_ex, exercise_ids=exercise_ids,  exercises=preprocessed_data, program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
+        return render_template('edit_program.html',photo_program=file_path, total_nr_of_ex = total_nr_of_ex, exercise_ids=exercise_ids,  exercises=preprocessed_data, program=program_dict,  user_name=name, logged_in=True, user_type=user_type, )
 
     if request.method == 'POST':
         form_data = request.form.to_dict()
@@ -545,7 +552,7 @@ def exercise():
             'id': ex[0],
             'name': ex[1].capitalize(),
             'description': ex[2].capitalize(),
-            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'photo_id': ex[3],
             'category_name': ex[4].capitalize(),
             # 'therapist_id': ex[5], therapist ID no need to render to HTML
             'max_reps': ex[6],
@@ -594,6 +601,25 @@ def add_exercise():
             max_reps = form_data['rep']
             permissive_error = form_data["permissive-error"]
 
+
+            # # retrive photoes and add the to DB
+
+            # photo = request.form.get('photo_exercise')
+            # photo = request.form.get('photo_step_1')
+            # photo = request.form.get('photo_step_2')
+            # photo = request.form.get('photo_step_3')
+            # print(photo)
+            # Access the uploaded file
+            file_exercise = request.files['photo_exercise']
+            # file_step_1 = request.files['photo_step_1']
+            # file_step_2 = request.files['photo_step_2']
+            # file_step_2 = request.files['photo_step_3']
+            # add photo to database and retrieve photo_id
+            # photo_id = add_photo(cur, file, category)
+
+
+            # ---------------
+
             # Extract step descriptions and joint values
             step_descriptions = {}
             joint_values = {}
@@ -619,18 +645,24 @@ def add_exercise():
             #     print(f"  Joint: {joint}\tStep: {step_number}\tValue: {value}")
 
             cur = mysql.connection.cursor()
-            cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps), ''))
+            # add photo exercise
+            photo_id_ex = add_photo(cur, file_exercise, category)
+
+            cur.callproc('add_exercise', args=(exercise_name, exercise_description, category, therapist_id, int(max_reps), photo_id_ex, ''))
             mysql.connection.commit()
-            cur.execute("SELECT @_add_exercise_5")
+            cur.execute("SELECT @_add_exercise_6")
             exercise_id = cur.fetchone()[0]
             # print("Generated ex ID:", exercise_id)
 
             for step_number, description in step_descriptions.items():
+
+                photo_id_step = add_photo(cur, request.files["photo_step_%s" % step_number], category)
+
                 # cur = mysql.connection.cursor()
-                cur.callproc('add_step', args=(exercise_id, description, int(permissive_error), int(step_number), ''))
+                cur.callproc('add_step', args=(exercise_id, description, int(permissive_error), int(step_number), photo_id_step, ''))
                 # retrieve last created UUID
                 mysql.connection.commit()
-                cur.execute("SELECT @_add_step_4")
+                cur.execute("SELECT @_add_step_5")
                 last_step_id = cur.fetchone()[0]
                 # print("Generated step ID:", last_step_id)
 

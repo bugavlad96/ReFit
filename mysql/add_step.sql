@@ -22,27 +22,21 @@
 DELIMITER //
 CREATE PROCEDURE add_step(
     IN p_exercise_id CHAR(36),
- --    p_photo_name CHAR(36),
     IN p_description LONGTEXT,
     IN p_permissive_error smallint,
     IN p_step_order SMALLINT,
+    IN p_photo_id CHAR(36),
+    IN p_category_name CHAR(36), 
 	OUT p_generated_id CHAR(36)
     
 )
 BEGIN
 	DECLARE unique_id char(36);
- --    DECLARE unique_id_photo char(36);
---     DECLARE path_to_photo VARCHAR(255);
     SET unique_id = UUID();
     set p_generated_id = unique_id;
- --    SET unique_id_photo = UUID();
---     SET path_to_photo = CONCAT('path/to/', p_photo_name, '.jpg');
 
-	-- INSERT INTO photo (id, path, category_name)
--- 		values(unique_id_photo, path_to_photo, p_exercise_category);
--- 	
-		INSERT INTO step (id, exercise_id, description, permissive_error, step_order)
-		VALUES (unique_id, p_exercise_id, p_description, p_permissive_error, p_step_order);
+		INSERT INTO step (id, exercise_id, description, permissive_error, step_order, photo_id)
+		VALUES (unique_id, p_exercise_id, p_description, p_permissive_error, p_step_order, p_photo_id);
     
 END //
 DELIMITER ;

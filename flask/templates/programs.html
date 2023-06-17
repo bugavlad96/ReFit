@@ -13,7 +13,7 @@
 <div class="program-list">
   {% for program in programs %}
   <div class="program">
-    <img src="../static/images/img.jpg" >
+    <img src="static/uploads/{{ program.category_name }}/{{ program.photo_id }}.png" >
     {% if program.show_prog_content %}
     <div class="prog-content">
     {% else %}

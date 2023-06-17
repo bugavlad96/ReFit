@@ -14,7 +14,7 @@
 <div class="program-list">
   {% for exercise in exercises %}
   <div class="program">
-    <img src="../static/images/img.jpg">
+    <img src="static/uploads/{{ exercise.category_name }}/{{ exercise.photo_id }}.png">
     <div class="prog-content">
       <div class="program-info">
         <h2 style="text-align: left;">{{ exercise.name }}</h2>
