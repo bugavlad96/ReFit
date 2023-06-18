@@ -1,40 +1,35 @@
-<!DOCTYPE html>
 <html>
-  <head>
-    <title>Dynamic Content Update</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-      $(document).ready(function() {
-        // Handle form submission
-        $('form').submit(function(event) {
-          event.preventDefault();  // Prevent page reload
+    <head>
+        <title>Count Increment</title>
+        <script>
+            function updateCount() {
+                // Create a new XMLHttpRequest object
+                var xhr = new XMLHttpRequest();
 
-          // Send AJAX POST request to the server
-          $.ajax({
-            type: 'POST',
-            url: '/',
-            data: $(this).serialize(),
-            success: function(response) {
-              // Update the image and other content
-              $('#dynamic-image').attr('src', '/static/images/' + response.image_name);
-              $('#other-content').text(response.other_content);
+                // Configure the request
+                xhr.open('GET', '/get_count', true);
+
+                // Set the callback function to handle the response
+                xhr.onload = function() {
+                    if (xhr.status === 200) {
+                        // Parse the JSON response
+                        var response = JSON.parse(xhr.responseText);
+
+                        // Update the count in the HTML element
+                        document.getElementById('count').textContent = 'Counter: ' + response.count;
+                    }
+                };
+
+                // Send the request
+                xhr.send();
             }
-          });
-        });
-      });
-    </script>
-  </head>
-  <body>
-    <h1>Dynamic Content Update</h1>
-    <form>
-      <label for="image_name">Enter Image Name:</label>
-      <input type="text" name="image_name" id="image_name" required>
-      <input type="submit" value="Submit">
-    </form>
 
-    <div id="dynamic-content">
-      <img id="dynamic-image" src="/static/images/default-image.png" alt="Dynamic Image">
-      <p id="other-content">Initial content</p>
-    </div>
-  </body>
+            // Call the updateCount function initially and set it to execute every 3 seconds
+            updateCount();
+            setInterval(updateCount, 3000);  // Update every 3 seconds
+        </script>
+    </head>
+    <body>
+        <p id="count">Counter: {{ count }}</p>
+    </body>
 </html>

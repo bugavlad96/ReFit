@@ -1,9 +1,10 @@
 import uuid
-
-from flask import Flask, render_template, request, redirect, session, Response
+from flask import Flask, render_template, request, redirect, session, Response, jsonify
 from db import connect_db
 import re
 import os
+import core.interpret_JSON as js
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key'
@@ -229,6 +230,7 @@ def add_photo(cur, file, category):
 
     return photo_id
 
+
 @app.route('/add_programs', methods=['GET', 'POST'])
 # @app.route('/add_programs')
 def add_programs():
@@ -299,6 +301,7 @@ def add_programs():
         return render_template('add_prog.html', exercises = preprocessed_data, user_name = name, logged_in=True, user_type=user_type, )
     else:
         return redirect('/')
+
 
 @app.route('/edit_program', methods=['GET', 'POST'])
 def edit_program():
@@ -437,7 +440,6 @@ def edit_program():
         cur.close()
 
         return redirect('/programs')
-
 
 
 @app.route('/delete_program')
@@ -682,13 +684,6 @@ def add_exercise():
         return redirect('/exercise')
 
 
-# def translate_category(input_category):
-#     if input_category == "hands":
-#         return
-#     if input_category == "shoulders"
-#     if input_category == "hips"
-#     if input_category == "feet"
-
 def fetch_exercise(exercise_id, exercise_dict, steps_list, cur):
     # return the exercise
     cur = mysql.connection.cursor()
@@ -739,6 +734,7 @@ def fetch_exercise(exercise_id, exercise_dict, steps_list, cur):
         # print("body_part_angles: ", body_part_angles)
     # print(steps_list)
     return exercise_id, exercise_dict, steps_list, cur
+
 
 @app.route('/edit_exercise', methods=['GET', 'POST'])
 def edit_exercise():
@@ -1073,6 +1069,10 @@ def profile():
     return render_template('profile.html', logged_in=True, user_name=name, photo=photo, mail=mail, name=name, surname=surname, user_type=user_type, user_type_str=user_type_str, info=user_info)
 
 
+
+
+
+
 @app.route('/view_exercise')
 def view_ex():
     exercise_id = request.args.get('exercise_id')
@@ -1096,11 +1096,8 @@ def view_ex():
     print("exercise_dict.category:", exercise_dict['category'])
     print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])
 
-    return render_template('view_ex.html', romanian_category=romanian_category, steps_list=steps_list, exercise_dict=exercise_dict, logged_in=True)
+    return render_template('view_ex.html', count=count, romanian_category=romanian_category, steps_list=steps_list, exercise_dict=exercise_dict, logged_in=True)
 
-
-
-import core.interpret_JSON as js
 
 json_data = '''{
   "Name": "Exercise Hand",
@@ -1108,18 +1105,39 @@ json_data = '''{
   "Permissive_error": 10,
   "Steps": {
             "step_0": {
-              "RIGHT_ELBOW": 90,
               "LEFT_ELBOW": 90
             },
             "step_1": {
-              "RIGHT_ELBOW": 180,
               "LEFT_ELBOW": 180
             }
   }
 }'''
+
+
 @app.route('/video_feed')
 def video_feed():
     return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# Route to get the updated count
+count = 0
+
+@app.route('/get_count')
+def get_count():
+    global count
+    count += 1
+
+    # Return the count as a JSON response
+    return jsonify(count=count)
+
+
+
+
+
+
+
+
+
 
 @app.route('/patients', methods=['GET', 'POST'])
 def patients():
@@ -1331,9 +1349,6 @@ def view_patient():
         cur.close()
 
         return redirect('/patients')
-
-
-
 
 
 if __name__ == '__main__':

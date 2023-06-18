@@ -31,7 +31,7 @@
         </div>
     </section>
 
-    <p class="counter"><b>Counter:</b> 0</p>
+    <p class="counter" id="count"><b>Counter:</b> {{ count }}</p>
     <p class="done">Well done</p>
     <section class="webstream">
         <div class="web">
@@ -42,4 +42,32 @@
             <img class="step" src="static/images/vlad.jpg">
         </div>
     </section>
+<script>
+    function updateCount() {
+        // Create a new XMLHttpRequest object
+        var xhr = new XMLHttpRequest();
+
+        // Configure the request
+        xhr.open('GET', '/get_count', true);
+
+        // Set the callback function to handle the response
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Parse the JSON response
+                var response = JSON.parse(xhr.responseText);
+
+                // Update the count in the HTML element
+                document.getElementById('count').textContent = 'Counter: ' + response.count;
+            }
+        };
+
+        // Send the request
+        xhr.send();
+    }
+
+    // Call the updateCount function initially and set it to execute every 3 seconds
+    updateCount();
+    setInterval(updateCount, 3000);  // Update every 3 seconds
+</script>
+
 {% endblock %}

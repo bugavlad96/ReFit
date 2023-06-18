@@ -1,22 +1,22 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, jsonify, render_template
 
 app = Flask(__name__)
 
-# Route for the home page
-@app.route('/', methods=['GET', 'POST'])
-def home():
-    if request.method == 'POST':
-        # Get the user input from the form
-        image_name = request.form['image_name']
+count = 0
 
-        # Create a dictionary with the updated content
-        response = {'image_name': image_name, 'other_content': 'Updated content'}
+# Route to get the updated count
+@app.route('/get_count')
+def get_count():
+    global count
+    count += 1
 
-        # Return the response as JSON
-        return jsonify(response)
+    # Return the count as a JSON response
+    return jsonify(count=count)
 
-    # Render the initial template
-    return render_template('index.html')
+# Route to render the HTML template
+@app.route('/')
+def index():
+    return render_template('index.html', count=count)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
