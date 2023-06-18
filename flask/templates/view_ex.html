@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block style %}
+    <link rel="stylesheet" href="static/style.css">
+    <link rel="stylesheet" href="static/webstream.css">
+{% endblock %}
+
+{% block content %}
+    <h1>{{exercise_dict.name}} </h1>
+     <p class="info"><b>Descriere:</b> {{exercise_dict.description}}</p>
+     <p class="info"><b>Categorie:</b> {{romanian_category}}</p>
+
+    <section class="services">
+        <div class="service-item">
+            <img src="static/uploads/{{exercise_dict.category}}/{{steps_list[0].photo_id}}.png" alt="Step 1">
+            <h3>Step 1</h3>
+            <p>Descriere: {{steps_list[0].description}}</p>
+            <p>Erroarea admisa: {{steps_list[0].permissive_error}} grade</p>
+        </div>
+        <div class="service-item">
+            <img src="static/uploads/{{exercise_dict.category}}/{{steps_list[1].photo_id}}.png" alt="Step 2">
+            <h3>step 2</h3>
+            <p>Descriere: {{steps_list[1].description}}</p>
+            <p>Erroarea admisa: {{steps_list[1].permissive_error}} grade</p>
+        </div>
+        <div class="service-item">
+            <img src="static/uploads/{{exercise_dict.category}}/{{steps_list[2].photo_id}}.png" alt="Step 3">
+            <h3>Step 3</h3>
+            <p>Descriere: {{steps_list[2].description}}</p>
+            <p>Erroarea admisa: {{steps_list[2].permissive_error}} grade</p>
+        </div>
+    </section>
+
+    <p class="counter"><b>Counter:</b> 0</p>
+    <p class="done">Well done</p>
+    <section class="webstream">
+        <div class="web">
+            <img class="stream" src="{{ url_for('video_feed') }}">
+        </div>
+
+        <div class="next-step">
+            <img class="step" src="static/images/vlad.jpg">
+        </div>
+    </section>
+{% endblock %}
