@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Dynamic Content Update</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // Handle form submission
+        $('form').submit(function(event) {
+          event.preventDefault();  // Prevent page reload
+
+          // Send AJAX POST request to the server
+          $.ajax({
+            type: 'POST',
+            url: '/',
+            data: $(this).serialize(),
+            success: function(response) {
+              // Update the image and other content
+              $('#dynamic-image').attr('src', '/static/images/' + response.image_name);
+              $('#other-content').text(response.other_content);
+            }
+          });
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <h1>Dynamic Content Update</h1>
+    <form>
+      <label for="image_name">Enter Image Name:</label>
+      <input type="text" name="image_name" id="image_name" required>
+      <input type="submit" value="Submit">
+    </form>
+
+    <div id="dynamic-content">
+      <img id="dynamic-image" src="/static/images/default-image.png" alt="Dynamic Image">
+      <p id="other-content">Initial content</p>
+    </div>
+  </body>
+</html>
