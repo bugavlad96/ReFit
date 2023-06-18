@@ -1,0 +1,47 @@
+{% extends "main.html" %}
+
+{% block style %}
+<link rel="stylesheet" href="static/signup.css">
+<link rel="stylesheet" href="static/style.css">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>Înregistrează-te</h2>
+    {% if error %}
+    <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="POST" action="/signup">
+        <label for="name">Nume:</label>
+        <input type="text" name="name" id="name" placeholder="Nume" required>
+
+        <label for="surname">Prename:</label>
+        <input type="text" name="surname" id="surname" placeholder="Prenume" required>
+
+        <label for="email">Mail:</label>
+        <input type="text" name="email" id="email" placeholder="Email" required>
+
+        <div class="radio-group" >
+            <label><input type="radio" name="option" value="0" required> Terapeut </label>
+            <label><input type="radio" name="option" value="1" required> Pacient </label>
+        </div>
+        <div class="radio-group" style="margin-bottom: 10px;">
+            <span> Genul: </span>
+            <select name = "gender">
+                <option value="1" > Bărbat </option>
+                <option value="2" > Femeie </option>
+                <option value="3" > Prefer sa nu spun </option>
+            </select>
+        </div>
+
+        <label for="password">Parola:</label>
+        <input type="password" name="password" id="password" placeholder="Parola" required>
+
+        <label for="confirm_password">Confirmă Parola:</label>
+        <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirmă Parola" required>
+
+
+        <input type="submit" value="Înregistrează-te">
+    </form>
+</div>
+{% endblock %}

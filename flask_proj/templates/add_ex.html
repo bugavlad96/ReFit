@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+
+{% block style %}
+  <link rel="stylesheet" href="../static/style.css">
+<!--  <link rel="stylesheet" href="../static/signup.css">-->
+  <link rel="stylesheet" href="../static/add_exercise.css">
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="../static/add_ex.js"></script>
+{% endblock %}
+
+{% block content %}
+<h2 class="title">Add New Exercise</h2>
+<div class="form-container">
+  <form method="post" enctype="multipart/form-data">
+    <div class="general-info">
+      <div class="form-group">
+        <label for="exercise_name">Nume Exercitiu</label>
+        <input type="text" name="exercise_name" id="exercise_name" required>
+      </div>
+      <div class="form-group">
+        <label for="exercise-description">Descriere Exercitiu</label>
+        <textarea name="exercise-description" id="exercise-description" rows="4" required></textarea>
+      </div>
+        <div class="radio-group" style="margin-bottom: 10px;">
+        <span> Categoria: </span>
+            <select name = "categ">
+                <option value="hands" > Mâini </option>
+                <option value="shoulders" > Umeri </option>
+                <option value="hips" > Șold </option>
+                <option value="feet" > Picioare </option>
+            </select>
+        </div>
+      <div class="angle">
+        <label for="reps">Nr de repetări</label>
+        <input type="text" name="rep" id="reps" required>
+      </div>
+      <div class="angle">
+        <label for="permissive-error">Eroarea admisa exercițiu</label>
+        <input type="text" name="permissive-error" id="permissive-error" required>
+      </div>
+      <div class="form-group">
+        <label>Imagine Exercitiu</label>
+            <div class="file-upload">
+              <div class="image-upload-wrap">
+                <input class="file-upload-input" name="photo_exercise" type="file" onchange="readURL(this)" accept="image/*" />
+                <div class="drag-text">
+                  <h3>Drag and drop a file or select add Image</h3>
+                </div>
+              </div>
+              <div class="file-upload-content">
+                <img class="file-upload-image" src="#" alt="your image" />
+                <div class="image-title-wrap">
+                  <button type="button" onclick="removeUpload(this)" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                </div>
+              </div>
+            </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <p class="step">Step 1</p>
+      <div class="form-group">
+        <label for="step1-description">Descriere Pas</label>
+        <textarea name="step_description_1" id="step1-description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagine Pas</label>
+            <div class="file-upload">
+              <div class="image-upload-wrap">
+                <input class="file-upload-input" name="photo_step_1" type="file" onchange="readURL(this)" accept="image/*" />
+                <div class="drag-text">
+                  <h3>Drag and drop a file or select add Image</h3>
+                </div>
+              </div>
+              <div class="file-upload-content">
+                <img class="file-upload-image" src="#" alt="your image" />
+                <div class="image-title-wrap">
+                  <button type="button" onclick="removeUpload(this)" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                </div>
+              </div>
+            </div>
+      </div>
+      <div class="body-parts">
+          <div class="angle">
+            <label for="re">Cot drept:</label>
+            <input type="text" name="RIGHT_ELBOW_1" id="re" >
+          </div>
+
+          <div class="angle">
+            <label for="le">Cot stâng:</label>
+            <input type="text" name="LEFT_ELBOW_1" id="le"  >
+          </div>
+
+          <div class="angle">
+            <label for="rs">Umăr drept:</label>
+            <input type="text" name="RIGHT_SHOULDER_1" id="rs" >
+          </div>
+
+          <div class="angle">
+            <label for="ls">Umăr stâng:</label>
+            <input type="text" name="LEFT_SHOULDER_1" id="ls" >
+          </div>
+
+          <div class="angle">
+            <label for="rh">Șold drept:</label>
+            <input type="text" name="RIGHT_HIP_1" id="rh"  >
+          </div>
+
+          <div class="angle">
+            <label for="lh">Șold stâng:</label>
+            <input type="text" name="LEFT_HIP_1" id="lh"  >
+          </div>
+
+          <div class="angle">
+            <label for="rk">Genunchi drept:</label>
+            <input type="text" name="RIGHT_KNEE_1" id="rk" >
+          </div>
+
+          <div class="angle">
+            <label for="lk">Genunchi stâng:</label>
+            <input type="text" name="LEFT_KNEE_1" id="lk" >
+          </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <p class="step">Step 2</p>
+      <div class="form-group">
+        <label for="step2-description">Descriere Pas</label>
+        <textarea name="step_description_2" id="step2-description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagine Pas</label>
+            <div class="file-upload">
+              <div class="image-upload-wrap">
+                <input class="file-upload-input" name="photo_step_2" type="file" onchange="readURL(this)" accept="image/*" />
+                <div class="drag-text">
+                  <h3>Drag and drop a file or select add Image</h3>
+                </div>
+              </div>
+              <div class="file-upload-content">
+                <img class="file-upload-image" src="#" alt="your image" />
+                <div class="image-title-wrap">
+                  <button type="button" onclick="removeUpload(this)" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                </div>
+              </div>
+            </div>
+      </div>
+      <div class="body-parts">
+          <div class="angle">
+            <label for="re2">Cot drept:</label>
+            <input type="text" name="RIGHT_ELBOW_2" id="re2"  >
+          </div>
+
+          <div class="angle">
+            <label for="le2">Cot stâng:</label>
+            <input type="text" name="LEFT_ELBOW_2" id="le2"  >
+          </div>
+
+          <div class="angle">
+            <label for="rs2">Umăr drept:</label>
+            <input type="text" name="RIGHT_SHOULDER_2" id="rs2"  >
+          </div>
+
+          <div class="angle">
+            <label for="ls2">Umăr stâng:</label>
+            <input type="text" name="LEFT_SHOULDER_2" id="ls2"  >
+          </div>
+
+          <div class="angle">
+            <label for="rh2">Șold drept:</label>
+            <input type="text" name="RIGHT_HIP_2" id="rh2"  >
+          </div>
+
+          <div class="angle">
+            <label for="lh2">Șold stâng:</label>
+            <input type="text" name="LEFT_HIP_2" id="lh2"  >
+          </div>
+
+          <div class="angle">
+            <label for="rk2">Genunchi drept:</label>
+            <input type="text" name="RIGHT_KNEE_2" id="rk2" >
+          </div>
+
+          <div class="angle">
+            <label for="lk2">Genunchi stâng:</label>
+            <input type="text" name="LEFT_KNEE_2" id="lk2" >
+          </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <p class="step">Step 3</p>
+      <div class="form-group">
+        <label for="step3-description">Descriere Pas</label>
+        <textarea name="step_description_3" id="step3-description" rows="4" required></textarea>
+      </div>
+      <div class="form-group">
+        <label>Imagine Pas</label>
+            <div class="file-upload">
+              <div class="image-upload-wrap">
+                <input class="file-upload-input" name="photo_step_3" type="file" onchange="readURL(this)" accept="image/*" />
+                <div class="drag-text">
+                  <h3>Drag and drop a file or select add Image</h3>
+                </div>
+              </div>
+              <div class="file-upload-content">
+                <img class="file-upload-image" src="#" alt="your image" />
+                <div class="image-title-wrap">
+                  <button type="button" onclick="removeUpload(this)" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
+                </div>
+              </div>
+            </div>
+          </div>
+      <div class="body-parts">
+            <div class="angle">
+              <label for="re3">Cot drept:</label>
+              <input type="text" name="RIGHT_ELBOW_3" id="re3" >
+            </div>
+
+            <div class="angle">
+              <label for="le3">Cot stâng:</label>
+              <input type="text" name="LEFT_ELBOW_3" id="le3" >
+            </div>
+
+            <div class="angle">
+              <label for="rs3">Umăr drept:</label>
+              <input type="text" name="RIGHT_SHOULDER_3" id="rs3" >
+            </div>
+
+            <div class="angle">
+              <label for="ls3">Umăr stâng:</label>
+              <input type="text" name="LEFT_SHOULDER_3" id="ls3" >
+            </div>
+
+            <div class="angle">
+              <label for="rh3">Șold drept:</label>
+              <input type="text" name="RIGHT_HIP_3" id="rh3" >
+            </div>
+
+            <div class="angle">
+              <label for="lh3">Șold stâng:</label>
+              <input type="text" name="LEFT_HIP_3" id="lh3" >
+            </div>
+
+            <div class="angle">
+              <label for="rk3">Genunchi drept:</label>
+              <input type="text" name="RIGHT_KNEE_3" id="rk3"  >
+            </div>
+
+            <div class="angle">
+              <label for="lk3">Genunchi stâng:</label>
+              <input type="text" name="LEFT_KNEE_3" id="lk3" >
+            </div>
+      </div>
+
+    </div>
+    <button type="submit" class="submit-button">Submit</button>
+  </form>
+</div>
+{% endblock %}

@@ -84,3 +84,9 @@ def find_variable_value(req_name):
         if req_name == name:
             return val
     return None
+
+# counter = 0
+#
+# def counter_value(counter):
+#     counter+=1
+#     return counter

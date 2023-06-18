@@ -9,6 +9,11 @@ import libs.color_landmark as color
 import libs.output_text
 import libs.output_text as ot
 
+shared_counter = 0
+def mofify_counter():
+   global shared_counter
+   shared_counter += 1
+
 
 
 # trebuie sa vad cum implementez functia de counter pentru a masura succesul
@@ -20,16 +25,12 @@ import libs.output_text as ot
 
             # body_parts, steps(va contine o succesiune de unghiuri) persmissive_error
 def exercise(body_parts, steps_angles, permissive_error, count_max):
-    # TREBUIE DE BAGAT TOT WHILE TRUE-ul pentru ca sa se execute aici!!!!!!!!!!!!!!!!!!
 
-    # --------------------------------------------------------------------------------------------------
-    # --------------------------------------------------------------------------------------------------
-
-    # initialize some vars
     up = False
-
+    # counter = flask_proj.app.counter
     counter = 0
-    are_steps_completed = []
+
+    # are_steps_completed = []
     actual_values = []
 
     first_half_exercise = False
@@ -89,6 +90,9 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                             if idx == 0:
                                 print("the last step dowm")
                                 counter += 1
+                                mofify_counter()
+                                print("exercise_shared_counter: ", shared_counter)
+                                print("")
                                 first_half_exercise = False
                                 # second_half_exercise = True
                                 are_steps_completed = [False for _ in range(len(steps_angles))]
@@ -113,7 +117,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
     # cap.release()
     # cv2.destroyAllWindows()
     #
-    # return counter
+    return counter
 
 
 
