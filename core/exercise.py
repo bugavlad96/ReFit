@@ -9,6 +9,7 @@ import libs.color_landmark as color
 import libs.output_text
 import libs.output_text as ot
 
+
 shared_counter = 0
 def mofify_counter():
    global shared_counter
@@ -56,6 +57,9 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
             mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
             points = utils.collect_points(img, results)
 
+            color.color_landmark(img, points, body_parts, var.RED)
+
+
             if not first_half_exercise:
                 print("am intrat")
                 for idx, is_step_completed in enumerate(are_steps_completed):
@@ -64,6 +68,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                         # print(idx, is_step_completed)
                         print(f"index {idx}")
                         are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
+                        ot.output_angles(img, points, actual_values, var.GREEN)
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")
                             break
