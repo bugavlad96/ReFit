@@ -5,10 +5,11 @@ import libs.global_var as var
 # dict_with_values cirespunde cu structura returnata de functia step
 def output_angles(img, points, dict_with_values, color_code):
 
+    print('output_angles: ', dict_with_values)
     if dict_with_values is not None:
         # example or a dict record: key = "LEFT_HAND", value = [var.LEFT_HAND, [False, 180grade]]
         for body_part_txt, (body_part_array, angle) in dict_with_values.items():
-                cv2.putText(img, str(int(angle[1])), (points[body_part_array[1]][0], points[body_part_array[1]][1]), cv2.FONT_HERSHEY_PLAIN, var.SIZE_ANGLES, color_code, var.SIZE_ANGLES)
+            cv2.putText(img, str(int(angle[1])), (points[body_part_array[1]][0], points[body_part_array[1]][1]), cv2.FONT_HERSHEY_PLAIN, var.SIZE_ANGLES, color_code, var.SIZE_ANGLES)
 
             # cv2.putText(img, str(int(angle[1])), (points[body_part_array[1]][0], points[body_part_array[1]][1]), cv2.FONT_HERSHEY_PLAIN, var.SIZE_ANGLES, color_code, var.SIZE_ANGLES)
 

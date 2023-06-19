@@ -68,7 +68,9 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                         # print(idx, is_step_completed)
                         print(f"index {idx}")
                         are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
-                        # ot.output_angles(img, points, actual_values, var.GREEN)
+                        print('actual_values[idx]: ', actual_values[idx])
+                        libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
+
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")
                             break
@@ -89,6 +91,8 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                 for idx, is_step_completed in reversed(list(enumerate(are_steps_completed))):
                     if (not is_step_completed):
                         are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
+                        libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
+
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")
                             break

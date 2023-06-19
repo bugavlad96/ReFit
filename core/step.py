@@ -9,7 +9,7 @@ from typing import Dict, Tuple
 
 import libs.utils as utils
 import libs.global_var as var
-
+import libs
 # voi primi array-uri cu landmark-uri din global_var.py
 
 

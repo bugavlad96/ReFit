@@ -11,7 +11,7 @@ STREAM_RESIZE = (1280, 960)
 
 # text size on stream
 SIZE_TXT_HINTS = 2
-SIZE_ANGLES = 2
+SIZE_ANGLES = 5
 
 # For angle computation
 RIGHT_ELBOW = [12, 14, 16]
