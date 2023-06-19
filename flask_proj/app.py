@@ -1175,24 +1175,26 @@ def video_feed():
     print("video_feed: count_max, ", count_max)
 
     # return Response(ex.exercise([[12, 14, 16], [11, 12, 14]], [[180, 100], [150, 100], [90, 100]], permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
-    return Response(ex.exercise(body_parts, steps_angles, permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(ex.exercise(body_parts, steps_angles, permissive_error, count_max+10), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 from core.exercise import shared_counter
 # Route to get the updated count
-count = 1
+count = 0
 
 @app.route('/get_count')
 def get_count():
     # global count
     # count += 1
     count = core.exercise.shared_counter
-    curr_step = core.exercise.current_step
+    current_step = core.exercise.current_step
 
     print('app_shared_counter: ', count)
+    print('app_current_step: ', current_step)
+
 
     # Return the count as a JSON response
-    return jsonify(count=count)
+    return jsonify(count=count, current_step=current_step)
 
 
 

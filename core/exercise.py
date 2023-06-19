@@ -68,6 +68,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
             if not first_half_exercise:
                 print("am intrat")
                 for idx, is_step_completed in enumerate(are_steps_completed):
+                    change_step(idx+1)
 
                     if (not is_step_completed):
                         # print(idx, is_step_completed)
@@ -81,7 +82,6 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                             break
                         else:
                             print(f"{idx}  SUCCESS")
-                            change_step(idx)
                             if idx == len(are_steps_completed) - 1:
                                 print("the last step up")
                                 first_half_exercise = True
@@ -94,6 +94,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                 print("in intrat in sens invers")
 
                 for idx, is_step_completed in reversed(list(enumerate(are_steps_completed))):
+                    change_step(len(are_steps_completed)- idx -1)
                     if (not is_step_completed):
                         are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
                         # libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
@@ -103,7 +104,6 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                             break
                         else:
                             print(f"{idx}  SUCCESS")
-                            change_step(idx - 1)
                             if idx == 0:
                                 print("the last step dowm")
                                 counter += 1

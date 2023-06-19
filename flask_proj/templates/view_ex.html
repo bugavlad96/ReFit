@@ -3,6 +3,8 @@
 {% block style %}
     <link rel="stylesheet" href="static/style.css">
     <link rel="stylesheet" href="static/webstream.css">
+    <link rel="stylesheet" href="static/programs.css">
+
 {% endblock %}
 
 {% block content %}
@@ -33,13 +35,25 @@
 
     <p class="counter" id="count"><b>Counter:</b> {{ count }}</p>
     <p class="done">Well done</p>
+
+    <div class="btn-group">
+        <body>
+            <button class="view" onclick="goBack()">Go Back</button>
+
+            <script>
+                function goBack() {
+                    window.history.back();
+                }
+            </script>
+        </body>
+    </div>
     <section class="webstream">
         <div class="web">
             <img class="stream" src="{{ url_for('video_feed') }}">
         </div>
 
         <div class="next-step">
-            <img class="step" id="image-step" src="static/uploads/{{exercise_dict.category}}/{{steps_list[0].photo_id}}.png" alt="Current Step">
+            <img class="step" id="image-step" src="" alt="Current Step">
         </div>
     </section>
 <script>
@@ -58,8 +72,25 @@
 
                 // Update the count in the HTML element
                 document.getElementById('count').textContent = 'Counter: ' + response.count;
-<!--                 // Update the image source-->
-<!--                document.getElementById('image-step').src = 'static/uploads/' + response.category + '/' + response.photo_id + '.png';-->
+                  // Update the image source based on the response count
+                var imageStep = document.getElementById('image-step');
+                if (response.current_step === 1) {
+                    imageStep.src = 'static/uploads/{{exercise_dict.category}}/{{steps_list[0].photo_id}}.png';
+                } else if (response.current_step === 2) {
+                    imageStep.src = 'static/uploads/{{exercise_dict.category}}/{{steps_list[1].photo_id}}.png';
+                } else if (response.current_step === 3) {
+                    imageStep.src = 'static/uploads/{{exercise_dict.category}}/{{steps_list[2].photo_id}}.png';
+                }
+
+             // Show the 'Well done' message when response.count equals exercise_dict.max_count
+                var maxCount = {{exercise_dict.max_reps}};
+                if (response.count >= maxCount) {
+                    var doneMessage = document.querySelector('.done');
+                    doneMessage.style.display = 'block';
+                } else {
+                    var doneMessage = document.querySelector('.done');
+                    doneMessage.style.display = 'none';
+                }
             }
         };
 
@@ -71,5 +102,6 @@
     updateCount();
     setInterval(updateCount, 500);  // Update every 3 seconds
 </script>
+
 
 {% endblock %}
