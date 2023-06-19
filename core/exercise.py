@@ -8,6 +8,7 @@ import cv2
 import libs.color_landmark as color
 import libs.output_text
 import libs.output_text as ot
+import libs.compute_angle as ca
 
 
 shared_counter = 0
@@ -59,6 +60,10 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
 
             color.color_landmark(img, points, body_parts, var.RED)
 
+            for part in body_parts:
+                angle_val = ca.compute_angle(points, part)
+                cv2.putText(img, str(int(angle_val)), (points[part[1]][0], points[part[1]][1]), cv2.FONT_HERSHEY_PLAIN, var.SIZE_ANGLES, var.GREEN, var.SIZE_ANGLES)
+
 
             if not first_half_exercise:
                 print("am intrat")
@@ -69,7 +74,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                         print(f"index {idx}")
                         are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
                         print('actual_values[idx]: ', actual_values[idx])
-                        libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
+                        # libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
 
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")
@@ -91,7 +96,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                 for idx, is_step_completed in reversed(list(enumerate(are_steps_completed))):
                     if (not is_step_completed):
                         are_steps_completed[idx], actual_values[idx] = step.step(results, img, body_parts, steps_angles[idx], permissive_error)
-                        libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
+                        # libs.output_text.output_angles(img, points, actual_values[idx], var.GREEN)
 
                         if not are_steps_completed[idx]:
                             print(f"{idx} NOT completed")

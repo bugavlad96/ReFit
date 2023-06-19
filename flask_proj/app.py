@@ -1113,9 +1113,9 @@ def view_ex():
     cur = mysql.connection.cursor()
 
     exercise_id, exercise_dict, steps_list, cur = fetch_exercise(exercise_id, exercise_dict, steps_list, cur)
-    print('exercise_id: ', exercise_id)
-    print('exercise_dict: ', exercise_dict)
-    print('steps_list: ', steps_list)
+    print('fetched exercise_id: ', exercise_id)
+    print('fetched exercise_dict: ', exercise_dict)
+    print('fetched steps_list: ', steps_list)
     parameters = {
         'hands': 'Mâini',
         'shoulders': 'Umeri',
@@ -1129,22 +1129,29 @@ def view_ex():
     print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])
 
     # parseaza steps si modifica bd_name in array conform global vars
-    sorted_steps = sorted(steps_list, key=lambda x: x['step_number'])
+    sorted_steps = sorted(steps_list, key=lambda x: int(x['step_number']))
+    print("sorted_steps: ", sorted_steps)
 
     bd_parts = []
     stp_angles = []
-    for step in sorted_steps:
+    for idx, step in enumerate(sorted_steps):
         body_part_angles = step['body_part_angles']
-        angles = [bd_angle['angle'] for bd_angle in body_part_angles]
-        bd_parts.extend([bd_angle['bd_name'] for bd_angle in body_part_angles])
-        stp_angles.append(angles)
+        aux_step_angle = []
+        for bd_angle in body_part_angles:
+            if idx == 0:
+                bd_parts.append(bd_angle['bd_name'])
+            aux_step_angle.append(bd_angle['angle'])
+        stp_angles.append(aux_step_angle)
 
-    bd_parts = list(set(bd_parts))
+    print("bd_parts: ", bd_parts)
+
     aux = []
+    # from string to array
     for part in bd_parts:
         aux.append(var.find_variable_value(part))
     print("aux: ", aux)
     bd_parts = aux
+    print("bd_parts_ AUX: ", bd_parts)
     assign_global_body_parts(bd_parts)
     assign_global_steps_angles(stp_angles)
     assign_permissive_error(int(sorted_steps[0]['permissive_error']))
@@ -1167,7 +1174,7 @@ def video_feed():
     print("video_feed: permissive_error, ", permissive_error)
     print("video_feed: count_max, ", count_max)
 
-    # return Response(ex.exercise([[12, 14, 16]], [[90], [150], [180]], permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(ex.exercise([[12, 14, 16], [11, 12, 14]], [[180, 100], [150, 100], [90, 100]], permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
     return Response(ex.exercise(body_parts, steps_angles, permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
