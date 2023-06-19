@@ -14,6 +14,10 @@ def mofify_counter():
    global shared_counter
    shared_counter += 1
 
+current_step = 0
+def change_step(value):
+   global current_step
+   current_step = value
 
 
 # trebuie sa vad cum implementez functia de counter pentru a masura succesul
@@ -65,6 +69,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                             break
                         else:
                             print(f"{idx}  SUCCESS")
+                            change_step(idx)
                             if idx == len(are_steps_completed) - 1:
                                 print("the last step up")
                                 first_half_exercise = True
@@ -84,6 +89,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                             break
                         else:
                             print(f"{idx}  SUCCESS")
+                            change_step(idx - 1)
                             if idx == 0:
                                 print("the last step dowm")
                                 counter += 1

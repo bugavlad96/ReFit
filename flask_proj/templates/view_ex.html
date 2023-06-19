@@ -39,7 +39,7 @@
         </div>
 
         <div class="next-step">
-            <img class="step" src="static/images/vlad.jpg">
+            <img class="step" id="image-step" src="static/uploads/{{exercise_dict.category}}/{{steps_list[{{current_step}}].photo_id}}.png" alt="Current Step">
         </div>
     </section>
 <script>
@@ -58,6 +58,8 @@
 
                 // Update the count in the HTML element
                 document.getElementById('count').textContent = 'Counter: ' + response.count;
+<!--                 // Update the image source-->
+<!--                document.getElementById('image-step').src = 'static/uploads/' + response.category + '/' + response.photo_id + '.png';-->
             }
         };
 

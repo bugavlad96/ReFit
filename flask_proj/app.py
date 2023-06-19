@@ -1180,6 +1180,7 @@ def get_count():
     # global count
     # count += 1
     count = core.exercise.shared_counter
+    curr_step = core.exercise.current_step
 
     print('app_shared_counter: ', count)
 
