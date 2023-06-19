@@ -91,6 +91,9 @@
                     var doneMessage = document.querySelector('.done');
                     doneMessage.style.display = 'none';
                 }
+                if (response.count >= maxCount+10) {
+                    goBack();
+                }
             }
         };
 
