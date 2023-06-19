@@ -1073,11 +1073,41 @@ def profile():
 
 
 
-
-
+import libs.global_var as var
+body_parts = []
+steps_angles = []
+permissive_error = 0
+count_max = 0
+def append_global_body_parts(body_part):
+    global body_parts
+    body_parts.append(body_part)
+    return body_parts
+def check_if_none(var):
+    if var is None:
+        return True
+    return False
+def append_global_steps_angles(step_angle):
+    global steps_angles
+    steps_angles.append(step_angle)
+def assign_permissive_error(perm_error):
+    global permissive_error
+    permissive_error = perm_error
+def assign_count_max(cnt_max):
+    global count_max
+    count_max = cnt_max
+def intialize_globals():
+    global body_parts
+    body_parts = []
+    global steps_angles
+    steps_angles = []
+    global permissive_error
+    permissive_error = 0
+    global count_max
+    count_max = 0
 
 @app.route('/view_exercise')
 def view_ex():
+    intialize_globals()
     exercise_id = request.args.get('exercise_id')
     exercise_dict = {}
     steps_list = []
@@ -1099,31 +1129,66 @@ def view_ex():
     print("exercise_dict.category:", exercise_dict['category'])
     print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])
 
+    # parseaza steps si modifica bd_name in array conform global vars
+    sorted_steps = sorted(steps_list, key=lambda x: x['step_number'])
+    step_body_parts = []
+
+    for step in sorted_steps:
+        step_angles = []
+        for bd_part in step['body_part_angles'].items():
+            if len(body_parts) < len()
+
+            step_body_parts.append(bd_part['bd_name'])
+            # step_body_parts.append(var.find_variable_value(bd_part['bd_name']))
+            step_angles.append(int(bd_part['angle']))
+            print("step_body_parts: ", step_body_parts)
+            print("step_angles: ", step_angles)
+        append_global_body_parts(step_body_parts)
+        append_global_steps_angles(step_angles)
+    assign_permissive_error(int(sorted_steps[0]['permissive_error']))
+    assign_count_max(int(exercise_dict['max_reps']))
+    # apoi creeaza aray-urile si parseaza direct in exercise
+
+    print("view_exercise body_parts: ", body_parts)
+    print("view_exercise steps_angles: ", steps_angles)
+
     return render_template('view_ex.html', count=count, romanian_category=romanian_category, steps_list=steps_list, exercise_dict=exercise_dict, logged_in=True)
 
 
 json_data = '''{
   "Name": "Exercise Hand",
-  "Count_max": 10,
+  "Count_max": 4,
   "Permissive_error": 10,
   "Steps": {
             "step_0": {
+              "RIGHT_ELBOW": 90,
               "LEFT_ELBOW": 90
             },
             "step_1": {
+              "RIGHT_ELBOW": 180,
               "LEFT_ELBOW": 180
+            },
+            "step_2": {
+              "RIGHT_ELBOW": 200,
+              "LEFT_ELBOW": 200
             }
   }
 }'''
 
-
+import core.exercise as ex
 @app.route('/video_feed')
 def video_feed():
 
     if core.exercise.shared_counter != 0:
         core.exercise.shared_counter = 0
+    print("video_feed: body_parts, ", body_parts)
+    print("video_feed: steps_angles, ", steps_angles)
+    print("video_feed: permissive_error, ", permissive_error)
+    print("video_feed: count_max, ", count_max)
 
-    return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(ex.exercise([[12, 14, 16]], [[90], [150], [180]], permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(ex.exercise(body_parts, steps_angles, permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return Response(js.interpret_json(json_data), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 from core.exercise import shared_counter
@@ -1140,13 +1205,6 @@ def get_count():
 
     # Return the count as a JSON response
     return jsonify(count=count)
-
-
-
-
-
-
-
 
 
 

@@ -27,12 +27,9 @@ def mofify_counter():
 def exercise(body_parts, steps_angles, permissive_error, count_max):
 
     up = False
-    # counter = flask_proj.app.counter
     counter = 0
-
     # are_steps_completed = []
     actual_values = []
-
     first_half_exercise = False
     second_half_exercise = False
 

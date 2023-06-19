@@ -23,12 +23,16 @@ def step(results, img, body_parts, body_angles, permissive_error):
         return None
     if len(body_parts) != len(body_angles):
         print("corresponding angles are missing for the requested body parts in the steps")
+        print('len(body_parts): ', len(body_parts))
+        print('len(body_angles): ', len(body_angles))
+
         return None
 
 
     actual_values = {}
     break_occurred = False
     for index, body_part_array in enumerate(body_parts):
+        print("step_step: ", index, ' ', body_part_array)
 
         points = utils.collect_points(img, results)
         body_part_name = var.find_variable_name(body_part_array)
@@ -41,7 +45,7 @@ def step(results, img, body_parts, body_angles, permissive_error):
                 # actual_values += body_part_array, (True, actual_angle)
                 actual_values[body_part_name] = (body_part_array, (True, actual_angle))
             else:
-                print(f"Correct your {body_part_name} angle")
+                print(f"Correct your {body_part_name} angle to {body_angles[index]}")
                 actual_values[body_part_name] = (body_part_array, (False, actual_angle))
                 break_occurred = True
                 break

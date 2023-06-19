@@ -29,6 +29,10 @@ json_data = '''{
             "step_1": {
               "RIGHT_ELBOW": 180,
               "LEFT_ELBOW": 180
+            },
+            "step_2": {
+              "RIGHT_ELBOW": 200,
+              "LEFT_ELBOW": 200
             }
   }
 }'''
@@ -46,11 +50,17 @@ def interpret_json(json_data):
 
     steps = data["Steps"]
     for step_key, step_value in steps.items():
-        # print("Step:", step_key)
+        print("Step:", step_key)
+        print('step_value: ', step_value)
         step_angles = []
         for body_part, angle in step_value.items():
             # nr_body_parts = len(step_value)
+            # presupunerea e ca la fiecare pas am aceleasi parti ale corpului (partea 1,2 si 3 an aceeasi ordime) pentru totii pasii. tot ce se schimba la pasii ulteriori sunt unghiurile
             if len(body_parts) < len(step_value):
+                print('len(body_parts): ', len(body_parts))
+                print('len(step_value): ', len(step_value))
+                print("body_parts: ", body_parts)
+                print('step_value: ', step_value)
                 value = var.find_variable_value(body_part)
                 if value is None:
                     return print("No such body_part")
@@ -62,10 +72,10 @@ def interpret_json(json_data):
 
         steps_angles.append(step_angles)
 
-    print(body_parts)
-    print(steps_angles)
+    print("din functia json: ", body_parts)
+    print("din functia json: ",steps_angles)
     # print(f"Body part: {body_part}, Angle: {angle}")
-    return ex.exercise(body_parts, steps_angles, permissive_error, count_max)
+    # return ex.exercise(body_parts, steps_angles, permissive_error, count_max)
 
 print(interpret_json(json_data))
 
