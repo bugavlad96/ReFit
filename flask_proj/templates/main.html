@@ -19,7 +19,7 @@
     <h2>Exerciții pe categorii</h2>
     {% for category in categories %}
         <div class="service-item">
-        <img src="../static/images/img.jpg" >
+        <img src="../static/uploads/{{ category.name }}/{{ category.name }}.jpg" >
         {% if category.show_prog_content %}
         <div class="prog-content">
         {% else %}
