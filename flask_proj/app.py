@@ -1047,8 +1047,8 @@ def profile():
                 'id': program[0],
                 'name': program[1].capitalize(),
                 'description': program[2].capitalize(),
-                # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
-                'category_name': program[4].capitalize(),
+                'photo_id': program[3],
+                'category_name': program[4],
                 # 'therapist_id': program[5], therapist ID no need to render to HTML
                 'therapist_name': therapist_name
             }
