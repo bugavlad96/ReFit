@@ -4,15 +4,15 @@ CREATE PROCEDURE add_categories()
 BEGIN
 
 	INSERT INTO category (name, description)
-	VALUES ('hands','hand related exercises');
+	VALUES ('hands','Exerciții pentru mâini');
 	INSERT INTO category (name, description)
-	VALUES ('shoulders','shoulder related exercises');
+	VALUES ('shoulders','Exerciții pentru umeri');
     INSERT INTO category (name, description)
-	VALUES ('hips','hip related exercises');
+	VALUES ('hips','Exerciții pentru șolduri');
     INSERT INTO category (name, description)
-	VALUES ('feet','feet related exercises');
+	VALUES ('feet','Exerciții pentru picioare');
 	INSERT INTO category (name, description)
-	VALUES ('users','user photo');
+	VALUES ('users','Poze utilizator');
     
 END //
 DELIMITER ;

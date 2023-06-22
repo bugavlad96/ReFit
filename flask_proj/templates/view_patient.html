@@ -64,7 +64,7 @@
   <form method="POST">
       <div class="patient">
           <div class="img">
-              <img src="../static/images/vlad.jpg">
+              <img src="../static/images/user.jpg">
           </div>    
           <div class="info">
               <p><b>Nume:</b> {{patient.name}}</p>
@@ -88,12 +88,12 @@
                 <div class="order"></div>
               </div>
 
-              <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
+              <img src="static/uploads/{{ program.category_name }}/{{ program.photo_id }}.png" style="margin-left: 10%; height: 200px;">
               <div class="prog-content">
                 <div class="program-info">
                   <h2>{{program.name}}</h2>
-                  <p>Categorie: {{program.category}}</p>
-                  <p>Terapeut:{{program.therapist}}</p>
+                  <p>Categorie: {{program.romanian_cat}}</p>
+                  <p>Terapeut:{{program.therapist_name}}</p>
                 </div>
               </div>
             </div>

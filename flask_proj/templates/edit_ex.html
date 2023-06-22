@@ -39,25 +39,7 @@
 <!--        <label for="permissive-error">Eroarea admisa exercițiu</label>-->
 <!--        <input type="text" name="permissive-error" id="permissive-error" required value="{{steps_list[0].permissive_error}}">-->
 <!--      </div>-->
-      <div class="form-group">
-        <label>Imagine Exercitiu</label>
-        <div class="file-upload">
-          <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-          <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-            <div class="drag-text">
-              <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
-            </div>
-          </div>
-          <div class="file-upload-content">
-            <img class="file-upload-image" src="#" alt="your image" />
-            <div class="image-title-wrap">
-              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
 
     <div class="step">
@@ -70,25 +52,7 @@
         <label for="permissive-error1">Eroarea admisa în grade: </label>
         <input type="text" name="permissive-error1" id="permissive-error1" required value="{{steps_list[0].permissive_error}}">
       </div>
-      <div class="form-group">
-        <label>Imagine Pas</label>
-        <div class="file-upload">
-          <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-          <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-            <div class="drag-text">
-              <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
-            </div>
-          </div>
-          <div class="file-upload-content">
-            <img class="file-upload-image" src="#" alt="your image" />
-            <div class="image-title-wrap">
-              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-            </div>
-          </div>
-        </div>
-      </div>
       <div class="body-parts">
 
 
@@ -231,25 +195,7 @@
         <label for="permissive-error2">Eroarea admisa în grade: </label>
         <input type="text" name="permissive-error2" id="permissive-error2" required value="{{steps_list[1].permissive_error}}">
       </div>
-      <div class="form-group">
-        <label>Imagine Pas</label>
-        <div class="file-upload">
-          <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-          <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-            <div class="drag-text">
-              <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
-            </div>
-          </div>
-          <div class="file-upload-content">
-            <img class="file-upload-image" src="#" alt="your image" />
-            <div class="image-title-wrap">
-              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-            </div>
-          </div>
-        </div>
-      </div>
       {% set remaining_angles2 = [
       {'name': 'RIGHT_ELBOW', 'label': 'Cot drept'},
       {'name': 'LEFT_ELBOW', 'label': 'Cot stâng'},
@@ -387,25 +333,7 @@
         <label for="permissive-error3">Eroarea admisa în grade: </label>
         <input type="text" name="permissive-error3" id="permissive-error3" required value="{{steps_list[2].permissive_error}}">
       </div>
-      <div class="form-group">
-        <label>Imagine Pas</label>
-        <div class="file-upload">
-          <button class="file-upload-btn" type="button" onclick="$('.file-upload-input').trigger( 'click' )">Add Image</button>
 
-          <div class="image-upload-wrap">
-            <input class="file-upload-input" type='file' onchange="readURL(this);" accept="image/*" />
-            <div class="drag-text">
-              <h4 style="font-weight: lighter;">Drag and drop a file or select add Image</h4>
-            </div>
-          </div>
-          <div class="file-upload-content">
-            <img class="file-upload-image" src="#" alt="your image" />
-            <div class="image-title-wrap">
-              <button type="button" onclick="removeUpload()" class="remove-image">Remove <span class="image-title">Uploaded Image</span></button>
-            </div>
-          </div>
-        </div>
-      </div>
         {% set remaining_angles3 = [
       {'name': 'RIGHT_ELBOW', 'label': 'Cot drept'},
       {'name': 'LEFT_ELBOW', 'label': 'Cot stâng'},
@@ -533,7 +461,7 @@
 
 
     </div>
-    <button type="submit" class="submit-button">Submit</button>
+    <button type="submit" class="submit-button">Actualizează</button>
   </form>
 </div>
 

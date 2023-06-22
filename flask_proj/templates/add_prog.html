@@ -60,11 +60,11 @@
                 <div class="order"></div>
               </div>
 
-              <img src="../static/images/img.jpg" style="margin-left: 10%; height: 200px;">
+              <img src="static/uploads/{{ exercise.category_name }}/{{ exercise.photo_id }}.png" style="margin-left: 10%; height: 200px;">
               <div class="prog-content">
                 <div class="program-info">
-                  <h2>{{ exercise.description }}</h2>
-                  <p>Categorie: {{ exercise.category_name }}</p>
+                  <h2>{{ exercise.name }}</h2>
+                  <p>Categorie: {{ exercise.romanian_cat }}</p>
                   <p>Terapeut: {{ exercise.therapist_name }}</p>
                 </div>
               </div>

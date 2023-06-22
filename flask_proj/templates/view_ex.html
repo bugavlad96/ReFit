@@ -15,25 +15,25 @@
     <section class="services">
         <div class="service-item">
             <img src="static/uploads/{{exercise_dict.category}}/{{steps_list[0].photo_id}}.png" alt="Step 1">
-            <h3>Step 1</h3>
+            <h3>Pasul 1</h3>
             <p>Descriere: {{steps_list[0].description}}</p>
             <p>Erroarea admisa: {{steps_list[0].permissive_error}} grade</p>
         </div>
         <div class="service-item">
             <img src="static/uploads/{{exercise_dict.category}}/{{steps_list[1].photo_id}}.png" alt="Step 2">
-            <h3>step 2</h3>
+            <h3>Pasul 2</h3>
             <p>Descriere: {{steps_list[1].description}}</p>
             <p>Erroarea admisa: {{steps_list[1].permissive_error}} grade</p>
         </div>
         <div class="service-item">
             <img src="static/uploads/{{exercise_dict.category}}/{{steps_list[2].photo_id}}.png" alt="Step 3">
-            <h3>Step 3</h3>
+            <h3>Pasul 3</h3>
             <p>Descriere: {{steps_list[2].description}}</p>
-            <p>Erroarea admisa: {{steps_list[2].permissive_error}} grade</p>
+            <p>Eroarea admisa: {{steps_list[2].permissive_error}} grade</p>
         </div>
     </section>
 
-    <p class="counter" id="count"><b>Counter:</b> {{ count }}</p>
+    <p class="counter" id="count"><b>Contor:</b> {{ count }}</p>
     <p class="done">Well done</p>
 
     <div class="btn-group">
@@ -71,7 +71,7 @@
                 var response = JSON.parse(xhr.responseText);
 
                 // Update the count in the HTML element
-                document.getElementById('count').textContent = 'Counter: ' + response.count;
+                document.getElementById('count').textContent = 'Contor: ' + response.count;
                   // Update the image source based on the response count
                 var imageStep = document.getElementById('image-step');
                 if (response.current_step === 1) {

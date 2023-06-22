@@ -94,8 +94,9 @@ def main():
         for category in all_cat:
             if category[0] != 'users':
                 preprocessed_item = {
-                    'name': category[0].capitalize(),
+                    'name': category[0],
                     'description': category[1].capitalize(),
+                    'romanian_cat': category_romanian.get(category[0],category[0]),
                 }
 
                 preprocessed_data.append(preprocessed_item)
@@ -198,7 +199,9 @@ def programs():
             'photo_id': program[3],
             'category_name': program[4],
             # 'therapist_id': program[5], therapist ID no need to render to HTML
-            'therapist_name': therapist_name
+            'therapist_name': therapist_name,
+            'romanian_cat': category_romanian.get(program[4], program[4]),
+
         }
         preprocessed_data.append(preprocessed_item)
         # print(preprocessed_item)
@@ -260,11 +263,14 @@ def add_programs():
             'id': ex[0], #no need to render ID
             'name': ex[1].capitalize(),
             'description': ex[2].capitalize(),
-            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'photo_id': ex[3],
             'category_name': ex[4].capitalize(),
-            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'therapist_id': ex[5],
             'max_reps': ex[6],
-            'therapist_name': therapist_name
+            'therapist_name': therapist_name,
+            'romanian_cat': category_romanian.get(ex[4], ex[4]),
+
+
         }
         preprocessed_data.append(preprocessed_item)
         # print(preprocessed_item)
@@ -336,11 +342,13 @@ def edit_program():
                 'id': ex[0],  # no need to render ID
                 'name': ex[1].capitalize(),
                 'description': ex[2].capitalize(),
-                # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+                'photo_id': ex[3],
                 'category_name': ex[4].capitalize(),
                 # 'therapist_id': ex[5], therapist ID no need to render to HTML
                 'max_reps': ex[6],
-                'therapist_name': therapist_name
+                'therapist_name': therapist_name,
+                'romanian_cat': category_romanian.get(ex[4], ex[4]),
+
             }
             preprocessed_data.append(preprocessed_item)
         #   print('vashee tati: ', preprocessed_data)
@@ -483,7 +491,9 @@ def view_program():
         'description': db_program[2],
         'photo_id': db_program[3],
         'category_name': db_program[4],
-        'therapist_name': therapist_name
+        'therapist_name': therapist_name,
+        'romanian_cat': category_romanian.get(db_program[4], db_program[4]),
+
     }
 
     cur.execute("SELECT * FROM exercise_to_prog WHERE program_id = %s", (program_id,))
@@ -515,20 +525,27 @@ def view_program():
             'id': ex[0],  # no need to render ID
             'name': ex[1].capitalize(),
             'description': ex[2].capitalize(),
-            # 'photo_id': ex[3], !!!!!!!!!!!!!!!!!needed later
+            'photo_id': ex[3],
             'category_name': ex[4].capitalize(),
-            # 'therapist_id': ex[5], therapist ID no need to render to HTML
+            'therapist_id': ex[5],
             'max_reps': ex[6],
-            'therapist_name': therapist_name
+            'therapist_name': therapist_name,
+            'romanian_cat': category_romanian.get(ex[4], ex[4]),
+
         }
         preprocessed_data.append(preprocessed_item)
     #   print('vashee tati: ', preprocessed_data)
 
 
-
+    if 'email' in session:
+        user_type = session['type']
+        name = session['name']
+        return render_template('view_program.html', user_name = name, logged_in=True, user_type=user_type, program=program, exercises=preprocessed_data, photo=photo)
+    else:
+        return render_template('view_program.html',program=program, exercises=preprocessed_data, photo=photo)
 
     # return render_template('add_prog.html', logged_in=True, user_type=user_type)
-    return render_template('view_program.html', program=program, exercises=preprocessed_data, photo=photo)
+
 
 
 @app.route('/exercise')
@@ -561,7 +578,8 @@ def exercise():
             'category_name': ex[4].capitalize(),
             # 'therapist_id': ex[5], therapist ID no need to render to HTML
             'max_reps': ex[6],
-            'therapist_name': therapist_name
+            'therapist_name': therapist_name,
+            'romanian_cat': category_romanian.get(ex[4], ex[4]),
         }
         preprocessed_data.append(preprocessed_item)
         # print(preprocessed_item)
@@ -577,9 +595,6 @@ def exercise():
         name = session['name']
         return render_template('exercise.html', user_name = name, logged_in=True, user_type=user_type, exercises=preprocessed_data)
     else:
-
-
-
         return render_template('exercise.html', exercises=preprocessed_data)
 
 
@@ -1103,7 +1118,12 @@ def intialize_globals():
     permissive_error = 0
     global count_max
     count_max = 0
-
+category_romanian = {
+        'hands': 'Mâini',
+        'shoulders': 'Umeri',
+        'hips': 'Șold',
+        'feet': 'Picioare',
+    }
 @app.route('/view_exercise')
 def view_ex():
     intialize_globals()
@@ -1116,14 +1136,9 @@ def view_ex():
     print('fetched exercise_id: ', exercise_id)
     print('fetched exercise_dict: ', exercise_dict)
     print('fetched steps_list: ', steps_list)
-    parameters = {
-        'hands': 'Mâini',
-        'shoulders': 'Umeri',
-        'hips': 'Șold',
-        'feet': 'Picioare',
-    }
+
     english_word = 'hands'
-    romanian_category = parameters.get(english_word, english_word) # Use the English word as fallback if translation is not available
+    romanian_category = category_romanian.get(english_word, english_word) # Use the English word as fallback if translation is not available
 
     print("exercise_dict.category:", exercise_dict['category'])
     print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])
@@ -1329,10 +1344,12 @@ def view_patient():
                 'id': program[0],
                 'name': program[1].capitalize(),
                 'description': program[2].capitalize(),
-                # 'photo_id': program[3], !!!!!!!!!!!!!!!!!needed later
+                'photo_id': program[3],
                 'category_name': program[4].capitalize(),
-                # 'therapist_id': program[5], therapist ID no need to render to HTML
-                'therapist_name': therapist_name
+                'therapist_id': program[5],
+                'therapist_name': therapist_name,
+                'romanian_cat': category_romanian.get(program[4], program[4]),
+
             }
             preprocessed_data.append(preprocessed_item)
             # print(preprocessed_item)
