@@ -22,9 +22,9 @@
                     <a href="#" class="dropbtn">Cont</a>
                     <div class="dropdown-content">
                         {% if logged_in %}
-                            <a href="#">Hi, {{ user_name }}</a>
-                            <a href="{{ url_for('profile') }}">Account</a>
-                            <a href="{{ url_for('logout') }}">Logout</a>
+                            <a href="#">Salut, {{ user_name }}</a>
+                            <a href="{{ url_for('profile') }}">Cont</a>
+                            <a href="{{ url_for('logout') }}">Delogează-te</a>
                         {% else %}
                             <a href="{{ url_for('login') }}">Login</a>
                             <a href="{{ url_for('signup') }}">Sign up</a>
