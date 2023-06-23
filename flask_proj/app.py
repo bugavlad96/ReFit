@@ -1164,17 +1164,17 @@ def view_ex():
     # from string to array
     for part in bd_parts:
         aux.append(var.find_variable_value(part))
-    print("aux: ", aux)
+    # print("aux: ", aux)
     bd_parts = aux
-    print("bd_parts_ AUX: ", bd_parts)
+    # print("bd_parts_ AUX: ", bd_parts)
     assign_global_body_parts(bd_parts)
     assign_global_steps_angles(stp_angles)
     assign_permissive_error(int(sorted_steps[0]['permissive_error']))
     assign_count_max(int(exercise_dict['max_reps']))
     # apoi creeaza aray-urile si parseaza direct in exercise
 
-    print("view_exercise bd_parts: ", bd_parts)
-    print("view_exercise stp_angles: ", stp_angles)
+    # print("view_exercise bd_parts: ", bd_parts)
+    # print("view_exercise stp_angles: ", stp_angles)
 
     return render_template('view_ex.html', count=count, romanian_category=romanian_category, steps_list=steps_list, exercise_dict=exercise_dict, logged_in=True)
 
@@ -1184,10 +1184,10 @@ def video_feed():
 
     if core.exercise.shared_counter != 0:
         core.exercise.shared_counter = 0
-    print("video_feed: body_parts, ", body_parts)
-    print("video_feed: steps_angles, ", steps_angles)
-    print("video_feed: permissive_error, ", permissive_error)
-    print("video_feed: count_max, ", count_max)
+    # print("video_feed: body_parts, ", body_parts)
+    # print("video_feed: steps_angles, ", steps_angles)
+    # print("video_feed: permissive_error, ", permissive_error)
+    # print("video_feed: count_max, ", count_max)
 
     # return Response(ex.exercise([[12, 14, 16], [11, 12, 14]], [[180, 100], [150, 100], [90, 100]], permissive_error, count_max), mimetype='multipart/x-mixed-replace; boundary=frame')
     return Response(ex.exercise(body_parts, steps_angles, permissive_error, count_max+10), mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -1223,7 +1223,7 @@ def patients():
     mail = session['email']
 
     cur = mysql.connection.cursor()
-    default_program = "c14396cc-0c7c-11ee-8999-846993cbe512"
+    default_program = "02f64975-111f-11ee-86ee-846993cbe512"
     error = ''
     all_patients_of_therapist = []
 
