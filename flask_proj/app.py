@@ -1133,19 +1133,19 @@ def view_ex():
     cur = mysql.connection.cursor()
 
     exercise_id, exercise_dict, steps_list, cur = fetch_exercise(exercise_id, exercise_dict, steps_list, cur)
-    print('fetched exercise_id: ', exercise_id)
-    print('fetched exercise_dict: ', exercise_dict)
-    print('fetched steps_list: ', steps_list)
+    # print('fetched exercise_id: ', exercise_id)
+    # print('fetched exercise_dict: ', exercise_dict)
+    # print('fetched steps_list: ', steps_list)
 
     english_word = 'hands'
     romanian_category = category_romanian.get(english_word, english_word) # Use the English word as fallback if translation is not available
 
-    print("exercise_dict.category:", exercise_dict['category'])
-    print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])
+    # print("exercise_dict.category:", exercise_dict['category'])
+    # print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])
 
     # parseaza steps si modifica bd_name in array conform global vars
     sorted_steps = sorted(steps_list, key=lambda x: int(x['step_number']))
-    print("sorted_steps: ", sorted_steps)
+    # print("sorted_steps: ", sorted_steps)
 
     bd_parts = []
     stp_angles = []
@@ -1158,7 +1158,7 @@ def view_ex():
             aux_step_angle.append(bd_angle['angle'])
         stp_angles.append(aux_step_angle)
 
-    print("bd_parts: ", bd_parts)
+    # print("bd_parts: ", bd_parts)
 
     aux = []
     # from string to array
@@ -1199,15 +1199,10 @@ count = 0
 
 @app.route('/get_count')
 def get_count():
-    # global count
-    # count += 1
     count = core.exercise.shared_counter
     current_step = core.exercise.current_step
-
-    print('app_shared_counter: ', count)
-    print('app_current_step: ', current_step)
-
-
+    # print('app_shared_counter: ', count)
+    # print('app_current_step: ', current_step)
     # Return the count as a JSON response
     return jsonify(count=count, current_step=current_step)
 
