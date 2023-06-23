@@ -23,7 +23,7 @@
                     <div class="dropdown-content">
                         {% if logged_in %}
                             <a href="#">Salut, {{ user_name }}</a>
-                            <a href="{{ url_for('profile') }}">Cont</a>
+                            <a href="{{ url_for('profile') }}">Profil</a>
                             <a href="{{ url_for('logout') }}">Delogează-te</a>
                         {% else %}
                             <a href="{{ url_for('login') }}">Loghează-te</a>
