@@ -11,7 +11,7 @@ import libs.compute_angle as ca
 
 
 shared_counter = 0
-def mofify_counter():
+def modify_counter():
    global shared_counter
    shared_counter += 1
 
@@ -97,7 +97,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
                             if idx == 0:
                                 print("the last step dowm")
                                 counter += 1
-                                mofify_counter()
+                                modify_counter()
                                 print("exercise_shared_counter: ", shared_counter)
                                 print("")
                                 first_half_exercise = False
