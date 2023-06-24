@@ -26,7 +26,6 @@ CREATE PROCEDURE add_step(
     IN p_permissive_error smallint,
     IN p_step_order SMALLINT,
     IN p_photo_id CHAR(36),
-    IN p_category_name CHAR(36), 
 	OUT p_generated_id CHAR(36)
     
 )
@@ -42,4 +41,6 @@ END //
 DELIMITER ;
 
 -- DROP PROCEDURE IF EXISTS add_step;
-
+use refit;
+SHOW CREATE PROCEDURE add_step;
+select * from step;
