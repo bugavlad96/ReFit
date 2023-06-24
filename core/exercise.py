@@ -48,7 +48,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
             mpDraw.draw_landmarks(img, results.pose_landmarks, mpPose.POSE_CONNECTIONS)
             points = utils.collect_points(img, results)
 
-            color.color_landmark(img, points, body_parts, var.RED)
+            color.color_landmark(img, points, body_parts, var.YELLOW)
 
             for part in body_parts:
                 angle_val = ca.compute_angle(points, part)

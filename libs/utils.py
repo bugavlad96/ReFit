@@ -7,8 +7,8 @@ import cv2
 
 def exercise_initialization():
     # Enable OpenCV to use CUDA
-    cv2.setUseOptimized(True)
-    cv2.cuda.setDevice(0)
+    # cv2.setUseOptimized(True)
+    # cv2.cuda.setDevice(0)
 
     # Create MediaPipe objects
     mpDraw = mp.solutions.drawing_utils
