@@ -1,4 +1,3 @@
-import core.step as steps
 import libs.global_var as var
 import libs.utils as utils
 import libs.prepare_stream_BGR2RGB as ps
@@ -112,7 +111,7 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
             print("--------------")
 
 
-        ot.output_text(img, str(counter), var.FISRT_LANE, var.RED, var.SIZE_TXT_HINTS)
+        # ot.output_text(img, str(counter), var.FISRT_LANE, var.RED, var.SIZE_TXT_HINTS)
         # cv2.putText(img, str(counter), (100, 150), cv2.FONT_HERSHEY_PLAIN, 12, (255, 0, 0), 12)
         _, encoded_frame = cv2.imencode('.jpg', img)
         yield (b'--frame\r\n'
@@ -126,43 +125,3 @@ def exercise(body_parts, steps_angles, permissive_error, count_max):
     # cv2.destroyAllWindows()
     #
     return counter
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    # --------------------------------------------------------------------------------------------------
-    # --------------------------------------------------------------------------------------------------
-
-
-    # # ARRAY DE COUNTERI daca e counter separat pentru fiecare parte a copului
-    # # un array de pasi
-    #
-    # # initialize the step complition
-    # is_step_completed = []
-    #
-    # for idx in range(len(list_of_steps)):
-    #     is_step_completed[idx-1] = var.STEP_NOT_COMPLETED
-    #
-    #
-    # # in list_of_steps ordinea conteaza
-    # # gandeste-te la inversarea executarii pasilor
-    # # if fac prima jumatate revin sa fac in ordine inversa
-    # for step in list_of_steps:
-    #     if is_step_completed[]
-    #
-    #
-    #
-    # return succes, counter_list
