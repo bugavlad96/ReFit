@@ -1137,8 +1137,7 @@ def view_ex():
     # print('fetched exercise_dict: ', exercise_dict)
     # print('fetched steps_list: ', steps_list)
 
-    english_word = 'hands'
-    romanian_category = category_romanian.get(english_word, english_word) # Use the English word as fallback if translation is not available
+    romanian_category = category_romanian.get(exercise_dict['category'], exercise_dict['category']) # Use the English word as fallback if translation is not available
 
     # print("exercise_dict.category:", exercise_dict['category'])
     # print('steps_list[0].photo_id: ', steps_list[0]['photo_id'])

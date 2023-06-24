@@ -21,23 +21,14 @@ def change_step(value):
    global current_step
    current_step = value
 
-
-# trebuie sa vad cum implementez functia de counter pentru a masura succesul
-# IDEE: la desenat poate merge sa desenezi sageti care sa indice directia de miscare pe stream
-
-
-# trebuie de implementat counter, oare n-ar fie o idee de a pune in pasul de steps
-# O lista de dictionare
-
-            # body_parts, steps(va contine o succesiune de unghiuri) persmissive_error
 def exercise(body_parts, steps_angles, permissive_error, count_max):
 
     up = False
     counter = 0
     # are_steps_completed = []
-    actual_values = []
+    # actual_values = []
     first_half_exercise = False
-    second_half_exercise = False
+    # second_half_exercise = False
 
     # for idx in range(len(body_parts)):
     #     are_steps_completed[idx] = var.STEP_NOT_COMPLETED
