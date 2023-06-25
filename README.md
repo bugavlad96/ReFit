@@ -38,4 +38,10 @@ Pentru a instala dependențele necesare, urmați acești pași:
 
 2. Adăugați detaliile conexiunii, cum ar fi gazdă (host), port, nume de utilizator și parolă, în fișierul `db.py` din flask_proj al proiectului.
 
-3. Creați o nouă bază de date și executați scripturile SQL necesare pentru a configura tabelele și procedurile necesare. 
+3. Creați o nouă bază de date și executați scripturile SQL necesare pentru a configura tabelele și procedurile necesare.
+
+## Lansarea aplicației
+
+```bash
+   python app.py
+ ```
