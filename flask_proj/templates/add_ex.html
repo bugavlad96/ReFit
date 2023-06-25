@@ -10,6 +10,9 @@
 
 {% block content %}
 <h2 class="title">Adaugă exercițiu nou</h2>
+  {% if error %}
+      <p style="color: red; text-align: center;">{{ error }}</p>
+  {% endif %}
 <div class="form-container">
   <form method="post" enctype="multipart/form-data">
     <div class="general-info">

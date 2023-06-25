@@ -619,8 +619,19 @@ def add_exercise():
             exercise_description = form_data['exercise-description']
             category = form_data['categ']
             max_reps = form_data['rep']
-            permissive_error = form_data["permissive-error"]
+            if max_reps is not None:
+                if not max_reps.isdigit():
+                    err = "Valoare repetițiilor poate fi doar un număr"
+                    return render_template('add_ex.html', user_name=name, logged_in=True, user_type=user_type, error=err)
 
+
+
+            if not form_data["permissive-error"].isdigit():
+                err = "Valoare errorii admisa a exercitiului poate fi doar un număr"
+                return render_template('add_ex.html', user_name=name, logged_in=True, user_type=user_type,
+                                       error=err)
+
+            permissive_error = form_data["permissive-error"]
 
             # # retrive photoes and add the to DB
 
@@ -650,6 +661,22 @@ def add_exercise():
                     step_descriptions[step_number] = value
                 elif key.startswith(('RIGHT_', 'LEFT_')):
                     joint, step_number = key.rsplit('_', 1)  # Split the joint name and step number
+                    if value is not "":
+                        print("value0, ",value)
+                        print("type", type(value))
+                        print("int", int(value))
+                        print("type int", type(int(value)))
+                        if not (value.isdigit()):
+                            err = "Valoare unghiurilor articulațiilor poate fi doar un număr"
+                            return render_template('add_ex.html', user_name=name, logged_in=True, user_type=user_type,
+                                                   error=err)
+                        if int(value) < 0 and int(value) > 180:
+                            err = "Valoarea unghiurilor articulațiilor poate fi doar un număr între 0 și 180"
+                            return render_template('add_ex.html', user_name=name, logged_in=True, user_type=user_type,
+                                                   error=err)
+
+
+
                     joint_values[(joint, step_number)] = value
 
             # Print the extracted information
