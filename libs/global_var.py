@@ -14,7 +14,19 @@ SIZE_TXT_HINTS = 2
 SIZE_ANGLES = 5
 
 # For angle computation
+RIGHT_ELBOW = [12, 14, 16]
+LEFT_ELBOW = [11, 13, 15]
+# left_shoulder -> right_shouler -> right elbow
+RIGHT_SHOULDER = [11, 12, 14]
+# right shoulder -> left_shoulder -> left Elbow
+LEFT_SHOULDER = [12, 11, 13]
 
+#hips to compute the angles
+LEFT_HIP = [11, 23, 25]
+RIGHT_HIP = [12, 24, 26]
+# feet
+LEFT_KNEE = [23, 25, 27]
+RIGHT_KNEE = [24, 26, 28]
 
 NOT_VISIBLE = False
 VISIBLE     = True
